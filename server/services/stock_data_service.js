@@ -10,18 +10,24 @@ const Stocks_Symbols_Model = require("../models/stock_symbols_model.js");
 /* Init stock symbol data */
 get_symbol_list();
 async function get_symbol_list() {
+  var to_get_data_or_not = false
   const data_age_limit = 1000*60*60*24 //24 hours
   /* Check DB first */
   let now = Date.now()
   logger.log({now})
   let symbol_data = await Stocks_Symbols_Model.findOne()
-  logger.log(symbol_data.symbols_data_updated)
-  let db_data_time = new Date(symbol_data.symbols_data_updated).getTime()
-  logger.log({db_data_time})
-  let age = now - db_data_time
-  logger.log(age)
-  logger.log(age > data_age_limit)
-  if(age > data_age_limit){
+  if(!symbol_data) {to_get_data_or_not = true}
+  else{
+
+    logger.log(symbol_data.symbols_data_updated)
+    let db_data_time = new Date(symbol_data.symbols_data_updated).getTime()
+    logger.log({db_data_time})
+    let age = now - db_data_time
+    logger.log(age)
+    logger.log(age > data_age_limit)
+    to_get_data_or_not = age > data_age_limit
+  }
+  if(to_get_data_or_not){
 
     /* If not in DB get teh source */
     let resp = await rp("https://api.iextrading.com/1.0/ref-data/symbols");

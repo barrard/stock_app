@@ -47,7 +47,7 @@ next_app
     const server = express();
     logger.log("I AM SERVER".yellow);
     const env = dev ? "Development" : "Production"
-    logger.log(`Running in ${dev}`)
+    logger.log(`Running in ${env}`)
     server.set("trust proxy", "loopback");
 
     middleware(server, next_app);
