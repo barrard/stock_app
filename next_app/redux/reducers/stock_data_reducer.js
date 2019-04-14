@@ -2,11 +2,42 @@
 
 const initial_state = {
   has_symbols_data: false,
-  symbols_data: {}
+  symbols_data: {},
+  charts:{},
+  search_symbol:'',
+  home_page_data:{},
+  home_page_data_set_at:0,
+  sector_data:{}
 };
 
 export default (state = initial_state, action) => {
   switch (action.type) {
+    case "SET_SECTOR_DATA":{
+      const {sector, data} = action
+      const sector_data = {...state.sector_data, ...{[sector]:data}}
+      return{
+        ...state, sector_data:sector_data
+      }
+    }
+    case "SET_HOME_PAGE_DATA":{
+      const {home_page_data, home_page_data_set_at} =action
+      return{
+        ...state,
+        home_page_data, home_page_data_set_at
+      }
+    }
+    case "SET_SEACH_SYMBOL":{
+      return{
+        ...state, search_symbol:action.search_symbol
+      }
+
+    }
+    case "ADD_CHART_DATA":{
+      let charts = {...state.charts, ...action.chart_data}
+      return{
+        ...state, charts
+      }
+    }
     case "SET_SYMBOLS_DATA": {
       return {
         ...state,

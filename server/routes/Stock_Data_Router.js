@@ -1,9 +1,9 @@
 const { Router } = require("express");
 const Stock_Data_Controller = require("../controllers/Stock_Data_controller.js");
 
-const {
-  ensure_authenticated
-} = require("../middleware/router_middleware.js");
+// const {
+//   ensure_authenticated
+// } = require("../middleware/router_middleware.js");
 
 class Stock_Data_Router {
   constructor() {

@@ -1,3 +1,62 @@
+.xs_fixed_height {
+  min-height: 100px;
+  max-height: 100px
+}
+.sm_fixed_height {
+  min-height: 200px;
+  max-height: 200px
+}
+
+.flex{
+  display: flex;
+}
+
+.scroll_y{
+  overflow-y: scroll
+}
+
+.scroll_x{
+  overflow-x: scroll
+}
+.ticker_vol{
+  color: white;
+}
+.ticker_row_light{
+  background: gray;
+  padding: 5px;
+}
+.ticker_row_dark{
+  background: black;
+  padding: 5px;
+}
+.ticker_price{
+  color: lightgoldenrodyellow;
+}
+.ticker_symbol{
+  color: beige;
+}
+.percentage_up{
+  color: lawngreen;
+}
+.percentage_down{
+  color: red;
+}
+.percentage_neutral{
+  color: #eee;
+}
+
+.md_fixed_height {
+  min-height: 400px;
+  max-height: 400px
+}
+
+.lg_fixed_height {
+  min-height: 700px;
+  max-height: 700px
+}
+.grid{
+  display: grid;
+}
 .relative{
   position: relative;
 }
@@ -5,11 +64,57 @@
   position: absolute;
 }
 
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  
+  border-bottom: 5px solid black;
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  
+  border-top: 5px solid black;
+}
+
+
+.right_10_px{
+  right:10px;
+}
 .filtered_stock_list{
+  z-index: 10;
+  background: white;
   position: absolute;
   top: 100%;
-  right:0%
+  right:0%;
+  height:50vh;
+  overflow-y: scroll;
+  width: 50%;
 }
+.margin_right_4em{
+  margin-right: 4em;
+}
+.nav-bar-links{
+  color: rgba(0, 0, 0, 0.5);
+  display: contents;
+  list-style: none;
+}
+ .nav-link{
+   color:rgba(0, 0, 0, 0.5);
+ }
+ .dropdown-item{
+  color:rgba(0, 0, 0, 0.5);
+ }
+
+ .dropdown-item:hover{
+  color:rgba(0, 0, 0, 0.5);
+ }
+
 
 .filtered_stock_list_item{
   border: 1px solid black;
@@ -32,6 +137,42 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.align_items_center{
+  align-items: center;
+}
+.clickable{
+  cursor: pointer;
+}
+
+.background_grey{
+  background: #ddd;
+}
+
+.full_screen_height{
+  height: 100vh;
+}
+
+.flex_end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.stock-list-dropdown:hover{
+  text-decoration: none;
+  color:#212529;
+
+
+}
+.zero_margin{
+  margin: 0 !important;
+}
+.stock-list-dropdown{
+  text-decoration: none;
+  color:#212529;
+  background-color: transparent;
+  font-weight: 400;
 }
 
 .sc-btn {

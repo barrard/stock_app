@@ -17,8 +17,9 @@ const Symbol_Data = module.exports = mongoose.model('Stock_Symbols', Stock_Symbo
 Symbol_Data.update_symbols = update_symbols
 
 async function update_symbols(data){
-  await Symbol_Data.findOneAndUpdate({name:'symbols'},
+  let symbol_data = await Symbol_Data.findOneAndUpdate({name:'symbols'},
   { symbols_data_updated:Date.now(), symbols:data
-  }, {upsert:true})
+  }, {upsert:true, new:true})
   logger.log('UPDATE SYMBOLS')
+  return symbol_data
 }

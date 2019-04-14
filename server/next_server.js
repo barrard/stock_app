@@ -4,6 +4,7 @@ logger = require("tracer").colorConsole({
     "{{timestamp.green}} <{{title.yellow}}> {{message.cyan}} (in {{file.red}}:{{line}})",
   dateformat: "HH:MM:ss.L"
 });
+const cacheableResponse = require('cacheable-response')
 
 // import {Logger, createConsoleProcessor} from '@grabrinc/isomorphic-logger';
 
@@ -22,6 +23,16 @@ const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT || 3000;
 const next_app = next({ dir: "./next_app", dev });
 const handle = next_app.getRequestHandler();
+
+/* Home page cashing function */
+const Home_Page_Cache = cacheableResponse({
+  ttl: 1000 * 60 * 5, // 5 min
+  get: async ({ req, res, pagePath, queryParams }) => ({
+    data: await next_app.renderToHTML(req, res, pagePath, queryParams)
+  }),
+  send: ({ data, res }) => res.send(data)
+})
+
 
 const get_routes = require("./routes/routes.js");
 const routes = get_routes();
@@ -52,10 +63,19 @@ next_app
 
     middleware(server, next_app);
 
-    /* Render dynamic campaign_id */
-    server.get("/campaign-view/:campaign_id", (req, res) => {
-      return next_app.render(req, res, "/campaign-view", {
-        campaign_id: req.params.campaign_id
+    server.get('/', (req, res)=> Home_Page_Cache({req, res, pagePath:'/landing'}))
+
+    /* Render dynamic chart */
+    server.get("/chart/:symbol", (req, res) => {
+      return next_app.render(req, res, "/chart", {
+        chart: req.params.symbol
+      });
+    });
+
+    /* Render dynamic sector */
+    server.get("/sector/:sector", (req, res) => {
+      return next_app.render(req, res, "/sector", {
+        sector: req.params.sector
       });
     });
 

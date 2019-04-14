@@ -4,29 +4,40 @@ import { withRouter } from "next/router";
 import fetch from "isomorphic-fetch";
 import Link from "next/link";
 
-import { set_symbols_data } from "../redux/actions/stock_actions.js";
+import {
+  set_symbols_data,
+  set_search_symbol,
+  add_chart_data
+} from "../redux/actions/stock_actions.js";
+import { view_selected_stock_symbol } from "../components/charts/chart_data_utils.js";
+import { is_loading, show_filter_list } from "../redux/actions/meta_actions.js";
 class Main_Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      search_symbol: "",
+      // search_symbol: "",
       filtered_stock_list: [],
       searching: true,
       stock_selected: false
+      // show_filter_list: false
     };
+    this.handle_search_input_keydown = this.handle_search_input_keydown.bind(this)
     this.handle_seach_symbol_input = this.handle_seach_symbol_input.bind(this);
     this.make_filter_list = this.make_filter_list.bind(this);
     this.highlight_search_letters = this.highlight_search_letters.bind(this);
     this.filtered_stock_list_item = this.filtered_stock_list_item.bind(this);
+
   }
   async componentDidMount() {
     console.log("asdasd");
-    const { api_server } = this.props.meta;
+    const { api_server } = location.origin;
+    console.log(location)
+    console.log(api_server)
     try {
       const { has_symbols_data } = this.props.stock_data;
       if (has_symbols_data) return;
       let all_stock_symbols_json = await fetch(`
-        ${api_server}/stock/get_symbols_data
+        /stock/get_symbols_data
       `);
       let all_stock_symbols = await all_stock_symbols_json.json();
       console.log(all_stock_symbols);
@@ -36,41 +47,77 @@ class Main_Nav extends React.Component {
       console.log(err);
     }
   }
+  handle_search_input_keydown(e){
+    console.log(e)
+  }
 
-  handle_seach_symbol_input(e, prop) {
-    this.setState({ [prop]: e.target.value });
+  handle_seach_symbol_input(e) {
+    if (!this.props.meta.show_filter_list)
+      this.props.dispatch(show_filter_list(true));
+    this.props.dispatch(set_search_symbol(e.target.value));
     this.make_filter_list(e.target.value);
   }
   handle_search(e) {
     e.preventDefault();
     console.log(this.state.search);
   }
-
+  /* On input makes the list */
   make_filter_list(search_text) {
     var search_text = search_text.toLowerCase();
-    let full_list = this.props.stock_data.symbols_data.symbols;
+    let full_list = this.props.stock_data.symbols_data;
     if (!full_list) {
       /* wait a second...  try again */
       setTimeout(() => this.make_filter_list(search_text), 100);
       return;
     }
+    console.log(full_list)
+    /* list of possible arrays with data */
+    var symbol_starts_with = [];
+    var name_starts_with = [];
+    var symbol_list = [];
+    var name_list = [];
+    var filtered_stock_list = [];
 
-    /* check symbols */
-    let symbol_list = full_list.filter(list_item =>
-      list_item.symbol.toLowerCase().includes(search_text)
-    );
+    /* check symbol starts with */
+    symbol_starts_with = full_list.filter(list_item =>(
+      list_item.symbol.toLowerCase().startsWith(search_text)
+    )
+      );
+    console.log(symbol_starts_with);
+    filtered_stock_list = [...filtered_stock_list, ...symbol_starts_with];
+    if (filtered_stock_list.length < 100) {
+      /* check name starts with */
+      name_starts_with = full_list.filter(list_item =>
+        list_item.name.toLowerCase().startsWith(search_text)
+      );
+      console.log(name_starts_with);
+      filtered_stock_list = [...filtered_stock_list, ...name_starts_with];
+    }
 
-    /* check name */
-    let name_list = full_list.filter(list_item =>
-      list_item.name.toLowerCase().includes(search_text)
-    );
+    if (filtered_stock_list.length < 100) {
+      /* check symbols */
+      symbol_list = full_list.filter(list_item =>
+        list_item.symbol.toLowerCase().includes(search_text)
+      );
+      console.log(symbol_list)
+      filtered_stock_list = [...filtered_stock_list, ...symbol_list];
+    }
 
-    console.log({ symbol_list, name_list });
-    let filtered_stock_list = [...symbol_list, ...name_list].splice(0, 10);
-    console.log({ filtered_stock_list });
+    if (filtered_stock_list.length < 100) {
+      /* check name */
+      name_list = full_list.filter(list_item =>
+        list_item.name.toLowerCase().includes(search_text)
+      );
+      console.log(name_list)
+      filtered_stock_list = [...filtered_stock_list, ...name_list];
+    }
+    /* Combine the lists */
+    filtered_stock_list = [...new Set(filtered_stock_list)]
+    filtered_stock_list = filtered_stock_list.splice(0, 100);
     this.setState({ filtered_stock_list });
   }
 
+  /* Use the filtered stock list to make items */
   Filtered_Stock_List({ filtered_stock_list, search_symbol }) {
     return (
       <div className="filtered_stock_list">
@@ -80,16 +127,22 @@ class Main_Nav extends React.Component {
       </div>
     );
   }
+
+  /* Items that make the list of filtered stocks, on click event resets some things */
   filtered_stock_list_item(data, index, search) {
     return (
-      <div className="filtered_stock_list_item" key={index}>
+      <div
+        className="filtered_stock_list_item"
+        key={index}
+        onClick={() => view_selected_stock_symbol(data.symbol, this.props)}
+      >
         <span
           dangerouslySetInnerHTML={this.highlight_search_letters(
             data.symbol,
             search
           )}
         />
-        {' - '}
+        {" - "}
         <span
           dangerouslySetInnerHTML={this.highlight_search_letters(
             data.name,
@@ -101,12 +154,12 @@ class Main_Nav extends React.Component {
   }
 
   highlight_search_letters(name, search) {
-    console.log({ name, search });
+    // console.log({ name, search });
     let index_of_search_term_name = name
       .toLowerCase()
       .indexOf(search.toLowerCase());
 
-    console.log({ index_of_search_term_name });
+    // console.log({ index_of_search_term_name });
     if (index_of_search_term_name >= 0) {
       var split_name = name.split("");
 
@@ -115,18 +168,18 @@ class Main_Nav extends React.Component {
         0,
         `</span>`
       );
-      console.log({ split_name });
+      // console.log({ split_name });
 
       split_name.splice(
         index_of_search_term_name,
         0,
         `<span class="highlight_search">`
       );
-      console.log({ split_name });
+      // console.log({ split_name });
 
       name = split_name.join("");
     }
-    console.log(name);
+    // console.log(name);
 
     return { __html: name };
   }
@@ -140,7 +193,7 @@ class Main_Nav extends React.Component {
         <Link prefetch href="/landing" as="/">
           <a className="navbar-brand">Home</a>
         </Link>
-        <button
+        {/* <button
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
@@ -150,26 +203,32 @@ class Main_Nav extends React.Component {
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon" />
-        </button>
+        </button> */}
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav mr-auto">
+        {/* <div className="collapse navbar-collapse" id="navbarSupportedContent"> */}
+          <ul className="nav-bar-links">
             {!is_loggedin && <Register_Login_Links pathname={pathname} />}
             {is_loggedin && <Logout_Link pathname={pathname} />}
 
-            <Nav_Dropdown pathname={pathname} />
+            <Charts_Dropdown
+              pathname={pathname}
+              charts={this.props.stock_data.charts}
+            />
           </ul>
           <Navbar_Search
-            handle_search_input={e =>
-              this.handle_seach_symbol_input(e, "search_symbol")
-            }
+                                  /* Let the list stay long enough to click */
+            handle_search_input_blur={()=>setTimeout(()=>this.props.dispatch(show_filter_list(false)), 200)}
+            handle_search_input_keydown={e=>this.handle_search_input_keydown(e)}
+            handle_search_input={e => this.handle_seach_symbol_input(e)}
+            search_symbol={this.props.stock_data.search_symbol}
             handle_search={e => this.handle_search(e)}
           />
-        </div>
-        {this.Filtered_Stock_List({
-          filtered_stock_list: this.state.filtered_stock_list,
-          search_symbol: this.state.search_symbol
-        })}
+        {/* </div> */}
+        {this.props.meta.show_filter_list &&
+          this.Filtered_Stock_List({
+            filtered_stock_list: this.state.filtered_stock_list,
+            search_symbol: this.props.stock_data.search_symbol
+          })}
       </nav>
     );
   }
@@ -184,27 +243,35 @@ export default connect(mapStateToProps)(withRouter(Main_Nav));
 
 /*              Nav components               */
 
-const Navbar_Search = ({ handle_search_input, handle_search }) => (
-  <form className="form-inline my-2 my-lg-0">
+const Navbar_Search = ({
+  handle_search_input,
+  handle_search,
+  search_symbol,handle_search_input_blur,
+  handle_search_input_keydown
+}) => (
+  <form className="form-inline my-2 my-lg-0 absolute right_10_px">
     <input
+      onBlur={handle_search_input_blur}
+      onKeyDown={e=> handle_search_input_keydown(e)}
       onChange={e => handle_search_input(e)}
       className="form-control mr-sm-2"
       type="search"
       placeholder="Search Symbols"
       aria-label="Search"
+      value={search_symbol}
     />
-    <button
+    {/* <button
       onClick={e => handle_search(e)}
       className="btn btn-outline-success my-2 my-sm-0"
       type="submit"
     >
       Search
-    </button>
+    </button> */}
   </form>
 );
 
-const Nav_Dropdown = ({ pathname }) => (
-  <li className="nav-item dropdown">
+const Charts_Dropdown = ({ pathname, charts }) => (
+  <li className="nav-item dropdown margin_right_4em">
     <a
       className="nav-link dropdown-toggle"
       href="#"
@@ -214,19 +281,20 @@ const Nav_Dropdown = ({ pathname }) => (
       aria-haspopup="true"
       aria-expanded="false"
     >
-      Dropdown
+      Charts
     </a>
     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-      <a className="dropdown-item" href="#">
-        Action
-      </a>
-      <a className="dropdown-item" href="#">
-        Another action
-      </a>
-      <div className="dropdown-divider" />
-      <a className="dropdown-item" href="#">
-        Something else here
-      </a>
+      {charts &&
+        Object.keys(charts).map((symbol, index) => (
+          <Link href={`/chart?symbol=${symbol}`} key={index}>
+            <a className="stock-list-dropdown">
+              <p className="justify_center zero_margin">{symbol}</p>
+              {index + 1 != Object.keys(charts).length && (
+                <div className="dropdown-divider" />
+              )}
+            </a>
+          </Link>
+        ))}
     </div>
   </li>
 );
@@ -239,7 +307,12 @@ const Logout_Link = ({ pathname }) => (
       pathname={pathname}
     />
 
-    <Navbar_Links name="Logout" path={"/auth/logout"} pathname={pathname} />
+    <Navbar_Links
+      nofetch={true}
+      name="Logout"
+      path={"/auth/logout"}
+      pathname={pathname}
+    />
   </>
 );
 
@@ -251,16 +324,34 @@ const Register_Login_Links = ({ pathname }) => (
   </>
 );
 
-const Navbar_Links = ({ path, pathname, name }) => (
-  <li className="nav-item">
-    <Link href={path}>
-      <a
-        className={`${
-          pathname == path ? "active " : " "
-        }" nav-link dropdown-item"`}
-      >
-        {name}
-      </a>
-    </Link>
-  </li>
+const Navbar_Links = ({ path, pathname, name, nofetch }) => (
+  <>
+    {!nofetch && (
+      <li className="nav-item">
+        <Link prefetch href={path}>
+          <a
+            className={`${
+              pathname == path ? "active " : " "
+            }" nav-link dropdown-item"`}
+          >
+            {name}
+          </a>
+        </Link>
+      </li>
+    )}
+
+    {nofetch && (
+      <li className="nav-item">
+        <Link href={path}>
+          <a
+            className={`${
+              pathname == path ? "active " : " "
+            }" nav-link dropdown-item"`}
+          >
+            {name}
+          </a>
+        </Link>
+      </li>
+    )}
+  </>
 );
