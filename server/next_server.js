@@ -13,6 +13,7 @@ const cacheableResponse = require('cacheable-response')
 // logger.channel(createConsoleProcessor());
 require("dotenv").config();
 require("./db/db.js");
+require('./db/redis.js')
 const { parse } = require("url");
 const express = require("express");
 const next = require("next");

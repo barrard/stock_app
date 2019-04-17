@@ -19,10 +19,8 @@ export class List_Stock_Data extends React.Component {
         .sort((a, b) => this.high_to_low(a, b, "latestVolume"))
         .slice(0, 30)
     };
-    this.load_more_data = this.load_more_data.bind(this)
-    this.paginate_data = this.paginate_data.bind(this);
+    this.load_more_data = this.load_more_data.bind(this);
   }
-
 
   high_to_low(a, b, prop) {
     if (a[prop] > b[prop]) return -1;
@@ -34,19 +32,16 @@ export class List_Stock_Data extends React.Component {
     if (a[prop] < b[prop]) return -1;
     return 0;
   }
-  paginate_data(data) {
-    // return data.splice(0, 30)
-  }
+
   sort_by(prop, flag) {
-    console.log(prop, flag)
+    console.log(prop, flag);
     //flag true dont switch sort_state
     const number_rows = this.state.number_rows;
     this.setState({ sorted_prop: prop });
-    var sort_state = this.state.sort_state
+    var sort_state = this.state.sort_state;
+    /* Flag for not resetting sort_state */
+    if (flag) sort_state = !sort_state;
 
-    if(flag) sort_state = !sort_state
-
-    
     if (sort_state) {
       this.setState({ sort_state: false });
       this.setState({
@@ -56,7 +51,6 @@ export class List_Stock_Data extends React.Component {
       });
     } else {
       this.setState({ sort_state: true });
-
       this.setState({
         data: this.state.all_data
           .sort((a, b) => this.low_to_high(a, b, prop))
@@ -64,15 +58,16 @@ export class List_Stock_Data extends React.Component {
       });
     }
   }
-  load_more_data(){
-    console.log('LOAD MORE DATA')
-    const {number_rows} = this.state
+  load_more_data() {
+    console.log("LOAD MORE DATA");
+    const { number_rows } = this.state;
     this.setState({
-      number_rows:this.state.number_rows+30
-    })
-
-    console.log(this.state.number_rows)
-    this.sort_by(this.state.sorted_prop, true)
+      number_rows: this.state.number_rows + 30
+    });
+    /* Wait for next loops cycle to update state... */
+    setTimeout(() => {
+      this.sort_by(this.state.sorted_prop, true);
+    }, 0);
   }
 
   render() {
@@ -82,7 +77,7 @@ export class List_Stock_Data extends React.Component {
 
     return (
       <>
-        {/* Avoid rendering is data array is empty */}
+        {/* Avoid rendering if data array is empty */}
         {data && data.length > 0 && (
           <div className="col-12">
             <div className="row flex_center">
@@ -105,10 +100,9 @@ export class List_Stock_Data extends React.Component {
                 />
               ))}
             </div>
-            {this.state.all_data.length > 30 &&
-            <More_Rows
-              handle_click={this.load_more_data}
-            />}
+            {this.state.all_data.length > 30 && (
+              <More_Rows handle_click={this.load_more_data} />
+            )}
           </div>
         )}
       </>
@@ -129,15 +123,15 @@ export const Sector_Performance = ({ data, props }) => (
   </div>
 );
 
-const More_Rows = ({handle_click})=>{
-  return(
-    <div onClick={handle_click} className='row flex_center'>
-      <div className='col-sm-12 flex_center clickable background_grey'>
-      LOAD MORE
+const More_Rows = ({ handle_click }) => {
+  return (
+    <div onClick={handle_click} className="row flex_center">
+      <div className="col-sm-12 flex_center clickable background_grey">
+        LOAD MORE
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Display_Sector_Row = ({ data, index, props }) => {
   const { name, performance } = data;
@@ -149,7 +143,6 @@ const Display_Sector_Row = ({ data, index, props }) => {
         className="col-6 flex_center"
         onClick={
           () => fetch_sector_data(name, props)
-          // Router.push(`/sector?sector=${encodeURIComponent(name)}`)
         }
       >
         <Symbol symbol={name} />
@@ -195,7 +188,9 @@ const Stock_List_Header = ({ sort_by, sort_state, sorted_prop }) => {
         <h6 onClick={() => sort_by("symbol")}>Sym.</h6>
         {sort_state && sorted_prop == "symbol" && <div className="arrow-up" />}
 
-        {!sort_state && sorted_prop == "symbol" && <div className="arrow-down" />}
+        {!sort_state && sorted_prop == "symbol" && (
+          <div className="arrow-down" />
+        )}
       </div>
       <div className="align_items_center col-3 flex_end">
         <h6 onClick={() => sort_by("changePercent")}>Perc.</h6>
