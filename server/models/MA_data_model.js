@@ -82,7 +82,7 @@ async function add_MA_data(symbol, MA, price_type, crossover_results) {
         { upsert: true, new: true }
       );
     }
-    // logger.log(comapny_data)
+    logger.log(`${symbol} MA_data ${MA} ${price_type} added`)
   } catch (err) {
     logger.log("err".bgRed);
     logger.log(err);

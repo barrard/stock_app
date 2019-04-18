@@ -70,7 +70,7 @@ class Stock_Analysis_Controller {
 
   async track_all_stocks_MA_data() {
     let iex_symbols = await this.fetch_iex_symbols();
-    let counter = -1;
+    let counter = 4097;
     let total = iex_symbols.length;
     let timer = setInterval(async () => {
       counter++;
@@ -153,10 +153,98 @@ class Stock_Analysis_Controller {
         data.daily_data
       );
       if (counter + 1 == total) clearInterval(timer);
-    }, 100);
+    }, 500);
   }
 
+
+  slice_data(start, end, array){
+    return array.slice(start, end)
+  }
   /* Analysis Functions */
+  async add_MA_data_to_all_stocks(){
+    let iex_symbols = await this.fetch_iex_symbols();
+    let counter = -1;
+    let total = iex_symbols.length;
+    let timer = setInterval(async () => {
+      counter++;
+
+      let symbol = iex_symbols[counter].symbol;
+      logger.log({symbol, counter})
+      let data = await Daily_Stock_Data_Model.get_daily_data_for(symbol);
+      this.add_MA_data_to_model(symbol, data.daily_data)
+    }, 3000)
+
+  }
+  async add_MA_data_to_model(symbol, daily_data){
+    /* ensure we have data for the symbol*/
+    if (!daily_data) {
+      daily_data = await Daily_Stock_Data_Model.get_daily_data_for(symbol);
+      daily_data = daily_data.daily_data;
+    }
+
+    if (!daily_data) return `No data found for ${symbol}`;
+    let length = daily_data.length;
+
+    let counter = -1;
+    let MA_20  = 20 //minumum MA to calculater, hard coded..
+    let MA_50  = 50 //minumum MA to calculater, hard coded..
+    let MA_200  = 200 //minumum MA to calculater, hard coded..
+    /* Start a loop */
+    while (counter < length - MA_20) {
+      counter++
+      /* start from the begining of the array */
+      let end_counter_20 = MA_20 + counter;
+      let end_counter_50 = MA_50 + counter;
+      let end_counter_200 = MA_200 + counter;
+      let price_MA_data = {}
+      /* get the number MA items in array */
+        /* 20 */
+    if (length >= MA_20){
+      let slice_20 = this.slice_data(counter, end_counter_20, daily_data)
+      price_MA_data.MA_20_obj = this.get_price_type_averages(slice_20)
+ 
+      daily_data[end_counter_20-1].MA_20 = price_MA_data
+      // logger.log(daily_data[end_counter_20-1])
+
+      // price_MA_data.MA_20_obj.id = slice_20[19]._id
+    } 
+    if (length >= end_counter_50){
+      let slice_50 = this.slice_data(counter, end_counter_50, daily_data)
+      price_MA_data.MA_50_obj = this.get_price_type_averages(slice_50)
+
+      daily_data[end_counter_50-1].MA_20 = price_MA_data
+      // logger.log(daily_data[end_counter_50-1])
+
+      // price_MA_data.MA_50_obj.id = slice_50[49]._id
+
+    } 
+    if (length >= end_counter_200){
+      let slice_200 = this.slice_data(counter, end_counter_200, daily_data)
+      price_MA_data.MA_200_obj = this.get_price_type_averages(slice_200)
+
+      daily_data[end_counter_200-1].MA_20 = price_MA_data
+      // logger.log(daily_data[end_counter_200-1])
+      // price_MA_data.MA_200_obj.id = slice_200[199]._id
+
+    } 
+    
+
+
+
+  }
+  logger.log(daily_data)
+  logger.log(daily_data.length)
+  logger.log(daily_data[626])
+  logger.log(`done with ${symbol}`)
+  return
+  Daily_Stock_Data_Model.add_MA_price_data(price_MA_data)
+
+      
+  }
+
+  
+
+  /* OLD FUNCTION TO ANALYZE MA DAYA  TODO REWRITE */
   async track_price_vs_MA_over_time(symbol, MA, type, data) {
     let counter = 0;
     /* streak of values above/below */
@@ -587,11 +675,28 @@ class Stock_Analysis_Controller {
     let total = array_of_data.reduce((a, b) => a + b[type], 0);
     return total / array_of_data.length;
   }
+
+  /* average all 4 price types */
+  get_price_type_averages(array_of_price_data){
+    let length = array_of_price_data.length
+      let open= array_of_price_data.reduce((a, b) => a + b['open'], 0)
+      let close= array_of_price_data.reduce((a, b) => a + b['close'], 0)
+      let high= array_of_price_data.reduce((a, b) => a + b['high'], 0)
+      let low= array_of_price_data.reduce((a, b) => a + b['low'], 0)
+      let price_average_obj = {
+        open:open/length,
+        close:close/length,
+        high:high/length,
+        low:low/length
+      }
+    return price_average_obj
+  }
+
 }
 
 const stock_analysis_controller = (module.exports = new Stock_Analysis_Controller());
 
-stock_analysis_controller.track_all_stocks_MA_data();
+// stock_analysis_controller.track_all_stocks_MA_data();
 // stock_analysis_controller.track_price_vs_MA_over_time("AAPL", 20, "close");
 
 // stock_analysis_controller.test("GOOG");
@@ -599,3 +704,6 @@ stock_analysis_controller.track_all_stocks_MA_data();
 // stock_analysis_controller.find_all_stocks_near_MA(200, "close");
 
 // stock_analysis_controller.analyze_new_MA_data("FB")
+
+stock_analysis_controller.add_MA_data_to_all_stocks()
+// stock_analysis_controller.add_MA_data_to_model('AAPL')

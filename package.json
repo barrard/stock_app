@@ -47,6 +47,7 @@
     "redux-thunk": "^2.3.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
+    "socket.io": "^2.2.0",
     "tracer": "^0.9.8",
     "websocket": "^1.0.28"
   }
