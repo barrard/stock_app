@@ -12,33 +12,34 @@ const Company_Data_Model = require("../models/company_data_model.js");
 const Tags_Model = require("../models/tags_model.js");
 const rp = require("request-promise");
 require("../db/db.js");
+const MA_Data_Model = require("../models/MA_data_model.js");
 
 class Stock_Data_Controller {
   constructor() {
     this.get_symbols_data = this.get_symbols_data.bind(this);
   }
   /* One time getting all 5y data */
-  async get_all_1m_data() {
+  async get_one_5y_data(symbol) {
     // var counter = -1;
 
-    let iex_symbols = await this.fetch_iex_symbols();
-    console.log(iex_symbols.length);
-    var total = iex_symbols.length;
+    // let iex_symbols = await this.fetch_iex_symbols();
+    // console.log(iex_symbols.length);
+    // var total = iex_symbols.length;
 
-    var timer = setInterval(async () => {
-      counter++;
+    // var timer = setInterval(async () => {
+    // counter++;
 
-      const symbol = iex_symbols[counter].symbol;
-      const uri_encoded = encodeURIComponent(symbol);
+    // const symbol = iex_symbols[counter].symbol;
+    const uri_encoded = encodeURIComponent(symbol);
 
-      let daily_stock_data = await this.fetch_iex_5y_data(uri_encoded);
-      logger.log({ counter, symbol });
-      await Daily_Stock_Data_Model.create_daily_data(symbol, daily_stock_data);
+    let daily_stock_data = await this.fetch_iex_5y_data(uri_encoded);
+    logger.log({ symbol });
+    await Daily_Stock_Data_Model.create_daily_data(symbol, daily_stock_data);
 
-      if (counter + 1 == total) {
-        clearInterval(timer);
-      }
-    }, 300);
+    // if (counter + 1 == total) {
+    //   clearInterval(timer);
+    // }
+    // }, 300);
   }
   async get_all_5y_data() {
     const err_symbols = [];
@@ -182,38 +183,36 @@ class Stock_Data_Controller {
   }
   /* Gets all symbols form iex api */
   async fetch_iex_previous() {
-    logger.log('fetch_iex_previous')
+    logger.log("fetch_iex_previous");
     let resp = await rp(`${this.iex_api()}/stock/market/previous`);
     let json_Data = JSON.parse(resp);
     return json_Data;
   }
-  async get_previous_data(symbol){
+  async get_previous_data(symbol) {
     let resp = await rp(`${this.iex_api()}/stock/${symbol}/previous`);
     let json_Data = JSON.parse(resp);
-    logger.log({json_Data})
+    logger.log({ json_Data });
     return json_Data;
   }
 
-  async add_all_previous_daily_data_to_db(){
-    
+  async add_all_previous_daily_data_to_db() {
     let previous_data = await this.fetch_iex_previous();
-    var counter = -1
-    let symbol_list = Object.keys(previous_data)
-    var total = symbol_list.length
-    var timer = setInterval(async ()=>{
-      counter++
-      let symbol = symbol_list[counter]
-      let data = previous_data[symbol]
-      logger.log({symbol, counter})
+    var counter = -1;
+    let symbol_list = Object.keys(previous_data);
+    var total = symbol_list.length;
+    var timer = setInterval(async () => {
+      counter++;
+      let symbol = symbol_list[counter];
+      let data = previous_data[symbol];
+      logger.log({ symbol, counter });
 
-      let result =await Daily_Stock_Data_Model.add_previous_daily_data(symbol, data)
-      logger.log(result)
+      let result = await Daily_Stock_Data_Model.add_previous_daily_data(
+        symbol,
+        data
+      );
+      logger.log(result);
       if (counter + 1 == total) clearInterval(timer);
-
-    }, 100)
-
-
-
+    }, 100);
   }
 
   async get_all_company_tags_data() {
@@ -249,31 +248,36 @@ class Stock_Data_Controller {
       if (!data && debounder.indexOf(symbol) < 0) {
         debounder.push(symbol);
         logger.log(`no data for ${symbol}`);
-
       } else if (data && data.daily_data) {
         logger.log(data.daily_data.length);
-        logger.log(data.daily_data.length)
+        logger.log(data.daily_data.length);
 
         if (data.daily_data.length > 1259) {
           logger.log(`${symbol} Is over the limit!!!`);
           logger.log(data.daily_data.length);
-
         }
       } else if (double_debounder.indexOf(symbol) < 0) {
         double_debounder.push(symbol);
         logger.log(`${symbol} is broken!?!!?!`);
- 
       }
 
       if (counter == total) clearInterval(timer);
     }, 1000);
   }
 
-
+  /* Route responders for MA data */
+  /* Find all stocks X perc awway from Y MA type price_type */
+  async find_all_perc_away_from_MA_of_price_type(MA_perc_queries) {
+    return await MA_Data_Model.find_stocks_x_perc_from_y(MA_perc_queries);
+  }
 }
 
 const stock_data_controller = (module.exports = new Stock_Data_Controller());
 // stock_data_controller.fix_fuck_ups();
+
+
+
+// stock_data_controller.get_one_5y_data('A')
 
 /* Hits the /stock/symbol/log api for all symbols */
 // stock_data_controller.get_all_compnay_logo_into_db()
@@ -287,6 +291,6 @@ const stock_data_controller = (module.exports = new Stock_Data_Controller());
 /* Get All 5y data */
 // stock_data_controller.get_all_5y_data();
 
-
 /* Add All previous one-day daily data */
 // stock_data_controller.add_all_previous_daily_data_to_db()
+

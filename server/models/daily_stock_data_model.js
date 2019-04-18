@@ -37,38 +37,16 @@ Daily_Stock_Data_Model.get_limited_symbol_data = get_limited_symbol_data
 Daily_Stock_Data_Model.add_previous_daily_data = add_previous_daily_data
 Daily_Stock_Data_Model.add_MA_price_data= add_MA_price_data
 
-async function add_MA_price_data(price_MA_data){
-  let {MA_20_obj, MA_50_obj, MA_200_obj} = price_MA_data
-  var id_20,id_50,id_200
-  // logger.log(MA_20_obj)
-  if(MA_20_obj) id_20 = MA_20_obj.id
-  if(MA_50_obj) id_50 = MA_50_obj.id
-  if(MA_200_obj) id_200 = MA_200_obj.id
-  // logger.log(id_20)
+async function add_MA_price_data(symbol, price_data_with_MA_data){
+  let before_update = new Date().getTime()
 
-  if(id_20){
-    // logger.log({id_20})
+  // logger.log({id_20})
      await Daily_Stock_Data_Model.findOneAndUpdate({
-      'daily_data._id':id_20
-    }, {$set:{'daily_data.$.MA_20':MA_20_obj}})
-    logger.log(`done ${id_20}`)
-  }
-  if(id_50){
-    // logger.log({id_50})
-     await Daily_Stock_Data_Model.findOneAndUpdate({
-      'daily_data._id':id_50
-    }, {$set:{'daily_data.$.MA_50':MA_50_obj}})
-    logger.log(`done ${id_50}`)
+      symbol:symbol
+    }, {$set:{daily_data:price_data_with_MA_data}})
 
-  }
-  if(id_200){
-    // logger.log({id_200})
-     await Daily_Stock_Data_Model.findOneAndUpdate({
-      'daily_data._id':id_200
-    }, {$set:{'daily_data.$.MA_200':MA_200_obj}})
-    logger.log(`done ${id_200}`)
-    logger.log({MA_200})
-  }
+    let after_update = new Date().getTime()
+logger.log(after_update - before_update)
 
   
 }

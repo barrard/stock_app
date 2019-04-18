@@ -128,6 +128,17 @@
 .highlight_search{
   color:red;
 }
+
+.top-right{
+  position: absolute;
+  top: 0em;
+  right: 0em;
+}
+.top-middle{
+  position: absolute;
+  top: 0em;
+  right: 50%;
+}
 .justify_center {
   display: flex;
   justify-content: center;

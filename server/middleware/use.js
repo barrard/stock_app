@@ -14,6 +14,7 @@ const Page_views_model = require('../models/page_views_model.js')
 
 const helper = require('./helper.js')
 module.exports = (app, next_app) => {
+  const {protected_router} = require('../routes/Protected_Router.js')()
   const {auth_router} = require('../routes/Auth_Router.js')()
   const {user_router} = require('../routes/User_Router.js')()
   const {stock_data_router} = require('../routes/Stock_Data_Router.js')()
@@ -152,8 +153,9 @@ app.use((err, req, res, next)=> {
   
   
 
-  app.use('/auth',auth_router)
-  app.use('/user', user_router)
+    app.use('/',protected_router)
+    app.use('/auth',auth_router)
+    app.use('/user', user_router)
   app.use('/stock', stock_data_router)
 
 };
