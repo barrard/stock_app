@@ -197,6 +197,14 @@ class Stock_Data_Controller {
 
   async add_all_previous_daily_data_to_db() {
     let previous_data = await this.fetch_iex_previous();
+  /* Verify were getting new data */
+    /* check the date of the previous data */
+    let new_date = previous_data["FB"].date
+    /* check the date of last data */
+    let result = await Daily_Stock_Data_Model.get_symbol("FB")
+    let old_date = result.daily_data[result.daily_data.length-1]['date']
+     if(new_date == old_date) return
+
     var counter = -1;
     let symbol_list = Object.keys(previous_data);
     var total = symbol_list.length;

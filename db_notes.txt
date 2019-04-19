@@ -1,0 +1,14 @@
+#get db dumb
+mongodump -d iex_stock_app -o /home/dave/backups/iex_stock_app
+
+#use secure copy to send the file
+cd /home/dave/backups/iex_stock_app
+➜  iex_stock_app 
+   scp -r iex_stock_app dave@192.168.0.87:/home/dave/backups/
+
+
+restoring my desktop, not pi
+
+cd /home/dave/backups/iex_stock_app
+mongorestore -d iex_stock_app iex_stock_app%     
+
