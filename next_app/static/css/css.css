@@ -6,7 +6,9 @@
   min-height: 200px;
   max-height: 200px
 }
-
+.full-width{
+  width:100%
+}
 .flex{
   display: flex;
 }

@@ -317,7 +317,7 @@ class Stock_Analysis_Controller {
 
   async get_all_current_MA_status(){
     let iex_symbols = await this.fetch_iex_symbols();
-    let counter = 7040;
+    let counter = -1;
     let total = iex_symbols.length;
 
 
@@ -342,8 +342,8 @@ class Stock_Analysis_Controller {
     if(end_of_array < 200)return logger.log(`${symbol} has less than 200 data points`)
 
 /* Get some meta data */
-let {date, open, high, low, close, vwap} = daily_data[end_of_array-1]
-let meta_data = {date, open, high, low, close, vwap}
+let {date, open, high, low, close, vwap, volume} = daily_data[end_of_array-1]
+let meta_data = {date, open, high, low, close, vwap, volume}
 /* 20 */
 let data_20 = this.slice_data(end_of_array-20, end_of_array, daily_data)
 let data_50 = this.slice_data(end_of_array-50, end_of_array, daily_data)
@@ -359,7 +359,7 @@ let perc_200 = this.get_perc(MA_200.close, close)
 // logger.log({MA_20, MA_50, MA_200})
 // logger.log(meta_data)
 let all_data = {
-  date, meta_data, close, MA_20, MA_50, MA_200, perc_20, perc_50, perc_200
+   meta_data, MA_20, MA_50, MA_200, perc_20, perc_50, perc_200
 }
 // logger.log(all_data)
 Current_MA_Status_Model.update_current_MA_status(symbol, all_data)
@@ -548,9 +548,12 @@ Current_MA_Status_Model.update_current_MA_status(symbol, all_data)
 
   /* query the current_MA_status */
 
-async combined_MA_perc_serch() {
-  let MA_200_g_30 = await Current_MA_Status_Model.find_MA_perc_query(
-    [
+async combined_MA_perc_serch(req, res, next) {
+  logger.log(req.body)
+  let {query} = req.body
+  let result = await Current_MA_Status_Model.find_MA_perc_query(
+    query
+/*     [
       {
         perc: 90,
         MA: 200,
@@ -561,16 +564,11 @@ async combined_MA_perc_serch() {
         MA: 20,
         g_l:'l',
       },
-      // { perc: 0.05, MA: 200, price_type: "close" }
-    ]
+    ] */
     );
-    logger.log(MA_200_g_30)
-    logger.log(MA_200_g_30.length)
-  // let MA_200_perc_05 = await stock_data_controller.find_all_perc_away_from_MA_of_price_type(0.05, 200, 'close')
+    logger.log(result.length)
+    res.send(result)
 
-  // logger.log(MA_200_perc_05)
-  // logger.log(MA_50_perc_22)
-  // logger.log(MA_50_perc_22[0])
 }
 
 
@@ -798,7 +796,7 @@ const stock_analysis_controller = (module.exports = new Stock_Analysis_Controlle
 // stock_analysis_controller.get_all_current_MA_status()
 
 
-stock_analysis_controller.combined_MA_perc_serch()
+// stock_analysis_controller.combined_MA_perc_serch()
 
 
 // stock_analysis_controller.track_all_stocks_MA_data();

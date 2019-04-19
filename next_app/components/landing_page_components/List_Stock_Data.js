@@ -74,6 +74,8 @@ export class List_Stock_Data extends React.Component {
     const data = this.state.data;
     const { title } = this.props;
     const { props } = this.props;
+    console.log(props)
+    console.log(this.props)
 
     return (
       <>

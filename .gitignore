@@ -1,3 +1,5 @@
 node_modules
 .env
 
+server/next_app
+next_app/.next

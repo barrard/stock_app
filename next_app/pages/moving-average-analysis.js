@@ -5,6 +5,7 @@ import { withRouter } from "next/router";
 import Router from "next/router";
 
 import { ensure_loggedin } from "../components/utils/auth.js";
+import { view_selected_stock_symbol } from "../components/charts/chart_data_utils.js";
 
 import Main_Layout from "../layouts/Main_Layout.js";
 import { query } from "express-validator/check";
@@ -12,6 +13,9 @@ class MA_Analysis extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      saved_queries:[],
+      saved_query_results:[],
+      current_query_results:[],
       queries: [
         {
           MA: "50",
@@ -36,9 +40,31 @@ class MA_Analysis extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
-  submit_query() {
-    console.log("AJAX");
-    console.log(this.state.queries)
+  async submit_query() {
+    try {
+      const _csrf = this.props.meta.csrf
+  
+      let resp_json = await fetch('/MA-query', {
+        method:'POST',
+        headers: {
+          "Content-Type": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded",
+      },
+        body:JSON.stringify({query:this.state.queries, _csrf})
+      })  
+      let query_results = await resp_json.json()
+      console.log(query_results)
+      let saved_queries = this.state.saved_queries
+      saved_queries.push(this.state.queries)
+      let saved_query_results = this.state.saved_query_results
+      saved_query_results.push(query_results)
+      this.setState({saved_query_results})
+      this.setState({current_query_results:query_results})
+    } catch (err) {
+      console.log('err')
+      console.log(err)
+    }
+
   }
   remove_query(index) {
     let queries = this.state.queries;
@@ -55,7 +81,7 @@ class MA_Analysis extends React.Component {
       g_l: "g",
       perc: 20
     };
-    queries.push(queries);
+    queries.push(new_query);
     this.setState({ queries });
   }
 
@@ -76,8 +102,38 @@ class MA_Analysis extends React.Component {
   }
 
 
+  sort_by(prop, flag) {
+    console.log(prop, flag);
+    //flag true dont switch sort_state
+    // const number_rows = this.state.number_rows;
+    // this.setState({ sorted_prop: prop });
+    // var sort_state = this.state.sort_state;
+    // /* Flag for not resetting sort_state */
+    // if (flag) sort_state = !sort_state;
+
+    // if (sort_state) {
+    //   this.setState({ sort_state: false });
+    //   this.setState({
+    //     data: this.state.all_data
+    //       .sort((a, b) => this.high_to_low(a, b, prop))
+    //       .slice(0, number_rows)
+    //   });
+    // } else {
+    //   this.setState({ sort_state: true });
+    //   this.setState({
+    //     data: this.state.all_data
+    //       .sort((a, b) => this.low_to_high(a, b, prop))
+    //       .slice(0, number_rows)
+    //   });
+    // }
+  }
+
+
+
   render() {
-    // console.log(this.props)
+    const current_query_results = this.state.current_query_results;
+    const { props } = this;
+
     return (
       <Main_Layout>
         <h1>Query MA Data</h1>
@@ -97,10 +153,32 @@ class MA_Analysis extends React.Component {
               />
             ))}
           </div>
+
         </div>
         <div className="row flex_center">
           <Add_New_Query_Btn add_query={this.add_query} />
           <Submit_Query submit_query={this.submit_query} />
+        </div>
+        <div className='row flex_center'>
+          <div className='col-sm-12 flex_center'>
+          <Stock_List_Header
+              sorted_prop={this.state.sorted_prop}
+              sort_state={this.state.sort_state}
+              sort_by={prop => this.sort_by(prop)}
+              // on_sort={this}
+            />
+                  <div className="row_container">
+              {current_query_results.map((MA_data, index) => (
+                <Display_Stock_Row
+                  key={index}
+                  index={index}
+                  MA_data={MA_data}
+                  props={props}
+                />
+              ))}
+            </div>
+
+          </div>
         </div>
 
         {/* select greate or lesser */}
@@ -111,8 +189,8 @@ class MA_Analysis extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { user } = state;
-  return { user };
+  const { user, meta } = state;
+  return { user, meta };
 }
 
 export default connect(mapStateToProps)(withRouter(MA_Analysis));
@@ -211,3 +289,127 @@ const MA_Average_Select = ({ index, MA, handleInput }) => (
     </select>
   </div>
 );
+
+
+
+
+/* Display results components */
+function Display_Stock_Row({ MA_data, index, props }) {
+  const { symbol, latestPrice, changePercent, latestVolume } = MA_data;
+  let class_name = index % 2 == 0 ? "ticker_row_light" : "ticker_row_dark";
+
+  return (
+    <div
+      className={`row clickable ${class_name}`}
+      onClick={() => view_selected_stock_symbol(symbol, props)}
+    >
+      <div className="col-2 flex">
+        <Symbol symbol={symbol} />
+      </div>
+
+      {/* <div className="col-3 flex_end">
+        <Percent_Change precent_change={changePercent} />
+      </div>
+      <div className="col-3 flex_end">
+        <Price price={latestPrice} />
+      </div>
+
+      <div className="col-4 flex_end">
+        <Volume vol={latestVolume} />
+      </div> */}
+    </div>
+  );
+}
+
+const Stock_List_Header = ({ sort_by, sort_state, sorted_prop }) => {
+  return (
+    <div className="row full-width">
+      <div className="align_items_center col-1 flex">
+        <h6 onClick={() => sort_by("symbol")}>Sym.</h6>
+        {sort_state && sorted_prop == "symbol" && <div className="arrow-up" />}
+
+        {!sort_state && sorted_prop == "symbol" && (
+          <div className="arrow-down" />
+        )}
+      </div>
+
+      <div className="align_items_center col-2 flex_end">
+        <h6 onClick={() => sort_by("changePercent")}>20 MA.</h6>
+        {sort_state && sorted_prop == "changePercent" && (
+          <div className="arrow-up" />
+        )}
+        {!sort_state && sorted_prop == "changePercent" && (
+          <div className="arrow-down" />
+        )}{" "}
+      </div>
+      <div className="align_items_center col-2 flex_end">
+        <h6 onClick={() => sort_by("changePercent")}>50 MA.</h6>
+        {sort_state && sorted_prop == "changePercent" && (
+          <div className="arrow-up" />
+        )}
+        {!sort_state && sorted_prop == "changePercent" && (
+          <div className="arrow-down" />
+        )}{" "}
+      </div>
+      <div className="align_items_center col-2 flex_end">
+        <h6 onClick={() => sort_by("changePercent")}>200 MA.</h6>
+        {sort_state && sorted_prop == "changePercent" && (
+          <div className="arrow-up" />
+        )}
+        {!sort_state && sorted_prop == "changePercent" && (
+          <div className="arrow-down" />
+        )}{" "}
+      </div>
+
+      <div className="align_items_center col-2 flex_end">
+        <h6 onClick={() => sort_by("latestPrice")}>Price</h6>
+        {sort_state && sorted_prop == "latestPrice" && (
+          <div className="arrow-up" />
+        )}
+        {!sort_state && sorted_prop == "latestPrice" && (
+          <div className="arrow-down" />
+        )}
+      </div>
+
+      <div className="align_items_center col-3 flex_end">
+        <h6 onClick={() => sort_by("latestVolume")}>Vol.</h6>
+        {sort_state && sorted_prop == "latestVolume" && (
+          <div className="arrow-up" />
+        )}
+
+        {!sort_state && sorted_prop == "latestVolume" && (
+          <div className="arrow-down" />
+        )}
+      </div>
+
+    </div>
+  );
+};
+const Volume = ({ vol }) => (
+  <span className="ticker_vol">{vol.toLocaleString("en-US")}</span>
+);
+
+const Price = ({ price }) => (
+  <span className="ticker_price">
+    $
+    {parseFloat(price)
+      .toFixed(2)
+      .toLocaleString("en-US")}
+  </span>
+);
+
+const Percent_Change = ({ precent_change }) => {
+  let class_name;
+  if (precent_change > 0) class_name = "percentage_up";
+  if (precent_change < 0) class_name = "percentage_down";
+  if (precent_change == 0) class_name = "percentage_neutral";
+  return (
+    <span className={class_name}>
+      {`${parseFloat((precent_change * 100).toLocaleString("en-US")).toFixed(
+        2
+      )}%`}
+    </span>
+  );
+};
+
+const Symbol = ({ symbol }) => <span className="ticker_symbol">{symbol}</span>;

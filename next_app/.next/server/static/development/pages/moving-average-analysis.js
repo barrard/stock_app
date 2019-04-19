@@ -214,6 +214,17 @@ module.exports = __webpack_require__(/*! core-js/library/fn/object/set-prototype
 
 /***/ }),
 
+/***/ "../node_modules/@babel/runtime-corejs2/core-js/parse-float.js":
+/*!*********************************************************************!*\
+  !*** ../node_modules/@babel/runtime-corejs2/core-js/parse-float.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! core-js/library/fn/parse-float */ "core-js/library/fn/parse-float");
+
+/***/ }),
+
 /***/ "../node_modules/@babel/runtime-corejs2/core-js/promise.js":
 /*!*****************************************************************!*\
   !*** ../node_modules/@babel/runtime-corejs2/core-js/promise.js ***!
@@ -2339,29 +2350,36 @@ function mapStateToProps(state) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "../node_modules/@babel/runtime-corejs2/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/asyncToGenerator */ "../node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "../node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "../node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "../node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "../node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "../node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "../node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "../node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "../node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-redux */ "react-redux");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-redux-toastr */ "react-redux-toastr");
-/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(react_redux_toastr__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! next/router */ "next/router");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _components_utils_auth_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/utils/auth.js */ "./components/utils/auth.js");
-/* harmony import */ var _layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../layouts/Main_Layout.js */ "./layouts/Main_Layout.js");
-/* harmony import */ var express_validator_check__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! express-validator/check */ "express-validator/check");
-/* harmony import */ var express_validator_check__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(express_validator_check__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/parse-float */ "../node_modules/@babel/runtime-corejs2/core-js/parse-float.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "../node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "../node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "../node_modules/@babel/runtime-corejs2/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/json/stringify */ "../node_modules/@babel/runtime-corejs2/core-js/json/stringify.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/asyncToGenerator */ "../node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "../node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "../node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "../node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "../node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "../node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "../node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-redux-toastr */ "react-redux-toastr");
+/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(react_redux_toastr__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! next/router */ "next/router");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _components_utils_auth_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/utils/auth.js */ "./components/utils/auth.js");
+/* harmony import */ var _components_charts_chart_data_utils_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../components/charts/chart_data_utils.js */ "./components/charts/chart_data_utils.js");
+/* harmony import */ var _layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../layouts/Main_Layout.js */ "./layouts/Main_Layout.js");
+/* harmony import */ var express_validator_check__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! express-validator/check */ "express-validator/check");
+/* harmony import */ var express_validator_check__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(express_validator_check__WEBPACK_IMPORTED_MODULE_19__);
+
+
 
 
 
@@ -2382,42 +2400,108 @@ var _jsxFileName = "/home/dave/code/next_stocks/next_app/pages/moving-average-an
 
 
 
+
 var MA_Analysis =
 /*#__PURE__*/
 function (_React$Component) {
-  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_9__["default"])(MA_Analysis, _React$Component);
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_11__["default"])(MA_Analysis, _React$Component);
 
   function MA_Analysis(props) {
     var _this;
 
-    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__["default"])(this, MA_Analysis);
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__["default"])(this, MA_Analysis);
 
-    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7__["default"])(MA_Analysis).call(this, props));
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_8__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_9__["default"])(MA_Analysis).call(this, props));
     _this.state = {
+      saved_queries: [],
+      saved_query_results: [],
+      current_query_results: [],
       queries: [{
         MA: "50",
         g_l: "g",
         perc: 20
       }]
     };
-    _this.handleInput = _this.handleInput.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8__["default"])(_this));
-    _this.add_query = _this.add_query.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8__["default"])(_this));
-    _this.submit_query = _this.submit_query.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8__["default"])(_this));
-    _this.remove_query = _this.remove_query.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8__["default"])(_this));
+    _this.handleInput = _this.handleInput.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_10__["default"])(_this));
+    _this.add_query = _this.add_query.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_10__["default"])(_this));
+    _this.submit_query = _this.submit_query.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_10__["default"])(_this));
+    _this.remove_query = _this.remove_query.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_10__["default"])(_this));
     return _this;
   }
 
-  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__["default"])(MA_Analysis, [{
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__["default"])(MA_Analysis, [{
     key: "componentDidMount",
     value: function componentDidMount() {
       window.scrollTo(0, 0);
     }
   }, {
     key: "submit_query",
-    value: function submit_query() {
-      console.log("AJAX");
-      console.log(this.state.queries);
-    }
+    value: function () {
+      var _submit_query = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(
+      /*#__PURE__*/
+      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_3___default.a.mark(function _callee() {
+        var _csrf, resp_json, query_results, saved_queries, saved_query_results;
+
+        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_3___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _csrf = this.props.meta.csrf;
+                _context.next = 4;
+                return fetch('/MA-query', {
+                  method: 'POST',
+                  headers: {
+                    "Content-Type": "application/json" // "Content-Type": "application/x-www-form-urlencoded",
+
+                  },
+                  body: _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_4___default()({
+                    query: this.state.queries,
+                    _csrf: _csrf
+                  })
+                });
+
+              case 4:
+                resp_json = _context.sent;
+                _context.next = 7;
+                return resp_json.json();
+
+              case 7:
+                query_results = _context.sent;
+                console.log(query_results);
+                saved_queries = this.state.saved_queries;
+                saved_queries.push(this.state.queries);
+                saved_query_results = this.state.saved_query_results;
+                saved_query_results.push(query_results);
+                this.setState({
+                  saved_query_results: saved_query_results
+                });
+                this.setState({
+                  current_query_results: query_results
+                });
+                _context.next = 21;
+                break;
+
+              case 17:
+                _context.prev = 17;
+                _context.t0 = _context["catch"](0);
+                console.log('err');
+                console.log(_context.t0);
+
+              case 21:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 17]]);
+      }));
+
+      function submit_query() {
+        return _submit_query.apply(this, arguments);
+      }
+
+      return submit_query;
+    }()
   }, {
     key: "remove_query",
     value: function remove_query(index) {
@@ -2432,13 +2516,13 @@ function (_React$Component) {
     value: function add_query() {
       console.log("add_query");
       var queries = this.state.queries;
-      if (queries.length >= 3) return react_redux_toastr__WEBPACK_IMPORTED_MODULE_12__["toastr"].info("Three is enough");
+      if (queries.length >= 3) return react_redux_toastr__WEBPACK_IMPORTED_MODULE_14__["toastr"].info("Three is enough");
       var new_query = {
         MA: "50",
         g_l: "g",
         perc: 20
       };
-      queries.push(queries);
+      queries.push(new_query);
       this.setState({
         queries: queries
       });
@@ -2453,7 +2537,7 @@ function (_React$Component) {
       var queries = this.state.queries;
       var query = queries[index];
       console.log(query);
-      query = Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_3__["default"])({}, query, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])({}, key, value));
+      query = Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, query, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])({}, key, value));
       console.log(query);
       queries[index] = query;
       this.setState({
@@ -2461,39 +2545,65 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "sort_by",
+    value: function sort_by(prop, flag) {
+      console.log(prop, flag); //flag true dont switch sort_state
+      // const number_rows = this.state.number_rows;
+      // this.setState({ sorted_prop: prop });
+      // var sort_state = this.state.sort_state;
+      // /* Flag for not resetting sort_state */
+      // if (flag) sort_state = !sort_state;
+      // if (sort_state) {
+      //   this.setState({ sort_state: false });
+      //   this.setState({
+      //     data: this.state.all_data
+      //       .sort((a, b) => this.high_to_low(a, b, prop))
+      //       .slice(0, number_rows)
+      //   });
+      // } else {
+      //   this.setState({ sort_state: true });
+      //   this.setState({
+      //     data: this.state.all_data
+      //       .sort((a, b) => this.low_to_high(a, b, prop))
+      //       .slice(0, number_rows)
+      //   });
+      // }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      // console.log(this.props)
-      return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(_layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_15__["default"], {
+      var current_query_results = this.state.current_query_results;
+      var props = this.props;
+      return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(_layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_18__["default"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 82
+          lineNumber: 138
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h1", {
+      }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("h1", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 83
+          lineNumber: 139
         },
         __self: this
-      }, "Query MA Data"), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+      }, "Query MA Data"), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
         className: "col-sm-12 ",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 86
+          lineNumber: 142
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
         className: "row flex_center",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 87
+          lineNumber: 143
         },
         __self: this
       }, this.state.queries.map(function (query, index) {
-        return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(MA_Select_Form, {
+        return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(MA_Select_Form, {
           remove_query: _this2.remove_query,
           perc: query.perc,
           MA: query.MA,
@@ -2503,55 +2613,100 @@ function (_React$Component) {
           handleInput: _this2.handleInput,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 89
+            lineNumber: 145
           },
           __self: this
         });
-      }))), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+      }))), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
         className: "row flex_center",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 101
+          lineNumber: 158
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(Add_New_Query_Btn, {
+      }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(Add_New_Query_Btn, {
         add_query: this.add_query,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 102
+          lineNumber: 159
         },
         __self: this
-      }), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(Submit_Query, {
+      }), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(Submit_Query, {
         submit_query: this.submit_query,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 103
+          lineNumber: 160
         },
         __self: this
-      })));
+      })), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+        className: "row flex_center",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 162
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+        className: "col-sm-12 flex_center",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 163
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(Stock_List_Header, {
+        sorted_prop: this.state.sorted_prop,
+        sort_state: this.state.sort_state,
+        sort_by: function sort_by(prop) {
+          return _this2.sort_by(prop);
+        } // on_sort={this}
+        ,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 164
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+        className: "row_container",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 170
+        },
+        __self: this
+      }, current_query_results.map(function (MA_data, index) {
+        return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(Display_Stock_Row, {
+          key: index,
+          index: index,
+          MA_data: MA_data,
+          props: props,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 172
+          },
+          __self: this
+        });
+      })))));
     }
   }], [{
     key: "getInitialProps",
     value: function () {
-      var _getInitialProps = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(
+      var _getInitialProps = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_5__["default"])(
       /*#__PURE__*/
-      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(ctx) {
-        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_3___default.a.mark(function _callee2(ctx) {
+        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_3___default.a.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 if (ctx.req) {
-                  if (!ctx.req.user) next_router__WEBPACK_IMPORTED_MODULE_13___default.a.push("/login");
+                  if (!ctx.req.user) next_router__WEBPACK_IMPORTED_MODULE_15___default.a.push("/login");
                 }
 
-                return _context.abrupt("return", {});
+                return _context2.abrupt("return", {});
 
               case 2:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee);
+        }, _callee2);
       }));
 
       function getInitialProps(_x) {
@@ -2563,26 +2718,28 @@ function (_React$Component) {
   }]);
 
   return MA_Analysis;
-}(react__WEBPACK_IMPORTED_MODULE_10___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_12___default.a.Component);
 
 function mapStateToProps(state) {
-  var user = state.user;
+  var user = state.user,
+      meta = state.meta;
   return {
-    user: user
+    user: user,
+    meta: meta
   };
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_11__["connect"])(mapStateToProps)(Object(next_router__WEBPACK_IMPORTED_MODULE_13__["withRouter"])(MA_Analysis)));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_13__["connect"])(mapStateToProps)(Object(next_router__WEBPACK_IMPORTED_MODULE_15__["withRouter"])(MA_Analysis)));
 
 var Remove_Query = function Remove_Query(_ref) {
   var remove_query = _ref.remove_query;
-  return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("button", {
     onClick: remove_query,
     type: "button",
     className: "btn btn-danger ",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 121
+      lineNumber: 199
     },
     __self: this
   }, "X");
@@ -2595,41 +2752,41 @@ var MA_Select_Form = function MA_Select_Form(_ref2) {
       MA = _ref2.MA,
       g_l = _ref2.g_l,
       remove_query = _ref2.remove_query;
-  return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
     className: "row flex_center ",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 128
+      lineNumber: 206
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
     className: "col-sm-12 flex_center",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 129
+      lineNumber: 207
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(Remove_Query, {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(Remove_Query, {
     remove_query: remove_query,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 130
+      lineNumber: 208
     },
     __self: this
-  })), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+  })), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
     className: "col-sm-12 flex_center",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 134
+      lineNumber: 212
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("form", {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("form", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 136
+      lineNumber: 214
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(MA_Average_Select, {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(MA_Average_Select, {
     index: index,
     MA: MA,
     handleInput: function handleInput(e, key, index) {
@@ -2637,10 +2794,10 @@ var MA_Select_Form = function MA_Select_Form(_ref2) {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 137
+      lineNumber: 215
     },
     __self: this
-  }), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(Perc_Input, {
+  }), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(Perc_Input, {
     perc: perc,
     index: index,
     handleInput: function handleInput(e, key, index) {
@@ -2648,10 +2805,10 @@ var MA_Select_Form = function MA_Select_Form(_ref2) {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 142
+      lineNumber: 220
     },
     __self: this
-  }), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(G_L_Select, {
+  }), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(G_L_Select, {
     index: index,
     g_l: g_l,
     handleInput: function handleInput(e, key, index) {
@@ -2659,7 +2816,7 @@ var MA_Select_Form = function MA_Select_Form(_ref2) {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 147
+      lineNumber: 225
     },
     __self: this
   }))));
@@ -2669,21 +2826,21 @@ var Perc_Input = function Perc_Input(_ref3) {
   var handleInput = _ref3.handleInput,
       index = _ref3.index,
       perc = _ref3.perc;
-  return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
     className: "form-group",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 159
+      lineNumber: 237
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("label", {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("label", {
     htmlFor: "percent",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 160
+      lineNumber: 238
     },
     __self: this
-  }, "Percentage"), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("input", {
+  }, "Percentage"), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("input", {
     className: "form-control",
     type: "number",
     value: perc,
@@ -2692,7 +2849,7 @@ var Perc_Input = function Perc_Input(_ref3) {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 161
+      lineNumber: 239
     },
     __self: this
   }));
@@ -2700,13 +2857,13 @@ var Perc_Input = function Perc_Input(_ref3) {
 
 var Add_New_Query_Btn = function Add_New_Query_Btn(_ref4) {
   var add_query = _ref4.add_query;
-  return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("button", {
     onClick: add_query,
     type: "button",
     className: "btn btn-success",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 172
+      lineNumber: 250
     },
     __self: this
   }, "Add");
@@ -2714,13 +2871,13 @@ var Add_New_Query_Btn = function Add_New_Query_Btn(_ref4) {
 
 var Submit_Query = function Submit_Query(_ref5) {
   var submit_query = _ref5.submit_query;
-  return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("button", {
     onClick: submit_query,
     type: "button",
     className: "btn btn-primary",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 180
+      lineNumber: 258
     },
     __self: this
   }, "Get Stocks");
@@ -2730,21 +2887,21 @@ var G_L_Select = function G_L_Select(_ref6) {
   var index = _ref6.index,
       g_l = _ref6.g_l,
       handleInput = _ref6.handleInput;
-  return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
     className: "form-group",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 187
+      lineNumber: 265
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("label", {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("label", {
     htmlFor: "greater than less than",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 188
+      lineNumber: 266
     },
     __self: this
-  }, "Greater or Lesser than."), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("select", {
+  }, "Greater or Lesser than."), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("select", {
     value: g_l,
     onChange: function onChange(e) {
       return handleInput(e, "g_l", "".concat(index));
@@ -2752,21 +2909,21 @@ var G_L_Select = function G_L_Select(_ref6) {
     className: "form-control",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 189
+      lineNumber: 267
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("option", {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("option", {
     value: "l",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 194
+      lineNumber: 272
     },
     __self: this
-  }, "Less Than"), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("option", {
+  }, "Less Than"), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("option", {
     value: "g",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 195
+      lineNumber: 273
     },
     __self: this
   }, "Greater Than")));
@@ -2776,21 +2933,21 @@ var MA_Average_Select = function MA_Average_Select(_ref7) {
   var index = _ref7.index,
       MA = _ref7.MA,
       handleInput = _ref7.handleInput;
-  return react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", {
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
     className: "form-group",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 201
+      lineNumber: 279
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("label", {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("label", {
     htmlFor: "exampleFormControlInput1",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 202
+      lineNumber: 280
     },
     __self: this
-  }, "Moving Average"), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("select", {
+  }, "Moving Average"), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("select", {
     value: MA,
     onChange: function onChange(e) {
       return handleInput(e, "MA", "".concat(index));
@@ -2798,31 +2955,315 @@ var MA_Average_Select = function MA_Average_Select(_ref7) {
     className: "form-control",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 203
+      lineNumber: 281
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("option", {
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("option", {
     value: "20",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 208
+      lineNumber: 286
     },
     __self: this
-  }, "20"), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("option", {
+  }, "20"), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("option", {
     value: "50",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 209
+      lineNumber: 287
     },
     __self: this
-  }, "50"), react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("option", {
+  }, "50"), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("option", {
     value: "200",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 210
+      lineNumber: 288
     },
     __self: this
   }, "200")));
+};
+/* Display results components */
+
+
+function Display_Stock_Row(_ref8) {
+  var MA_data = _ref8.MA_data,
+      index = _ref8.index,
+      props = _ref8.props;
+  var symbol = MA_data.symbol,
+      latestPrice = MA_data.latestPrice,
+      changePercent = MA_data.changePercent,
+      latestVolume = MA_data.latestVolume;
+  var class_name = index % 2 == 0 ? "ticker_row_light" : "ticker_row_dark";
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "row clickable ".concat(class_name),
+    onClick: function onClick() {
+      return Object(_components_charts_chart_data_utils_js__WEBPACK_IMPORTED_MODULE_17__["view_selected_stock_symbol"])(symbol, props);
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 302
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "col-2 flex",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 306
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(Symbol, {
+    symbol: symbol,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 307
+    },
+    __self: this
+  })));
+}
+
+var Stock_List_Header = function Stock_List_Header(_ref9) {
+  var sort_by = _ref9.sort_by,
+      sort_state = _ref9.sort_state,
+      sorted_prop = _ref9.sorted_prop;
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "row full-width",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 326
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "align_items_center col-1 flex",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 327
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("h6", {
+    onClick: function onClick() {
+      return sort_by("symbol");
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 328
+    },
+    __self: this
+  }, "Sym."), sort_state && sorted_prop == "symbol" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-up",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 329
+    },
+    __self: this
+  }), !sort_state && sorted_prop == "symbol" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-down",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 332
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "align_items_center col-2 flex_end",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 336
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("h6", {
+    onClick: function onClick() {
+      return sort_by("changePercent");
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 337
+    },
+    __self: this
+  }, "20 MA."), sort_state && sorted_prop == "changePercent" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-up",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 339
+    },
+    __self: this
+  }), !sort_state && sorted_prop == "changePercent" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-down",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 342
+    },
+    __self: this
+  }), " "), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "align_items_center col-2 flex_end",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 345
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("h6", {
+    onClick: function onClick() {
+      return sort_by("changePercent");
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 346
+    },
+    __self: this
+  }, "50 MA."), sort_state && sorted_prop == "changePercent" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-up",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 348
+    },
+    __self: this
+  }), !sort_state && sorted_prop == "changePercent" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-down",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 351
+    },
+    __self: this
+  }), " "), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "align_items_center col-2 flex_end",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 354
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("h6", {
+    onClick: function onClick() {
+      return sort_by("changePercent");
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 355
+    },
+    __self: this
+  }, "200 MA."), sort_state && sorted_prop == "changePercent" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-up",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 357
+    },
+    __self: this
+  }), !sort_state && sorted_prop == "changePercent" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-down",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 360
+    },
+    __self: this
+  }), " "), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "align_items_center col-2 flex_end",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 364
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("h6", {
+    onClick: function onClick() {
+      return sort_by("latestPrice");
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 365
+    },
+    __self: this
+  }, "Price"), sort_state && sorted_prop == "latestPrice" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-up",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 367
+    },
+    __self: this
+  }), !sort_state && sorted_prop == "latestPrice" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-down",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 370
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "align_items_center col-3 flex_end",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 374
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("h6", {
+    onClick: function onClick() {
+      return sort_by("latestVolume");
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 375
+    },
+    __self: this
+  }, "Vol."), sort_state && sorted_prop == "latestVolume" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-up",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 377
+    },
+    __self: this
+  }), !sort_state && sorted_prop == "latestVolume" && react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", {
+    className: "arrow-down",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 381
+    },
+    __self: this
+  })));
+};
+
+var Volume = function Volume(_ref10) {
+  var vol = _ref10.vol;
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("span", {
+    className: "ticker_vol",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 389
+    },
+    __self: this
+  }, vol.toLocaleString("en-US"));
+};
+
+var Price = function Price(_ref11) {
+  var price = _ref11.price;
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("span", {
+    className: "ticker_price",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 393
+    },
+    __self: this
+  }, "$", _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()(price).toFixed(2).toLocaleString("en-US"));
+};
+
+var Percent_Change = function Percent_Change(_ref12) {
+  var precent_change = _ref12.precent_change;
+  var class_name;
+  if (precent_change > 0) class_name = "percentage_up";
+  if (precent_change < 0) class_name = "percentage_down";
+  if (precent_change == 0) class_name = "percentage_neutral";
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("span", {
+    className: class_name,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 407
+    },
+    __self: this
+  }, "".concat(_babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()((precent_change * 100).toLocaleString("en-US")).toFixed(2), "%"));
+};
+
+var Symbol = function Symbol(_ref13) {
+  var symbol = _ref13.symbol;
+  return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("span", {
+    className: "ticker_symbol",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 415
+    },
+    __self: this
+  }, symbol);
 };
 
 /***/ }),
@@ -3094,6 +3535,17 @@ module.exports = require("core-js/library/fn/object/keys");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/object/set-prototype-of");
+
+/***/ }),
+
+/***/ "core-js/library/fn/parse-float":
+/*!*************************************************!*\
+  !*** external "core-js/library/fn/parse-float" ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("core-js/library/fn/parse-float");
 
 /***/ }),
 
