@@ -1,27 +1,55 @@
 {
-  "devFiles": [
-    "static/development/dll/dll_9f052745d9378ee03f88.js"
-  ],
+  "devFiles": [],
   "pages": {
     "/_app": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
     ],
     "/_error": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
+    ],
+    "/about-us": [
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
+    ],
+    "/account-profile": [
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
     ],
     "/chart": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
     ],
     "/landing": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
+    ],
+    "/login": [
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
     ],
     "/moving-average-analysis": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
+    ],
+    "/sector": [
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
+    ],
+    "/sign-up": [
+      "static/runtime/webpack-fdce77a122c11e06ae50.js",
+      "static/chunks/commons.7cb8ca9abbc2a0f83748.js",
+      "static/runtime/main-d6f029d89290f3cab051.js"
     ]
   }
 }
