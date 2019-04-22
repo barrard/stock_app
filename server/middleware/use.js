@@ -10,6 +10,7 @@ const mongoStore = require("connect-mongo")(session);
 const passport = require('passport')
 const express_validator = require('express-validator')
 const Page_views_model = require('../models/page_views_model.js')
+const {ensure_admin} = require('./router_middleware.js')
 
 
 const helper = require('./helper.js')
@@ -18,6 +19,8 @@ module.exports = (app, next_app) => {
   const {auth_router} = require('../routes/Auth_Router.js')()
   const {user_router} = require('../routes/User_Router.js')()
   const {stock_data_router} = require('../routes/Stock_Data_Router.js')()
+  const {admin_router} = require('../routes/Admin_Router.js')()
+  
 
   app.use(helmet());
   app.use(cors())
@@ -156,6 +159,7 @@ app.use((err, req, res, next)=> {
     app.use('/',protected_router)
     app.use('/auth',auth_router)
     app.use('/user', user_router)
-  app.use('/stock', stock_data_router)
-
+    app.use('/stock', stock_data_router)
+    app.use('/admin/',[ensure_admin], admin_router)
+    
 };

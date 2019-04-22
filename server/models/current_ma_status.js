@@ -67,6 +67,7 @@ Current_MA_Status_Model.find_MA_perc_query = find_MA_perc_query
 
 
 async function find_MA_perc_query(array_of_queries){
+try {
   let queries = array_of_queries.map(query=>{
     let{perc, MA, g_l} = query
     if(g_l == 'g') return {[`current_MA_data.perc_${MA}`]: {$gt:perc}}
@@ -79,6 +80,11 @@ async function find_MA_perc_query(array_of_queries){
   if(!percentage_query) return []
 
   return percentage_query
+} catch (err) {
+  logger.log('err'.bgRed)
+  logger.log(err)
+  return 'N/A'
+}
 }
 
 async function update_current_MA_status(symbol, data){

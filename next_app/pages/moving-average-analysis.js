@@ -6,32 +6,29 @@ import Router from "next/router";
 
 import { ensure_loggedin } from "../components/utils/auth.js";
 import { view_selected_stock_symbol } from "../components/charts/chart_data_utils.js";
-
+import {
+  set_MA_query,
+  add_query,
+  remove_query,
+  submit_query,
+  load_more_MA_results,
+  sort_by
+} from "../redux/actions/MA_analysis_actions.js";
+import { Block_Spinner } from "../components/spinners/Block_Spinner.js";
 import Main_Layout from "../layouts/Main_Layout.js";
-import { query } from "express-validator/check";
+
 class MA_Analysis extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       number_rows: 30, //starting default
       sorted_prop: "volume",
-      sort_state:false,
-      saved_queries: [],
-      saved_query_results: [],
-      current_query_results: [],
-      sorted_query_results: [],
-      queries: [
-        {
-          MA: "50",
-          g_l: "g",
-          perc: 20
-        },
-        {
-          MA: "200",
-          g_l: "l",
-          perc: 2
-        }
-      ]
+      sort_state: false
+      // saved_queries: [],
+      // saved_query_results: [],
+      // current_query_results: [],
+      // sorted_query_results: [],
+      // queries: []
     };
     this.handleInput = this.handleInput.bind(this);
     this.add_query = this.add_query.bind(this);
@@ -51,62 +48,36 @@ class MA_Analysis extends React.Component {
     window.scrollTo(0, 0);
   }
   load_more_data() {
+    const { sorted_prop } = this.props.MA_analysis;
     console.log("LOAD MORE DATA");
-    const { number_rows } = this.state;
-    this.setState({
-      number_rows: this.state.number_rows + 30
-    });
+    this.props.dispatch(load_more_MA_results(sorted_prop));
     /* Wait for next loops cycle to update state... */
     setTimeout(() => {
-      this.sort_by(this.state.sorted_prop, true);
+      this.props.dispatch(sort_by(sorted_prop, true));
     }, 0);
   }
 
   async submit_query() {
-    try {
-      const _csrf = this.props.meta.csrf;
-
-      let resp_json = await fetch("/MA-query", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-          // "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: JSON.stringify({ query: this.state.queries, _csrf })
-      });
-      let query_results = await resp_json.json();
-      console.log(query_results);
-      let saved_queries = this.state.saved_queries;
-      saved_queries.push(this.state.queries);
-      let saved_query_results = this.state.saved_query_results;
-      saved_query_results.push(query_results);
-      this.setState({ saved_query_results });
-      this.setState({ current_query_results: query_results });
-      const sorted_query_results = query_results.sort((a, b) => this.high_to_low(a, b, "volume"))
-      .slice(0, 30)
-      this.setState({ sorted_query_results });
-    } catch (err) {
-      console.log("err");
-      console.log(err);
-    }
+    let {is_loading} =this.props.meta
+    if(is_loading)return toastr.info('Searching in progress....')
+    const _csrf = this.props.meta.csrf;
+    let { queries, saved_queries } = this.props.MA_analysis;
+    let query_data = { query: queries, _csrf };
+    saved_queries.push(queries);
+    this.props.dispatch(submit_query(query_data, saved_queries));
   }
   remove_query(index) {
-    let queries = this.state.queries;
-    queries.splice(index, 1);
-    this.setState({ queries });
+    let { queries } = this.props.MA_analysis;
+
+    this.props.dispatch(remove_query(index, queries));
   }
 
   add_query() {
+    let { queries } = this.props.MA_analysis;
     console.log("add_query");
-    let queries = this.state.queries;
     if (queries.length >= 3) return toastr.info("Three is enough");
-    let new_query = {
-      MA: "50",
-      g_l: "g",
-      perc: 20
-    };
-    queries.push(new_query);
-    this.setState({ queries });
+
+    this.props.dispatch(add_query(queries));
   }
 
   handleInput(e, key, index) {
@@ -114,23 +85,16 @@ class MA_Analysis extends React.Component {
     console.log(key);
     console.log(index);
     let value = e.target.value;
-    let queries = this.state.queries;
+    let queries = this.props.MA_analysis.queries;
     var query = queries[index];
     console.log(query);
     query = { ...query, ...{ [key]: value } };
     console.log(query);
     queries[index] = query;
-    this.setState({
-      queries
-    });
+    this.props.dispatch(set_MA_query(queries));
   }
 
   high_to_low(a, b, prop) {
-    console.log(a)
-    console.log(b)
-    console.log(prop)
-    console.log(deep_value(a, prop))
-    console.log(deep_value(b, prop))
     if (deep_value(a, prop) > deep_value(b, prop)) return -1;
     if (deep_value(a, prop) < deep_value(b, prop)) return 1;
     return 0;
@@ -143,34 +107,39 @@ class MA_Analysis extends React.Component {
 
   sort_by(prop, flag) {
     console.log(prop, flag);
+    this.props.dispatch(sort_by(prop, flag));
     // flag true dont switch sort_state
-    const number_rows = this.state.number_rows;
-    this.setState({ sorted_prop: prop });
-    var sort_state = this.state.sort_state;
-    /* Flag for not resetting sort_state */
-    if (flag) sort_state = !sort_state;
+    // const number_rows = this.state.number_rows;
+    // this.setState({ sorted_prop: prop });
+    // var sort_state = this.state.sort_state;
+    // /* Flag for not resetting sort_state */
+    // if (flag) sort_state = !sort_state;
 
-    if (sort_state) {
-      this.setState({ sort_state: false });
-      this.setState({
-        sorted_query_results: this.state.current_query_results
-          .sort((a, b) => this.high_to_low(a, b, prop))
-          .slice(0, number_rows)
-      });
-    } else {
-      this.setState({ sort_state: true });
-      this.setState({
-        sorted_query_results: this.state.current_query_results
-          .sort((a, b) => this.low_to_high(a, b, prop))
-          .slice(0, number_rows)
-      });
-    }
+    // if (sort_state) {
+    //   this.setState({ sort_state: false });
+    //   this.setState({
+    //     sorted_query_results: this.state.current_query_results
+    //       .sort((a, b) => this.high_to_low(a, b, prop))
+    //       .slice(0, number_rows)
+    //   });
+    // } else {
+    //   this.setState({ sort_state: true });
+    //   this.setState({
+    //     sorted_query_results: this.state.current_query_results
+    //       .sort((a, b) => this.low_to_high(a, b, prop))
+    //       .slice(0, number_rows)
+    //   });
+    // }
   }
 
   render() {
-    const {sorted_query_results, current_query_results} = this.state;
+    const {
+      sorted_query_results,
+      current_query_results
+    } = this.props.MA_analysis;
+    const { is_loading } = this.props.meta;
     const { props } = this;
-
+    // console.log(this.props);
     return (
       <Main_Layout>
         <h1>Query MA Data</h1>
@@ -178,7 +147,7 @@ class MA_Analysis extends React.Component {
         {/* select Moving Average */}
         <div className="col-sm-12 ">
           <div className="row flex_center">
-            {this.state.queries.map((query, index) => (
+            {this.props.MA_analysis.queries.map((query, index) => (
               <MA_Select_Form
                 remove_query={this.remove_query}
                 perc={query.perc}
@@ -204,14 +173,24 @@ class MA_Analysis extends React.Component {
               // on_sort={this}
             />
             <div className="">
-              {sorted_query_results.map((MA_data, index) => (
-                <Display_Stock_Row
-                  key={index}
-                  index={index}
-                  MA_data={MA_data}
-                  props={props}
-                />
-              ))}
+              Results:{" "}
+              {is_loading ? "Loading..." : current_query_results.length}
+              <>
+                {is_loading &&
+                <div className='row flex_center'>
+                   <Block_Spinner />
+                </div>
+                }
+                {!is_loading &&
+                  sorted_query_results.map((MA_data, index) => (
+                    <Display_Stock_Row
+                      key={index}
+                      index={index}
+                      MA_data={MA_data}
+                      props={props}
+                    />
+                  ))}
+              </>
             </div>
             {current_query_results.length > 30 && (
               <More_Rows handle_click={this.load_more_data} />
@@ -227,8 +206,8 @@ class MA_Analysis extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { user, meta } = state;
-  return { user, meta };
+  const { user, meta, MA_analysis } = state;
+  return { user, meta, MA_analysis };
 }
 
 export default connect(mapStateToProps)(withRouter(MA_Analysis));
@@ -259,7 +238,7 @@ const MA_Select_Form = ({
             MA={MA}
             handleInput={(e, key, index) => handleInput(e, key, index)}
           />
-             <G_L_Select
+          <G_L_Select
             index={index}
             g_l={g_l}
             handleInput={(e, key, index) => handleInput(e, key, index)}
@@ -269,7 +248,6 @@ const MA_Select_Form = ({
             index={index}
             handleInput={(e, key, index) => handleInput(e, key, index)}
           />
-       
         </form>
       </div>
     </div>
@@ -397,11 +375,11 @@ const Stock_List_Header = ({ sort_by, sort_state, sorted_prop }) => {
     <div className="row full-width">
       <div className="align_items_center col-1 flex">
         <h6 onClick={() => sort_by("symbol")}>Sym.</h6>
-        {sort_state && sorted_prop == "symbol" && <div className="arrow-down" />}
-
-        {!sort_state && sorted_prop == "symbol" && (
-          <div className="arrow-up" />
+        {sort_state && sorted_prop == "symbol" && (
+          <div className="arrow-down" />
         )}
+
+        {!sort_state && sorted_prop == "symbol" && <div className="arrow-up" />}
       </div>
 
       <div className="align_items_center col-3 flex_end">
@@ -433,7 +411,9 @@ const Stock_List_Header = ({ sort_by, sort_state, sorted_prop }) => {
       </div>
 
       <div className="align_items_center col-1 flex_end">
-        <h6 onClick={() => sort_by("current_MA_data.meta_data.close")}>Price</h6>
+        <h6 onClick={() => sort_by("current_MA_data.meta_data.close")}>
+          Price
+        </h6>
         {sort_state && sorted_prop == "current_MA_data.meta_data.close" && (
           <div className="arrow-down" />
         )}
@@ -443,7 +423,9 @@ const Stock_List_Header = ({ sort_by, sort_state, sorted_prop }) => {
       </div>
 
       <div className="align_items_center col-1 flex_end">
-        <h6 onClick={() => sort_by("current_MA_data.meta_data.volume")}>Vol.</h6>
+        <h6 onClick={() => sort_by("current_MA_data.meta_data.volume")}>
+          Vol.
+        </h6>
         {sort_state && sorted_prop == "current_MA_data.meta_data.volume" && (
           <div className="arrow-down" />
         )}
@@ -484,16 +466,16 @@ const Percent_From_Price = ({ MA_price, current_close, MA_perc }) => {
   if (MA_price < current_close) class_name = "percentage_down";
   if (MA_price == current_close) class_name = "percentage_neutral";
   return (
-    <div className='row flex_center'>
-      <div className='col-12 col-sm-6 flex_center'>
-      <Price price={MA_price} /> 
+    <div className="row flex_center">
+      <div className="col-12 col-sm-6 flex_center">
+        <Price price={MA_price} />
       </div>
-      <div className='col-12 col-sm-6 flex_center'>
-      (
-      <span className={class_name}>
-        {`${parseFloat(MA_perc.toLocaleString("en-US")).toFixed(2)}%`}
-      </span>
-      )
+      <div className="col-12 col-sm-6 flex_center">
+        (
+        <span className={class_name}>
+          {`${parseFloat(MA_perc.toLocaleString("en-US")).toFixed(2)}%`}
+        </span>
+        )
       </div>
     </div>
   );
@@ -501,10 +483,9 @@ const Percent_From_Price = ({ MA_price, current_close, MA_perc }) => {
 
 const Symbol = ({ symbol }) => <span className="ticker_symbol">{symbol}</span>;
 
-
-const deep_value = (obj, path) => 
+const deep_value = (obj, path) =>
   path
-    .replace(/\[|\]\.?/g, '.')
-    .split('.')
+    .replace(/\[|\]\.?/g, ".")
+    .split(".")
     .filter(s => s)
     .reduce((acc, val) => acc && acc[val], obj);

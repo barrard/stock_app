@@ -1,5 +1,14 @@
 
 module.exports = {
+
+  ensure_admin(req, res, next){
+    let {pw, admin} = req.cookies
+    if(pw == 'pass' && admin == 'true'){
+      next()
+    }else{
+      res.redirect('/')
+    }
+  },
   
    ensure_not_logged_in(req, res, next){
      logger.log('IS THIS USER ALREADY LOCGED IN??')

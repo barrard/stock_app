@@ -15740,6 +15740,164 @@ function login_success(payload) {
 
 /***/ }),
 
+/***/ "./redux/reducers/MA_analysis_reducer.js":
+/*!***********************************************!*\
+  !*** ./redux/reducers/MA_analysis_reducer.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "../node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "../node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+
+
+
+var _initial_state;
+
+// import * as meta_actions from "../actions/meta_actions.js";
+var initial_state = (_initial_state = {
+  queries: [{
+    MA: "50",
+    g_l: "g",
+    perc: 20
+  }, {
+    MA: "200",
+    g_l: "l",
+    perc: 2
+  }],
+  saved_query_results: [],
+  saved_queries: []
+}, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_initial_state, "saved_query_results", []), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_initial_state, "current_query_results", []), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_initial_state, "sorted_query_results", []), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_initial_state, "number_rows", 30), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_initial_state, "sorted_prop", "volume"), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_initial_state, "sort_state", false), _initial_state);
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initial_state;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case "CLEAR_RESULTS":
+      {
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          current_query_results: [],
+          sorted_query_results: [],
+          number_rows: 30
+        });
+      }
+
+    case "SORT_BY":
+      {
+        var prop = action.prop,
+            flag = action.flag;
+        console.log(prop, flag); // flag true dont switch sort_state
+
+        var number_rows = state.number_rows;
+        var sort_state = state.sort_state;
+        /* Flag for not resetting sort_state */
+
+        if (flag) sort_state = !sort_state;
+        var sorted_query_results = [];
+
+        if (sort_state) {
+          sort_state = false;
+          sorted_query_results = state.current_query_results.sort(function (a, b) {
+            return high_to_low(a, b, prop);
+          }).slice(0, number_rows);
+        } else {
+          sort_state = true;
+          sorted_query_results = state.current_query_results.sort(function (a, b) {
+            return low_to_high(a, b, prop);
+          }).slice(0, number_rows);
+        }
+
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          sorted_prop: prop,
+          sort_state: sort_state,
+          sorted_query_results: sorted_query_results
+        });
+      }
+
+    case "LOAD_MORE_MA_RESULTS":
+      {
+        console.log(state.number_rows);
+        console.log(state.number_rows);
+        var _number_rows = state.number_rows;
+        _number_rows += 30;
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          number_rows: _number_rows
+        });
+      }
+
+    case "QUERY_SUBMITTED":
+      {
+        var query_results = action.query_results,
+            saved_queries = action.saved_queries;
+        var saved_query_results = state.saved_query_results;
+        saved_query_results.push(query_results);
+
+        var _sorted_query_results = query_results.sort(function (a, b) {
+          return high_to_low(a, b, "volume");
+        }).slice(0, 30);
+
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          saved_queries: saved_queries,
+          saved_query_results: saved_query_results,
+          current_query_results: query_results,
+          sorted_query_results: _sorted_query_results
+        });
+      }
+
+    case "SET_MA_QUERY":
+      {
+        console.log(action);
+        var queries = action.queries;
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          queries: queries
+        });
+      }
+
+    case "REMOVE_QUERY":
+      {
+        var _queries = action.queries;
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          queries: _queries
+        });
+      }
+
+    case "ADD_QUERY":
+      {
+        var _queries2 = action.queries;
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          queries: _queries2
+        });
+      }
+
+    default:
+      return state;
+  }
+});
+
+function high_to_low(a, b, prop) {
+  if (deep_value(a, prop) > deep_value(b, prop)) return -1;
+  if (deep_value(a, prop) < deep_value(b, prop)) return 1;
+  return 0;
+}
+
+function low_to_high(a, b, prop) {
+  if (deep_value(a, prop) > deep_value(b, prop)) return 1;
+  if (deep_value(a, prop) < deep_value(b, prop)) return -1;
+  return 0;
+}
+
+var deep_value = function deep_value(obj, path) {
+  return path.replace(/\[|\]\.?/g, ".").split(".").filter(function (s) {
+    return s;
+  }).reduce(function (acc, val) {
+    return acc && acc[val];
+  }, obj);
+};
+
+/***/ }),
+
 /***/ "./redux/reducers/index.js":
 /*!*********************************!*\
   !*** ./redux/reducers/index.js ***!
@@ -15755,6 +15913,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _meta_reducer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./meta_reducer.js */ "./redux/reducers/meta_reducer.js");
 /* harmony import */ var _user_reducer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./user_reducer.js */ "./redux/reducers/user_reducer.js");
 /* harmony import */ var _stock_data_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stock_data_reducer */ "./redux/reducers/stock_data_reducer.js");
+/* harmony import */ var _MA_analysis_reducer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MA_analysis_reducer.js */ "./redux/reducers/MA_analysis_reducer.js");
+
 
 
 
@@ -15765,7 +15925,8 @@ __webpack_require__.r(__webpack_exports__);
   toastr: react_redux_toastr__WEBPACK_IMPORTED_MODULE_1__["reducer"],
   user: _user_reducer_js__WEBPACK_IMPORTED_MODULE_3__["default"],
   meta: _meta_reducer_js__WEBPACK_IMPORTED_MODULE_2__["default"],
-  stock_data: _stock_data_reducer__WEBPACK_IMPORTED_MODULE_4__["default"]
+  stock_data: _stock_data_reducer__WEBPACK_IMPORTED_MODULE_4__["default"],
+  MA_analysis: _MA_analysis_reducer_js__WEBPACK_IMPORTED_MODULE_5__["default"]
 }));
 
 /***/ }),

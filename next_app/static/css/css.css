@@ -56,8 +56,15 @@
   min-height: 700px;
   max-height: 700px
 }
+.transparent{
+  background: transparent;
+}
 .grid{
   display: grid;
+}
+.trade_post_form_overlay{
+  left:2em;
+  top:2em;
 }
 .relative{
   position: relative;
@@ -65,7 +72,12 @@
 .absolute{
   position: absolute;
 }
-
+.under_1{
+  z-index: -1;
+}
+.opaque{
+  background-color: rgba(255,255,255,0.7);
+}
 .arrow-up {
   width: 0; 
   height: 0; 
@@ -86,13 +98,14 @@
 
 
 .right_10_px{
+  top:3em;
   right:10px;
 }
 .filtered_stock_list{
   z-index: 10;
   background: white;
   position: absolute;
-  top: 100%;
+  top: 160%;
   right:0%;
   height:50vh;
   overflow-y: scroll;

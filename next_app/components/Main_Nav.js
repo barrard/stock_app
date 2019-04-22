@@ -21,18 +21,19 @@ class Main_Nav extends React.Component {
       stock_selected: false
       // show_filter_list: false
     };
-    this.handle_search_input_keydown = this.handle_search_input_keydown.bind(this)
+    this.handle_search_input_keydown = this.handle_search_input_keydown.bind(
+      this
+    );
     this.handle_seach_symbol_input = this.handle_seach_symbol_input.bind(this);
     this.make_filter_list = this.make_filter_list.bind(this);
     this.highlight_search_letters = this.highlight_search_letters.bind(this);
     this.filtered_stock_list_item = this.filtered_stock_list_item.bind(this);
-
   }
   async componentDidMount() {
     console.log("asdasd");
-    const { api_server } = location.origin;
-    console.log(location)
-    console.log(api_server)
+    // const { api_server } = location.origin;
+    // console.log(location);
+    // console.log(api_server);
     try {
       const { has_symbols_data } = this.props.stock_data;
       if (has_symbols_data) return;
@@ -47,8 +48,8 @@ class Main_Nav extends React.Component {
       console.log(err);
     }
   }
-  handle_search_input_keydown(e){
-    console.log(e)
+  handle_search_input_keydown(e) {
+    console.log(e);
   }
 
   handle_seach_symbol_input(e) {
@@ -57,10 +58,10 @@ class Main_Nav extends React.Component {
     this.props.dispatch(set_search_symbol(e.target.value));
     this.make_filter_list(e.target.value);
   }
-  handle_search(e) {
-    e.preventDefault();
-    console.log(this.state.search);
-  }
+  // handle_search(e) {
+  //   e.preventDefault();
+  //   console.log(this.state.search);
+  // }
   /* On input makes the list */
   make_filter_list(search_text) {
     var search_text = search_text.toLowerCase();
@@ -70,7 +71,7 @@ class Main_Nav extends React.Component {
       setTimeout(() => this.make_filter_list(search_text), 100);
       return;
     }
-    console.log(full_list)
+    console.log(full_list);
     /* list of possible arrays with data */
     var symbol_starts_with = [];
     var name_starts_with = [];
@@ -79,10 +80,9 @@ class Main_Nav extends React.Component {
     var filtered_stock_list = [];
 
     /* check symbol starts with */
-    symbol_starts_with = full_list.filter(list_item =>(
+    symbol_starts_with = full_list.filter(list_item =>
       list_item.symbol.toLowerCase().startsWith(search_text)
-    )
-      );
+    );
     console.log(symbol_starts_with);
     filtered_stock_list = [...filtered_stock_list, ...symbol_starts_with];
     if (filtered_stock_list.length < 100) {
@@ -99,7 +99,7 @@ class Main_Nav extends React.Component {
       symbol_list = full_list.filter(list_item =>
         list_item.symbol.toLowerCase().includes(search_text)
       );
-      console.log(symbol_list)
+      console.log(symbol_list);
       filtered_stock_list = [...filtered_stock_list, ...symbol_list];
     }
 
@@ -108,11 +108,11 @@ class Main_Nav extends React.Component {
       name_list = full_list.filter(list_item =>
         list_item.name.toLowerCase().includes(search_text)
       );
-      console.log(name_list)
+      console.log(name_list);
       filtered_stock_list = [...filtered_stock_list, ...name_list];
     }
     /* Combine the lists */
-    filtered_stock_list = [...new Set(filtered_stock_list)]
+    filtered_stock_list = [...new Set(filtered_stock_list)];
     filtered_stock_list = filtered_stock_list.splice(0, 100);
     this.setState({ filtered_stock_list });
   }
@@ -206,24 +206,26 @@ class Main_Nav extends React.Component {
         </button> */}
 
         {/* <div className="collapse navbar-collapse" id="navbarSupportedContent"> */}
-          <ul className="nav-bar-links">
-            {!is_loggedin && <Register_Login_Links pathname={pathname} />}
-            {is_loggedin && <Logout_Link pathname={pathname} />}
+        <ul className="nav-bar-links">
+          {!is_loggedin && <Register_Login_Links pathname={pathname} />}
+          {is_loggedin && <Logout_Link pathname={pathname} />}
 
-            <Charts_Dropdown
-              pathname={pathname}
-              charts={this.props.stock_data.charts}
-            />
-            {is_loggedin && <MA_Analysis_Link />}
-          </ul>
-          <Navbar_Search
-                                  /* Let the list stay long enough to click */
-            handle_search_input_blur={()=>setTimeout(()=>this.props.dispatch(show_filter_list(false)), 200)}
-            handle_search_input_keydown={e=>this.handle_search_input_keydown(e)}
-            handle_search_input={e => this.handle_seach_symbol_input(e)}
-            search_symbol={this.props.stock_data.search_symbol}
-            handle_search={e => this.handle_search(e)}
+          <Charts_Dropdown
+            pathname={pathname}
+            charts={this.props.stock_data.charts}
           />
+          {is_loggedin && <MA_Analysis_Link />}
+        </ul>
+        <Navbar_Search
+          /* Let the list stay long enough to click */
+          handle_search_input_blur={() =>
+            setTimeout(() => this.props.dispatch(show_filter_list(false)), 200)
+          }
+          handle_search_input_keydown={e => this.handle_search_input_keydown(e)}
+          handle_search_input={e => this.handle_seach_symbol_input(e)}
+          search_symbol={this.props.stock_data.search_symbol}
+          handle_search={e => this.handle_search(e)}
+        />
         {/* </div> */}
         {this.props.meta.show_filter_list &&
           this.Filtered_Stock_List({
@@ -247,13 +249,14 @@ export default connect(mapStateToProps)(withRouter(Main_Nav));
 const Navbar_Search = ({
   handle_search_input,
   handle_search,
-  search_symbol,handle_search_input_blur,
+  search_symbol,
+  handle_search_input_blur,
   handle_search_input_keydown
 }) => (
-  <form className="form-inline my-2 my-lg-0 absolute right_10_px">
+  <div className="form-inline my-2 my-lg-0 absolute right_10_px">
     <input
       onBlur={handle_search_input_blur}
-      onKeyDown={e=> handle_search_input_keydown(e)}
+      onKeyDown={e => handle_search_input_keydown(e)}
       onChange={e => handle_search_input(e)}
       className="form-control mr-sm-2"
       type="search"
@@ -261,14 +264,7 @@ const Navbar_Search = ({
       aria-label="Search"
       value={search_symbol}
     />
-    {/* <button
-      onClick={e => handle_search(e)}
-      className="btn btn-outline-success my-2 my-sm-0"
-      type="submit"
-    >
-      Search
-    </button> */}
-  </form>
+  </div>
 );
 
 const Charts_Dropdown = ({ pathname, charts }) => (
@@ -300,15 +296,13 @@ const Charts_Dropdown = ({ pathname, charts }) => (
   </li>
 );
 
-const MA_Analysis_Link = ({pathname})=>(
-
+const MA_Analysis_Link = ({ pathname }) => (
   <Navbar_Links
-  name="Moving Avg. Analysis"
-  path={"/moving-average-analysis"}
-  pathname={pathname}
-/>
-)
-
+    name="Moving Avg. Analysis"
+    path={"/moving-average-analysis"}
+    pathname={pathname}
+  />
+);
 
 const Logout_Link = ({ pathname }) => (
   <>
