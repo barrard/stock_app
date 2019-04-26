@@ -461,6 +461,7 @@ const Price = ({ price }) => (
 );
 
 const Percent_From_Price = ({ MA_price, current_close, MA_perc }) => {
+  if(!MA_perc)return "N/A"
   let class_name;
   if (MA_price > current_close) class_name = "percentage_up";
   if (MA_price < current_close) class_name = "percentage_down";

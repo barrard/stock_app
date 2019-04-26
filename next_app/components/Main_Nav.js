@@ -253,7 +253,7 @@ const Navbar_Search = ({
   handle_search_input_blur,
   handle_search_input_keydown
 }) => (
-  <div className="form-inline my-2 my-lg-0 absolute right_10_px">
+  <div className="form-inline my-2 my-lg-0 absolute right_10_px z_index_100">
     <input
       onBlur={handle_search_input_blur}
       onKeyDown={e => handle_search_input_keydown(e)}

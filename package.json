@@ -4,6 +4,8 @@
   "description": "Daves Next starter",
   "main": "ssr-server.js",
   "scripts": {
+    "analyze": "BUNDLE_ANALYZE=both next build ./next_app",
+
     "dev": "nodemon ./server/next_server.js",
     "build": "next build ./next_app",
     "export": "next export ./next_app",
@@ -12,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@zeit/next-bundle-analyzer": "^0.1.2",
     "bcrypt": "^3.0.3",
     "cacheable-response": "^1.5.2",
     "colors": "^1.3.3",

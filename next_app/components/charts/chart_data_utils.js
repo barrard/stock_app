@@ -34,7 +34,7 @@ export async function fetch_selected_chart_data(symbol, props) {
   const { meta, dispatch, router } = props;
   /* Start loading */
   dispatch(is_loading(true));
-  router.push(`/chart?symbol=${symbol}`);
+  if(router) router.push(`/chart?symbol=${symbol}`);
   const { iex_server } = meta;
   let book_data_json = await fetch(`
   ${iex_server}/stock/${symbol}/book

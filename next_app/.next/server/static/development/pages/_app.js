@@ -1258,8 +1258,8 @@ function (_App) {
                 if (ctx.isServer) {
                   logger.log('isServer');
                   _csrf = ctx.res.locals.csrf_token_function();
-                  api_server = ctx.res.locals.API_SERVER;
-                  logger.log(ctx.store);
+                  api_server = ctx.res.locals.API_SERVER; // logger.log(ctx.store)
+
                   ctx.store.dispatch(Object(_redux_actions_meta_actions_js__WEBPACK_IMPORTED_MODULE_14__["set_api_server"])(api_server));
                   ctx.store.dispatch(Object(_redux_actions_meta_actions_js__WEBPACK_IMPORTED_MODULE_14__["set_csrf"])(_csrf));
                   if (ctx.req.user) ctx.store.dispatch(Object(_redux_actions_user_actions_js__WEBPACK_IMPORTED_MODULE_15__["set_user"])(ctx.req.user));
@@ -1342,10 +1342,10 @@ function show_filter_list(show_filter_list) {
     show_filter_list: show_filter_list
   };
 }
-function is_loading(is_laoding) {
+function is_loading(is_loading) {
   return {
     type: "IS_LOADING",
-    is_laoding: is_laoding
+    is_loading: is_loading
   };
 }
 
@@ -1659,13 +1659,6 @@ var initial_state = {
       {
         return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
           csrf: action.csrf
-        });
-      }
-
-    case "IS_LOADING":
-      {
-        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
-          is_laoding: action.is_laoding
         });
       }
 

@@ -16,7 +16,15 @@ class Admin_Router {
   }
 
   buildRoutes() {
-    /* handle MA analysis queryies */
+    /* Delete trade post */
+    
+    this.admin_router.post(
+      "/delete_post",
+      [ensure_admin],
+      Admin_Controller.delete_post
+    );
+
+    /* Add trade  post */
 
     this.admin_router.post(
       "/add_trade_post",

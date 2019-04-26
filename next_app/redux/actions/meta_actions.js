@@ -21,9 +21,9 @@ export function show_filter_list(show_filter_list) {
 
 
 
-export function is_loading(is_laoding) {
+export function is_loading(is_loading) {
   return {
     type: "IS_LOADING",
-    is_laoding
+    is_loading
   };
 }

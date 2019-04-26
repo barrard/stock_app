@@ -14,7 +14,7 @@ const rp = require("request-promise");
 require("../db/db.js");
 const redis = require("../db/redis.js");
 const MA_Data_Model = require("../models/MA_data_model.js");
-const Current_MA_Status_Model= require('../models/current_ma_status.js')
+const Current_MA_Status_Model = require("../models/current_ma_status.js");
 
 class Stock_Analysis_Controller {
   constructor() {}
@@ -77,7 +77,7 @@ class Stock_Analysis_Controller {
       counter++;
 
       let symbol = iex_symbols[counter].symbol;
-      logger.log({symbol, counter})
+      logger.log({ symbol, counter });
       let data = await Daily_Stock_Data_Model.get_daily_data_for(symbol);
       // logger.log(data)
 
@@ -157,12 +157,11 @@ class Stock_Analysis_Controller {
     }, 500);
   }
 
-
-  slice_data(start, end, array){
-    return array.slice(start, end)
+  slice_data(start, end, array) {
+    return array.slice(start, end);
   }
   /* Analysis Functions */
-  async add_MA_data_to_all_stocks(){
+  async add_MA_data_to_all_stocks() {
     let iex_symbols = await this.fetch_iex_symbols();
     let counter = 17;
     let total = iex_symbols.length;
@@ -170,17 +169,16 @@ class Stock_Analysis_Controller {
       counter++;
 
       let symbol = iex_symbols[counter].symbol;
-      logger.log({symbol, counter})
-      let before_db = new Date().getTime()
+      logger.log({ symbol, counter });
+      let before_db = new Date().getTime();
       let data = await Daily_Stock_Data_Model.get_daily_data_for(symbol);
-      let after_db = new Date().getTime()
-      logger.log(after_db - before_db)
-      this.add_MA_data_to_model(symbol, data.daily_data)
-    }, 100)
-
+      let after_db = new Date().getTime();
+      logger.log(after_db - before_db);
+      this.add_MA_data_to_model(symbol, data.daily_data);
+    }, 100);
   }
-  async add_MA_data_to_model(symbol, daily_data){
-    let before_cal = new Date().getTime()
+  async add_MA_data_to_model(symbol, daily_data) {
+    let before_cal = new Date().getTime();
     /* ensure we have data for the symbol*/
     if (!daily_data) {
       daily_data = await Daily_Stock_Data_Model.get_daily_data_for(symbol);
@@ -191,63 +189,53 @@ class Stock_Analysis_Controller {
     let length = daily_data.length;
 
     let counter = -1;
-    let MA_20  = 20 //minumum MA to calculater, hard coded..
-    let MA_50  = 50 //minumum MA to calculater, hard coded..
-    let MA_200  = 200 //minumum MA to calculater, hard coded..
+    let MA_20 = 20; //minumum MA to calculater, hard coded..
+    let MA_50 = 50; //minumum MA to calculater, hard coded..
+    let MA_200 = 200; //minumum MA to calculater, hard coded..
     /* Start a loop */
     while (counter < length - MA_20) {
-      counter++
+      counter++;
       /* start from the begining of the array */
       let end_counter_20 = MA_20 + counter;
       let end_counter_50 = MA_50 + counter;
       let end_counter_200 = MA_200 + counter;
       // let price_MA_data = {}
       /* get the number MA items in array */
-        /* 20 */
-    if (length >= MA_20){
-      let slice_20 = this.slice_data(counter, end_counter_20, daily_data)
-      let price_MA_data = this.get_price_type_averages(slice_20)
- 
-      daily_data[end_counter_20-1].MA_20 = price_MA_data
-      // logger.log(daily_data[end_counter_20-1])
+      /* 20 */
+      if (length >= MA_20) {
+        let slice_20 = this.slice_data(counter, end_counter_20, daily_data);
+        let price_MA_data = this.get_price_type_averages(slice_20);
 
-      // price_MA_data.MA_20_obj.id = slice_20[19]._id
-    } 
-    if (length >= end_counter_50){
-      let slice_50 = this.slice_data(counter, end_counter_50, daily_data)
-      let price_MA_data = this.get_price_type_averages(slice_50)
+        daily_data[end_counter_20 - 1].MA_20 = price_MA_data;
+        // logger.log(daily_data[end_counter_20-1])
 
-      daily_data[end_counter_50-1].MA_50 = price_MA_data
-      // logger.log(daily_data[end_counter_50-1])
+        // price_MA_data.MA_20_obj.id = slice_20[19]._id
+      }
+      if (length >= end_counter_50) {
+        let slice_50 = this.slice_data(counter, end_counter_50, daily_data);
+        let price_MA_data = this.get_price_type_averages(slice_50);
 
-      // price_MA_data.MA_50_obj.id = slice_50[49]._id
+        daily_data[end_counter_50 - 1].MA_50 = price_MA_data;
+        // logger.log(daily_data[end_counter_50-1])
 
-    } 
-    if (length >= end_counter_200){
-      let slice_200 = this.slice_data(counter, end_counter_200, daily_data)
-      let price_MA_data = this.get_price_type_averages(slice_200)
+        // price_MA_data.MA_50_obj.id = slice_50[49]._id
+      }
+      if (length >= end_counter_200) {
+        let slice_200 = this.slice_data(counter, end_counter_200, daily_data);
+        let price_MA_data = this.get_price_type_averages(slice_200);
 
-      daily_data[end_counter_200-1].MA_200 = price_MA_data
-      // logger.log(daily_data[end_counter_200-1])
-      // price_MA_data.MA_200_obj.id = slice_200[199]._id
+        daily_data[end_counter_200 - 1].MA_200 = price_MA_data;
+        // logger.log(daily_data[end_counter_200-1])
+        // price_MA_data.MA_200_obj.id = slice_200[199]._id
+      }
+    }
 
-    } 
-    
+    logger.log(`done with ${symbol}`);
+    let after_cal = new Date().getTime();
+    logger.log(after_cal - before_cal);
 
-
-
+    Daily_Stock_Data_Model.add_MA_price_data(symbol, daily_data);
   }
-
-  logger.log(`done with ${symbol}`)
-  let after_cal = new Date().getTime()
-  logger.log(after_cal - before_cal)
-
-  Daily_Stock_Data_Model.add_MA_price_data(symbol, daily_data)
-
-      
-  }
-
-  
 
   /* OLD FUNCTION TO ANALYZE MA DAYA  TODO REWRITE */
   async track_price_vs_MA_over_time(symbol, MA, type, data) {
@@ -315,56 +303,65 @@ class Stock_Analysis_Controller {
     this.analyse_MA_crossover_data(symbol, MA, type, daily_MA_states);
   }
 
-  async get_all_current_MA_status(){
+  async get_all_current_MA_status() {
     let iex_symbols = await this.fetch_iex_symbols();
     let counter = -1;
     let total = iex_symbols.length;
 
-
-    let timer = setInterval(()=>{
-      counter++
-      let symbol = iex_symbols[counter].symbol
-      logger.log({symbol, counter})
-      this.get_current_MA_status(symbol)
-      if(counter+1 == total)clearInterval(timer)
-    }, 10)
+    let timer = setInterval(() => {
+      counter++;
+      let symbol = iex_symbols[counter].symbol;
+      logger.log({ symbol, counter });
+      this.get_current_MA_status(symbol);
+      if (counter + 1 == total) clearInterval(timer);
+    }, 10);
   }
 
-  async get_current_MA_status(symbol){
+  async get_current_MA_status(symbol) {
     /* 20, 50, and 200 MA */
     let data = await Daily_Stock_Data_Model.get_limited_symbol_data(
       symbol,
       200 * -1
     );
-    let daily_data = data.daily_data
+    let daily_data = data.daily_data;
     // logger.log(daily_data)
-    let end_of_array = daily_data.length
-    if(end_of_array < 200)return logger.log(`${symbol} has less than 200 data points`)
+    let end_of_array = daily_data.length;
+    if (end_of_array < 200)
+      return logger.log(`${symbol} has less than 200 data points`);
 
-/* Get some meta data */
-let {date, open, high, low, close, vwap, volume} = daily_data[end_of_array-1]
-let meta_data = {date, open, high, low, close, vwap, volume}
-/* 20 */
-let data_20 = this.slice_data(end_of_array-20, end_of_array, daily_data)
-let data_50 = this.slice_data(end_of_array-50, end_of_array, daily_data)
-let data_200 = this.slice_data(end_of_array-200, end_of_array, daily_data)
+    /* Get some meta data */
+    let { date, open, high, low, close, vwap, volume } = daily_data[
+      end_of_array - 1
+    ];
+    let meta_data = { date, open, high, low, close, vwap, volume };
+    /* 20 */
+    let data_20 = this.slice_data(end_of_array - 20, end_of_array, daily_data);
+    let data_50 = this.slice_data(end_of_array - 50, end_of_array, daily_data);
+    let data_200 = this.slice_data(
+      end_of_array - 200,
+      end_of_array,
+      daily_data
+    );
 
-  
-let MA_20 = this.get_price_type_averages(data_20)
-let MA_50 = this.get_price_type_averages(data_50)
-let MA_200 = this.get_price_type_averages(data_200)
-let perc_20 = this.get_perc(MA_20.close, close)
-let perc_50 = this.get_perc(MA_50.close, close)
-let perc_200 = this.get_perc(MA_200.close, close)
-// logger.log({MA_20, MA_50, MA_200})
-// logger.log(meta_data)
-let all_data = {
-   meta_data, MA_20, MA_50, MA_200, perc_20, perc_50, perc_200
-}
-// logger.log(all_data)
-Current_MA_Status_Model.update_current_MA_status(symbol, all_data)
-
-
+    let MA_20 = this.get_price_type_averages(data_20);
+    let MA_50 = this.get_price_type_averages(data_50);
+    let MA_200 = this.get_price_type_averages(data_200);
+    let perc_20 = this.get_perc(MA_20.close, close);
+    let perc_50 = this.get_perc(MA_50.close, close);
+    let perc_200 = this.get_perc(MA_200.close, close);
+    // logger.log({MA_20, MA_50, MA_200})
+    // logger.log(meta_data)
+    let all_data = {
+      meta_data,
+      MA_20,
+      MA_50,
+      MA_200,
+      perc_20,
+      perc_50,
+      perc_200
+    };
+    // logger.log(all_data)
+    Current_MA_Status_Model.update_current_MA_status(symbol, all_data);
   }
 
   async find_stock_MA_data(symbol, MA, price_type, data) {
@@ -398,8 +395,6 @@ Current_MA_Status_Model.update_current_MA_status(symbol, all_data)
     /* Enter this into the MA-data collection??  yes! */
     MA_Data_Model.update_MA_data(symbol, MA, price_type, new_MA_data);
   }
-
-
 
   async analyze_new_MA_data(symbol) {
     /* Query for the daily data,  */
@@ -548,12 +543,12 @@ Current_MA_Status_Model.update_current_MA_status(symbol, all_data)
 
   /* query the current_MA_status */
 
-async combined_MA_perc_serch(req, res, next) {
-  logger.log(req.body)
-  let {query} = req.body
-  let result = await Current_MA_Status_Model.find_MA_perc_query(
-    query
-/*     [
+  async combined_MA_perc_serch(req, res, next) {
+    logger.log(req.body);
+    let { query } = req.body;
+    let result = await Current_MA_Status_Model.find_MA_perc_query(
+      query
+      /*     [
       {
         perc: 90,
         MA: 200,
@@ -566,13 +561,9 @@ async combined_MA_perc_serch(req, res, next) {
       },
     ] */
     );
-    logger.log(result.length)
-    res.send(result)
-
-}
-
-
-
+    logger.log(result.length);
+    res.send(result);
+  }
 
   /* count how often the price is +-1..10%+ from MA */
   track_percentage_from_MA(MA_data, percent_ranges) {
@@ -762,42 +753,39 @@ async combined_MA_perc_serch(req, res, next) {
     let total = array_of_data.reduce((a, b) => a + b[type], 0);
     return total / array_of_data.length;
   }
-  get_perc(MA, price){
+  get_perc(MA, price) {
     // logger.log({MA, price})
-    if(MA < price){
-      return parseFloat((((price/MA)-1)*100).toFixed(2))
-    }else if(MA > price){
-      return parseFloat((((MA/price)-1)*100).toFixed(2))
-    }else{
-      return 0
+    if (MA < price) {
+      return parseFloat(((price / MA - 1) * 100).toFixed(2));
+    } else if (MA > price) {
+      return parseFloat(((MA / price - 1) * 100).toFixed(2));
+    } else {
+      return 0;
     }
   }
 
   /* average all 4 price types */
-  get_price_type_averages(array_of_price_data){
-    let length = array_of_price_data.length
-      let open= array_of_price_data.reduce((a, b) => a + b['open'], 0)
-      let close= array_of_price_data.reduce((a, b) => a + b['close'], 0)
-      let high= array_of_price_data.reduce((a, b) => a + b['high'], 0)
-      let low= array_of_price_data.reduce((a, b) => a + b['low'], 0)
-      let price_average_obj = {
-        open:parseFloat((open/length).toFixed(2)),
-        close:parseFloat((close/length).toFixed(2)),
-        high:parseFloat((high/length).toFixed(2)),
-        low:parseFloat((low/length).toFixed(2))
-      }
-    return price_average_obj
+  get_price_type_averages(array_of_price_data) {
+    let length = array_of_price_data.length;
+    let open = array_of_price_data.reduce((a, b) => a + b["open"], 0);
+    let close = array_of_price_data.reduce((a, b) => a + b["close"], 0);
+    let high = array_of_price_data.reduce((a, b) => a + b["high"], 0);
+    let low = array_of_price_data.reduce((a, b) => a + b["low"], 0);
+    let price_average_obj = {
+      open: parseFloat((open / length).toFixed(2)),
+      close: parseFloat((close / length).toFixed(2)),
+      high: parseFloat((high / length).toFixed(2)),
+      low: parseFloat((low / length).toFixed(2))
+    };
+    return price_average_obj;
   }
-
 }
 
 const stock_analysis_controller = (module.exports = new Stock_Analysis_Controller());
 /* Run daily after getting new prvious daily data */
 // stock_analysis_controller.get_all_current_MA_status()
 
-
 // stock_analysis_controller.combined_MA_perc_serch()
-
 
 // stock_analysis_controller.track_all_stocks_MA_data();
 // stock_analysis_controller.track_price_vs_MA_over_time("AAPL", 20, "close");

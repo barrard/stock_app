@@ -23,6 +23,10 @@ class Account_Profile extends React.Component{
     return(
       <Main_Layout>
         <h1>Account Profile</h1>
+        <div className="min_height_full_screen">
+
+
+        </div>
       
       </Main_Layout>
     )

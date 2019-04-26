@@ -1,6 +1,7 @@
 const { Router } = require("express");
 
 const Stock_Analysis_Controller = require("../controllers/Stock_Analysis.js");
+const Trade_Post_Model = require("../models/Trade_Post_Model.js");
 
 const {
   ensure_authenticated
@@ -13,8 +14,12 @@ class Protected_Router {
   }
 
   buildRoutes() {
-    /* handle MA analysis queryies */
+    /* return trade last 30 posts */
+    this.protected_router.get('/trade_posts', 
+    Trade_Post_Model.get_last_30_trade_posts
+    )
 
+    /* handle MA analysis queryies */
     this.protected_router.post(
       "/MA-query",
       [ensure_authenticated],

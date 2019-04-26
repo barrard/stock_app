@@ -7,7 +7,7 @@ cd /home/dave/backups/iex_stock_app
    scp -r iex_stock_app dave@192.168.0.87:/home/dave/backups/
 
 
-restoring my desktop, not pi
+#restoring db
 
 cd /home/dave/backups/iex_stock_app
 mongorestore -d iex_stock_app iex_stock_app%     

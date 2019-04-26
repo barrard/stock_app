@@ -220,7 +220,7 @@ class Stock_Data_Controller {
       );
       logger.log(result);
       if (counter + 1 == total) clearInterval(timer);
-    }, 100);
+    }, 10);
   }
 
   async get_all_company_tags_data() {

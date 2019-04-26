@@ -20,9 +20,7 @@ export default (state = initial_state, action) => {
     case "SET_CSRF": {
       return { ...state, csrf: action.csrf };
     }
-    case "IS_LOADING": {
-      return { ...state, is_laoding: action.is_laoding };
-    }
+
     case "SET_API_SERVER": {
       const {api_server, iex_server} = action
       return { ...state, api_server, iex_server };
