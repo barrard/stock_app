@@ -34,6 +34,15 @@ const Home_Page_Cache = cacheableResponse({
   send: ({ data, res }) => res.send(data)
 })
 
+/* chart page cashing function */
+const Chart_Page_Cache = cacheableResponse({
+  ttl: 1000 * 60 * 5, // 5 min
+  get: async ({ req, res, pagePath, queryParams }) => ({
+    data: await next_app.renderToHTML(req, res, pagePath, queryParams)
+  }),
+  send: ({ data, res }) => res.send(data)
+})
+
 
 const get_routes = require("./routes/routes.js");
 const routes = get_routes();
@@ -66,12 +75,14 @@ next_app
 
     server.get('/', (req, res)=> Home_Page_Cache({req, res, pagePath:'/landing'}))
 
+
     /* Render dynamic chart */
-    server.get("/chart/:symbol", (req, res) => {
-      return next_app.render(req, res, "/chart", {
-        chart: req.params.symbol
-      });
-    });
+    server.get("/chart/:symbol", (req, res) => Chart_Page_Cache({req, res, pagePath:'/chart'}))
+    // {
+    //   return next_app.render(req, res, "/chart", {
+    //     chart: req.params.symbol
+    //   });
+    // });
 
     /* Render dynamic sector */
     server.get("/sector/:sector", (req, res) => {

@@ -16018,7 +16018,7 @@ var initial_state = {
   has_symbols_data: false,
   symbols_data: {},
   charts: {},
-  search_symbol: '',
+  search_symbol: "",
   home_page_data: {},
   home_page_data_set_at: 0,
   sector_data: {}
@@ -16028,6 +16028,22 @@ var initial_state = {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
+    case "ADD_MA_DATA":
+      {
+        var symbol = action.symbol,
+            MA_data = action.MA_data;
+        var stock_data = state.charts[symbol];
+
+        var stock_data_with_MA = Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, stock_data, MA_data);
+
+        console.log({
+          stock_data_with_MA: stock_data_with_MA
+        });
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, state, {
+          charts: Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, state.charts, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, symbol, Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, state.charts[symbol], stock_data_with_MA)))
+        });
+      }
+
     case "SET_SECTOR_DATA":
       {
         var sector = action.sector,

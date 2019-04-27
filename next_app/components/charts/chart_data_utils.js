@@ -39,7 +39,7 @@ export async function fetch_selected_chart_data(symbol, props) {
   const { iex_server } = meta;
   let book_data_json = await fetch(`  ${iex_server}/stock/${symbol}/book
   `);
-  let chart_data_json = await fetch(`  ${iex_server}/stock/${symbol}/chart/5y
+  let chart_data_json = await fetch(`  ${iex_server}/stock/${symbol}/chart/1y
   `);
   let chart_logo_json = await fetch(`
   ${iex_server}/stock/${symbol}/logo

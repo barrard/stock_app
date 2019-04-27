@@ -1,3 +1,4 @@
+
 export function set_symbols_data(symbols_data) {
   return {
     type: "SET_SYMBOLS_DATA",
@@ -37,6 +38,13 @@ export function add_chart_data(chart_data) {
     type: "ADD_CHART_DATA",
     chart_data
   };
+}
+
+export function add_MA_data_action(MA_data, symbol){
+  return{
+    type:"ADD_MA_DATA", MA_data, symbol
+  }
+
 }
 
 

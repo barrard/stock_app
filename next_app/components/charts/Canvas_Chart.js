@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import { withRouter } from "next/router";
-import { load_more_MA_results } from "../../redux/actions/MA_analysis_actions";
+import { add_MA_data_action } from "../../redux/actions/stock_actions.js";
 
 class Canvas_Chart extends React.Component {
   constructor(props) {
@@ -23,12 +23,12 @@ class Canvas_Chart extends React.Component {
       crosshair_overlay: "",
       volume_canvas: "",
       volume_canvas_overlay: "",
-      vol_canvas_share: 0.1,
+      vol_canvas_share: 0.2,
       overlay_offset: "",
       symbol: "",
-      spinner_timmer: "",
+      spinner_timmer: false,
       MA_data: {},
-      chart_background:"white"
+      chart_background: "white"
     };
     this.draw_cross_hair = this.draw_cross_hair.bind(this);
   }
@@ -37,10 +37,24 @@ class Canvas_Chart extends React.Component {
     this.make_canvas_full_screen();
   }
   componentDidUpdate(prevProps) {
-    console.log("componentDidUpdate");
+    let {meta, canvas_id} = this.props
+    console.log("----------------componentDidUpdate=====================");
     console.log(prevProps);
-    if (!prevProps.meta.is_loading && this.props.meta.is_loading) {
+    console.log(this.props)
+    if (!prevProps.meta.is_loading && meta.is_loading) {
+      console.log('new chart data is being loaded')
       this.run_spinner();
+    }else if((!prevProps.meta.is_loading && !meta.is_loading)&&(canvas_id != prevProps.canvas_id)){
+      /* must have loaded a new chart?  Draw chart */
+      console.log('new  chart selected form chache')
+      this.draw_chart()
+    }else if(prevProps.meta.is_loading && !meta.is_loading){
+      console.log('Done loading new data, draw chart ')
+      this.draw_chart()
+
+    }else{
+      console.log('render what is happeneing')
+
     }
   }
   make_canvas_full_screen() {
@@ -55,18 +69,18 @@ class Canvas_Chart extends React.Component {
         let crosshair_overlay = document.getElementById(
           `${this.props.canvas_id}_crosshair_overlay`
         );
-        let overlay_offset = document
-          .getElementById(`${this.props.canvas_id}_crosshair_overlay`)
-          .getBoundingClientRect();
-        this.run_spinner(canvas);
+        let overlay_offset = crosshair_overlay.getBoundingClientRect()
         this.setState({ overlay_offset, canvas, crosshair_overlay });
+        this.run_spinner();
         console.log("does this run?");
         console.log(this);
       }, 0);
     }
   }
   run_spinner() {
-    var canvas = document.getElementById(this.props.canvas_id);
+
+    let { canvas_id, meta, stock_data, dispatch } = this.props
+    var canvas = document.getElementById(canvas_id);
     var context = canvas.getContext("2d");
     var start = new Date();
     var lines = 16,
@@ -74,19 +88,17 @@ class Canvas_Chart extends React.Component {
       cH = context.canvas.height;
 
     var draw_spinner = () => {
-      // console.log(this.props)
+
       if (!this.props.meta.is_loading) {
-        clearInterval(this.state.spinner_timmer);
-        console.log(this.props.stock_data);
-        console.log(this.props.canvas_id);
-        console.log(this.props.stock_data.charts[this.props.canvas_id]);
-        let chart_data = this.props.stock_data.charts[this.props.canvas_id]
-          .chart_data;
+        clearInterval(spinner_timmer);
+        this.setState({spinner_timmer:false})
+        console.log(stock_data);
+        console.log(canvas_id);
+        console.log(stock_data.charts[canvas_id]);
+        let chart_data = this.props.data.chart_data;
         console.log({ chart_data });
-        let MA_data = add_MA_data_to_model(chart_data);
-        console.log(MA_data);
-        this.setState({ MA_data });
-        return this.draw_chart(this.state.chart_background);
+
+        return this.draw_chart(this.state.chart_background) 
       }
       var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
       context.save();
@@ -105,7 +117,6 @@ class Canvas_Chart extends React.Component {
       context.restore();
     };
     let spinner_timmer = setInterval(draw_spinner, 1000 / 30);
-    this.setState({ spinner_timmer });
   }
   render_canvas(canvas_id, canvas_width, canvas_height) {
     return (
@@ -128,13 +139,14 @@ class Canvas_Chart extends React.Component {
     );
   }
   draw_cross_hair(e) {
-
     let {
+      vol_canvas_share,
       overlay_offset,
       crosshair_overlay,
       min_price,
       pennies_per_pixel,
-      candle_width, space_between_bars
+      candle_width,
+      space_between_bars
     } = this.state;
 
     let pos = {
@@ -143,12 +155,15 @@ class Canvas_Chart extends React.Component {
     };
     let { left, top } = pos;
     let canvas = crosshair_overlay;
+    if (!canvas) return;
+    const chart_height = canvas.height * (1 - vol_canvas_share);
 
     let price_label = parseFloat(
-      min_price + ((canvas.height - top) * pennies_per_pixel) / 100
+      min_price + ((chart_height - top) * pennies_per_pixel) / 100
     ).toFixed(2);
 
     let x_hair_ctx = canvas.getContext("2d");
+    
 
     x_hair_ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -164,23 +179,69 @@ class Canvas_Chart extends React.Component {
     x_hair_ctx.stroke();
     /* flip label near edges */
     let label_x_pos, label_y_pos;
-    if(left + 50 > canvas.width )label_x_pos=left-50
-    else label_x_pos = left+10
-    if(top + 50 > canvas.height )label_y_pos=top-50
-    else label_y_pos = top+15
+    if (left + 50 > canvas.width) label_x_pos = left - 50;
+    else label_x_pos = left + 10;
+    if (top + 50 > canvas.height) label_y_pos = top - 50;
+    else label_y_pos = top + 15;
 
-    let candle_id = Math.floor(left/(candle_width+space_between_bars))
-    console.log({candle_id})
-    console.log(bar_data)
-    
+    let candle_id = Math.floor(left / (candle_width + space_between_bars));
+
     write_label(price_label, "black", 14, x_hair_ctx, label_x_pos, label_y_pos);
-    const  bar_data  = this.props.data.chart_data[candle_id]
-    if(bar_data)write_label(bar_data.date, "black", 14, x_hair_ctx, left, canvas.height);
+    let bar_data;
+    if (this.props.data) bar_data = this.props.data.chart_data[candle_id];
+    if (bar_data) {
+      write_label(bar_data.date, "black", 14, x_hair_ctx, left, canvas.height);
+
+      /* info box */
+      var info_box_width = 80;
+      var info_box_height = 80;
+      /* Need to figure out widest label first */
+      let info_label_data = ["date", "open", "high", "low", "close"];
+      info_label_data.forEach((label_data, index) => {
+        var label = bar_data[label_data];
+        if (!isNaN(label)) label = `${label_data}: ${label.toFixed(2)}`;
+        let label_width = x_hair_ctx.measureText(label).width;
+        /* Adjust label_infor_box width accordingly */
+        if (label_width > info_box_width) info_box_width = label_width + 3;
+      });
+
+      x_hair_ctx.strokeStyle = "black";
+      /* flip label near edges */
+      let info_box_x_pos, info_box_y_pos;
+      if (left < info_box_width) info_box_x_pos = left;
+      else info_box_x_pos = left - info_box_width;
+      if (top < 100) info_box_y_pos = top;
+      else info_box_y_pos = top - info_box_height;
+
+      /* Bar data labels inside info box */
+
+      info_label_data.forEach((label_data, index) => {
+        var label = bar_data[label_data];
+        if (!isNaN(label)) label = `${label_data}: ${label.toFixed(2)}`;
+
+        write_label(
+          label,
+          "black",
+          14,
+          x_hair_ctx,
+          info_box_x_pos + 3,
+          info_box_y_pos + 15 * (index + 1)
+        );
+      });
+
+      x_hair_ctx.strokeRect(
+        info_box_x_pos,
+        info_box_y_pos,
+        info_box_width,
+        info_box_height
+      );
+    }
   }
 
-  draw_chart(canvas_background_color) {
-    const { chart_data } = this.props.data;
+  draw_chart() {
+    var { chart_data } = this.props.data;
     const {
+      chart_background,
       canvas,
       vol_canvas_share,
       candle_width,
@@ -188,8 +249,11 @@ class Canvas_Chart extends React.Component {
     } = this.state;
 
     console.log("DRAW CART");
+    if(!canvas)return console.log('no canvas')
     let context = canvas.getContext("2d", false);
-    clear_canvas(context, canvas_background_color);
+    clear_canvas(context, chart_background);
+    /* Figure out how many bars are going to fin in the visible space */
+    // let total_bar_count =  /(space_between_bars + candle_width)
 
     /* get min and max values */
     let min_price = this.get_min_price(chart_data);
@@ -199,17 +263,16 @@ class Canvas_Chart extends React.Component {
 
     /* price / Time markers */
     let date_marker_position = Math.floor(chart_data.length / 10);
-    console.log({ date_marker_position });
-    console.log(chart_data.length % date_marker_position);
 
-    console.log(`chart_data length ${chart_data.length}`);
-    console.log(`Candle width = ${candle_width}`);
     const volume_canvas_height = canvas.height * vol_canvas_share; //volume will be lower 20% (should be adjustable)
     const chart_height = canvas.height * (1 - vol_canvas_share);
-    let number_of_pennies = (max_price - min_price) * 100;
-    let pennies_per_pixel = number_of_pennies / chart_height;
-    let pixels_per_penny = chart_height / number_of_pennies;
-    let pixels_per_vol = volume_canvas_height / max_vol;
+    let number_of_pennies = Math.floor((max_price - min_price) * 100);
+    let pennies_per_pixel = (number_of_pennies / chart_height).toFixed(3);
+    let pixels_per_penny = (chart_height / number_of_pennies).toFixed(3);
+    let pixels_per_vol = (volume_canvas_height / max_vol).toFixed(10);
+    let MA_data = add_MA_data_to_model(chart_data);
+    console.log(MA_data);
+    // this.props.dispatch(add_MA_data_action(MA_data, this.props.canvas_id))
 
     console.log({
       number_of_pennies,
@@ -218,6 +281,7 @@ class Canvas_Chart extends React.Component {
       pixels_per_vol
     });
     this.setState({
+      MA_data,
       volume_canvas_height,
       chart_height,
       min_price,
@@ -229,35 +293,37 @@ class Canvas_Chart extends React.Component {
       pixels_per_vol
     });
 
-    this.draw_price_markers(context, min_price, max_price);
-    let { MA_20, MA_50, MA_200 } = this.state.MA_data;
-    this.draw_MA(MA_20, "green", context);
-    this.draw_MA(MA_50, "blue", context);
-    this.draw_MA(MA_200, "red", context);
-
-    chart_data.forEach((data, count) => {
-      const candle_position = count * candle_width + space_between_bars * count;
-
-      if (count % date_marker_position == 0)
-        this.draw_date_marker(candle_position, candle_width, data, canvas);
-
-      this.draw_candle(
-        context,
-        candle_position,
-        data,
-        candle_width,
-        pixels_per_penny,
-        pixels_per_vol
-      );
-    });
+    /* wait for setSate */
+    setTimeout(()=>{
+      this.draw_price_markers(context, min_price, max_price);
+      let { MA_20, MA_50, MA_200 } = this.state.MA_data;
+      console.log(this.props)
+      if(!MA_20) return
+      this.draw_MA(MA_20, "green", context);
+      this.draw_MA(MA_50, "blue", context);
+      this.draw_MA(MA_200, "red", context);
+  
+      chart_data.forEach((data, count) => {
+        const candle_position = count * candle_width + space_between_bars * count;
+  
+        if (count % date_marker_position == 0)
+          this.draw_date_marker(candle_position, candle_width, data, canvas);
+  
+        this.draw_candle(
+          context,
+          candle_position,
+          data,
+          candle_width,
+          pixels_per_penny,
+          pixels_per_vol
+        );
+      });
+    }, 0)
   }
   draw_date_marker(candle_position, candle_width, data, canvas) {
-    console.log(candle_position);
-    console.log(data);
     // console.log(canvas)
     let context = canvas.getContext("2d");
     let date_time = this.parsed_date_time(data.date, data.label);
-    console.log(date_time);
     context.beginPath();
     context.moveTo(candle_position + candle_width / 2, 0);
     context.lineTo(candle_position + candle_width / 2, canvas.height);
@@ -290,10 +356,10 @@ class Canvas_Chart extends React.Component {
         let text = context.measureText(price_label);
         write_label(
           price_label,
-          'black',
+          "black",
           10,
           context,
-          canvas.width - text.width ,
+          canvas.width - text.width,
           chart_height - x
         );
         marker_count++;
@@ -330,7 +396,6 @@ class Canvas_Chart extends React.Component {
   }
 
   get_min_price(data) {
-    console.log(data);
     return data.reduce((min, p) => (p.low < min ? p.low : min), data[0].low);
   }
   get_max_price(data) {
@@ -438,6 +503,7 @@ class Canvas_Chart extends React.Component {
     let new_data;
     if (x_offset == 0) {
       new_data = MA_data.slice(candle_count * -1);
+      console.log({ new_data, MA_data });
     } else {
       let end_of_data = data_length - x_offset - candle_count;
       if (end_of_data < 0) end_of_data = 0;
@@ -495,7 +561,7 @@ function clear_canvas(context, canvas_background_color) {
   let cW = context.canvas.width,
     cH = context.canvas.height;
   context.clearRect(0, 0, cW, cH);
-  context.fillStyle = canvas_background_color
+  context.fillStyle = canvas_background_color;
   context.fillRect(0, 0, cW, cH);
 }
 
@@ -553,9 +619,8 @@ function add_MA_data_to_model(daily_data) {
     }
   }
 
-  console.log(`done with `);
+  console.log(`done with calcculating moving averages in ${after_cal - before_cal} miliseconds`);
   let after_cal = new Date().getTime();
-  console.log(after_cal - before_cal);
   return MA_obj;
 }
 

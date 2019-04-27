@@ -35,6 +35,7 @@ class Account_Profile extends React.Component {
 
   render() {
     let{ symbol, stock_data } = this.props
+    console.log({symbol, stock_data})
     return (
       <Main_Layout>
         <div className="p-5">
@@ -46,7 +47,7 @@ class Account_Profile extends React.Component {
           <div className='row flex_center'>
             <div className='col-sm-12 vh_100'>
               <Canvas_Chart canvas_id={symbol}
-                data = {stock_data.charts[symbol]}
+                data = {stock_data.charts[this.props.symbol]}
 
               />
             </div>

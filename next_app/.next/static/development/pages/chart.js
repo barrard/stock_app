@@ -16991,7 +16991,6 @@ function (_React$Component) {
       stock_selected: false // show_filter_list: false
 
     };
-    _this.handle_search_input_keydown = _this.handle_search_input_keydown.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_9__["default"])(_this));
     _this.handle_seach_symbol_input = _this.handle_seach_symbol_input.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_9__["default"])(_this));
     _this.make_filter_list = _this.make_filter_list.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_9__["default"])(_this));
     _this.highlight_search_letters = _this.highlight_search_letters.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_9__["default"])(_this));
@@ -17035,23 +17034,23 @@ function (_React$Component) {
 
               case 10:
                 all_stock_symbols = _context.sent;
-                console.log(all_stock_symbols);
+                // console.log(all_stock_symbols);
                 this.props.dispatch(Object(_redux_actions_stock_actions_js__WEBPACK_IMPORTED_MODULE_16__["set_symbols_data"])(all_stock_symbols));
-                _context.next = 19;
+                _context.next = 18;
                 break;
 
-              case 15:
-                _context.prev = 15;
+              case 14:
+                _context.prev = 14;
                 _context.t0 = _context["catch"](1);
                 console.log("err");
                 console.log(_context.t0);
 
-              case 19:
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[1, 15]]);
+        }, _callee, this, [[1, 14]]);
       }));
 
       function componentDidMount() {
@@ -17060,11 +17059,6 @@ function (_React$Component) {
 
       return componentDidMount;
     }()
-  }, {
-    key: "handle_search_input_keydown",
-    value: function handle_search_input_keydown(e) {
-      console.log(e);
-    }
   }, {
     key: "handle_seach_symbol_input",
     value: function handle_seach_symbol_input(e) {
@@ -17092,10 +17086,10 @@ function (_React$Component) {
           return _this2.make_filter_list(search_text);
         }, 100);
         return;
-      }
+      } // console.log(full_list);
 
-      console.log(full_list);
       /* list of possible arrays with data */
+
 
       var symbol_starts_with = [];
       var name_starts_with = [];
@@ -17106,16 +17100,16 @@ function (_React$Component) {
 
       symbol_starts_with = full_list.filter(function (list_item) {
         return list_item.symbol.toLowerCase().startsWith(search_text);
-      });
-      console.log(symbol_starts_with);
+      }); // console.log(symbol_starts_with);
+
       filtered_stock_list = [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(filtered_stock_list), Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(symbol_starts_with));
 
       if (filtered_stock_list.length < 100) {
         /* check name starts with */
         name_starts_with = full_list.filter(function (list_item) {
           return list_item.name.toLowerCase().startsWith(search_text);
-        });
-        console.log(name_starts_with);
+        }); // console.log(name_starts_with);
+
         filtered_stock_list = [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(filtered_stock_list), Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(name_starts_with));
       }
 
@@ -17123,8 +17117,8 @@ function (_React$Component) {
         /* check symbols */
         symbol_list = full_list.filter(function (list_item) {
           return list_item.symbol.toLowerCase().includes(search_text);
-        });
-        console.log(symbol_list);
+        }); // console.log(symbol_list);
+
         filtered_stock_list = [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(filtered_stock_list), Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(symbol_list));
       }
 
@@ -17132,8 +17126,8 @@ function (_React$Component) {
         /* check name */
         name_list = full_list.filter(function (list_item) {
           return list_item.name.toLowerCase().includes(search_text);
-        });
-        console.log(name_list);
+        }); // console.log(name_list);
+
         filtered_stock_list = [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(filtered_stock_list), Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(name_list));
       }
       /* Combine the lists */
@@ -17158,7 +17152,7 @@ function (_React$Component) {
         className: "filtered_stock_list",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 123
+          lineNumber: 119
         },
         __self: this
       }, filtered_stock_list.map(function (data, index) {
@@ -17180,21 +17174,21 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 134
+          lineNumber: 130
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("span", {
         dangerouslySetInnerHTML: this.highlight_search_letters(data.symbol, search),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 139
+          lineNumber: 135
         },
         __self: this
       }), " - ", react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("span", {
         dangerouslySetInnerHTML: this.highlight_search_letters(data.name, search),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 146
+          lineNumber: 142
         },
         __self: this
       }));
@@ -17230,7 +17224,7 @@ function (_React$Component) {
         className: "navbar navbar-expand-lg navbar-light bg-light relative",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 192
+          lineNumber: 188
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_15___default.a, {
@@ -17239,35 +17233,35 @@ function (_React$Component) {
         as: "/",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 193
+          lineNumber: 189
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
         className: "navbar-brand",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 194
+          lineNumber: 190
         },
         __self: this
       }, "Home")), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("ul", {
         className: "nav-bar-links",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 209
+          lineNumber: 205
         },
         __self: this
       }, !is_loggedin && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Register_Login_Links, {
         pathname: pathname,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 210
+          lineNumber: 206
         },
         __self: this
       }), is_loggedin && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Logout_Link, {
         pathname: pathname,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 211
+          lineNumber: 207
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Charts_Dropdown, {
@@ -17275,13 +17269,13 @@ function (_React$Component) {
         charts: this.props.stock_data.charts,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 213
+          lineNumber: 209
         },
         __self: this
       }), is_loggedin && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(MA_Analysis_Link, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 217
+          lineNumber: 213
         },
         __self: this
       })), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Navbar_Search
@@ -17292,9 +17286,6 @@ function (_React$Component) {
             return _this5.props.dispatch(Object(_redux_actions_meta_actions_js__WEBPACK_IMPORTED_MODULE_18__["show_filter_list"])(false));
           }, 200);
         },
-        handle_search_input_keydown: function handle_search_input_keydown(e) {
-          return _this5.handle_search_input_keydown(e);
-        },
         handle_search_input: function handle_search_input(e) {
           return _this5.handle_seach_symbol_input(e);
         },
@@ -17304,7 +17295,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 219
+          lineNumber: 215
         },
         __self: this
       }), this.props.meta.show_filter_list && this.Filtered_Stock_List({
@@ -17335,20 +17326,16 @@ var Navbar_Search = function Navbar_Search(_ref2) {
   var handle_search_input = _ref2.handle_search_input,
       handle_search = _ref2.handle_search,
       search_symbol = _ref2.search_symbol,
-      handle_search_input_blur = _ref2.handle_search_input_blur,
-      handle_search_input_keydown = _ref2.handle_search_input_keydown;
+      handle_search_input_blur = _ref2.handle_search_input_blur;
   return react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", {
     className: "form-inline my-2 my-lg-0 absolute right_10_px z_index_100",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 256
+      lineNumber: 250
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("input", {
     onBlur: handle_search_input_blur,
-    onKeyDown: function onKeyDown(e) {
-      return handle_search_input_keydown(e);
-    },
     onChange: function onChange(e) {
       return handle_search_input(e);
     },
@@ -17359,7 +17346,7 @@ var Navbar_Search = function Navbar_Search(_ref2) {
     value: search_symbol,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 257
+      lineNumber: 251
     },
     __self: this
   }));
@@ -17372,7 +17359,7 @@ var Charts_Dropdown = function Charts_Dropdown(_ref3) {
     className: "nav-item dropdown margin_right_4em",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 271
+      lineNumber: 264
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
@@ -17385,7 +17372,7 @@ var Charts_Dropdown = function Charts_Dropdown(_ref3) {
     "aria-expanded": "false",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 272
+      lineNumber: 265
     },
     __self: this
   }, "Charts"), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", {
@@ -17393,7 +17380,7 @@ var Charts_Dropdown = function Charts_Dropdown(_ref3) {
     "aria-labelledby": "navbarDropdown",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 283
+      lineNumber: 276
     },
     __self: this
   }, charts && _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(charts).map(function (symbol, index) {
@@ -17402,28 +17389,28 @@ var Charts_Dropdown = function Charts_Dropdown(_ref3) {
       key: index,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 286
+        lineNumber: 279
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
       className: "stock-list-dropdown",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 287
+        lineNumber: 280
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("p", {
       className: "justify_center zero_margin",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 288
+        lineNumber: 281
       },
       __self: this
     }, symbol), index + 1 != _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(charts).length && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", {
       className: "dropdown-divider",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 290
+        lineNumber: 283
       },
       __self: this
     })));
@@ -17438,7 +17425,7 @@ var MA_Analysis_Link = function MA_Analysis_Link(_ref4) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 300
+      lineNumber: 293
     },
     __self: this
   });
@@ -17452,7 +17439,7 @@ var Logout_Link = function Logout_Link(_ref5) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 309
+      lineNumber: 302
     },
     __self: this
   }), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Navbar_Links, {
@@ -17462,7 +17449,7 @@ var Logout_Link = function Logout_Link(_ref5) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 315
+      lineNumber: 308
     },
     __self: this
   }));
@@ -17476,7 +17463,7 @@ var Register_Login_Links = function Register_Login_Links(_ref6) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 326
+      lineNumber: 319
     },
     __self: this
   }), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Navbar_Links, {
@@ -17485,7 +17472,7 @@ var Register_Login_Links = function Register_Login_Links(_ref6) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 328
+      lineNumber: 321
     },
     __self: this
   }));
@@ -17500,7 +17487,7 @@ var Navbar_Links = function Navbar_Links(_ref7) {
     className: "nav-item",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 335
+      lineNumber: 328
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_15___default.a, {
@@ -17508,35 +17495,35 @@ var Navbar_Links = function Navbar_Links(_ref7) {
     href: path,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 336
+      lineNumber: 329
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
     className: "".concat(pathname == path ? "active " : " ", "\" nav-link dropdown-item\""),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 337
+      lineNumber: 330
     },
     __self: this
   }, name))), nofetch && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("li", {
     className: "nav-item",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 349
+      lineNumber: 342
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_15___default.a, {
     href: path,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 350
+      lineNumber: 343
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
     className: "".concat(pathname == path ? "active " : " ", "\" nav-link dropdown-item\""),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 351
+      lineNumber: 344
     },
     __self: this
   }, name))));
@@ -17572,7 +17559,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react_redux_toastr__WEBPACK_IMPORTED_MODULE_11__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! next/router */ "../node_modules/next/dist/client/router.js");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _redux_actions_MA_analysis_actions__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../redux/actions/MA_analysis_actions */ "./redux/actions/MA_analysis_actions.js");
+/* harmony import */ var _redux_actions_stock_actions_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../redux/actions/stock_actions.js */ "./redux/actions/stock_actions.js");
 
 
 
@@ -17614,10 +17601,10 @@ function (_React$Component) {
       crosshair_overlay: "",
       volume_canvas: "",
       volume_canvas_overlay: "",
-      vol_canvas_share: 0.1,
+      vol_canvas_share: 0.2,
       overlay_offset: "",
       symbol: "",
-      spinner_timmer: "",
+      spinner_timmer: false,
       MA_data: {},
       chart_background: "white"
     };
@@ -17634,11 +17621,25 @@ function (_React$Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      console.log("componentDidUpdate");
+      var _this$props = this.props,
+          meta = _this$props.meta,
+          canvas_id = _this$props.canvas_id;
+      console.log("----------------componentDidUpdate=====================");
       console.log(prevProps);
+      console.log(this.props);
 
-      if (!prevProps.meta.is_loading && this.props.meta.is_loading) {
+      if (!prevProps.meta.is_loading && meta.is_loading) {
+        console.log('new chart data is being loaded');
         this.run_spinner();
+      } else if (!prevProps.meta.is_loading && !meta.is_loading && canvas_id != prevProps.canvas_id) {
+        /* must have loaded a new chart?  Draw chart */
+        console.log('new  chart selected form chache');
+        this.draw_chart();
+      } else if (prevProps.meta.is_loading && !meta.is_loading) {
+        console.log('Done loading new data, draw chart ');
+        this.draw_chart();
+      } else {
+        console.log('render what is happeneing');
       }
     }
   }, {
@@ -17658,15 +17659,15 @@ function (_React$Component) {
         setTimeout(function () {
           var canvas = document.getElementById(_this2.props.canvas_id);
           var crosshair_overlay = document.getElementById("".concat(_this2.props.canvas_id, "_crosshair_overlay"));
-          var overlay_offset = document.getElementById("".concat(_this2.props.canvas_id, "_crosshair_overlay")).getBoundingClientRect();
-
-          _this2.run_spinner(canvas);
+          var overlay_offset = crosshair_overlay.getBoundingClientRect();
 
           _this2.setState({
             overlay_offset: overlay_offset,
             canvas: canvas,
             crosshair_overlay: crosshair_overlay
           });
+
+          _this2.run_spinner();
 
           console.log("does this run?");
           console.log(_this2);
@@ -17678,7 +17679,12 @@ function (_React$Component) {
     value: function run_spinner() {
       var _this3 = this;
 
-      var canvas = document.getElementById(this.props.canvas_id);
+      var _this$props2 = this.props,
+          canvas_id = _this$props2.canvas_id,
+          meta = _this$props2.meta,
+          stock_data = _this$props2.stock_data,
+          dispatch = _this$props2.dispatch;
+      var canvas = document.getElementById(canvas_id);
       var context = canvas.getContext("2d");
       var start = new Date();
       var lines = 16,
@@ -17686,23 +17692,20 @@ function (_React$Component) {
           cH = context.canvas.height;
 
       var draw_spinner = function draw_spinner() {
-        // console.log(this.props)
         if (!_this3.props.meta.is_loading) {
-          clearInterval(_this3.state.spinner_timmer);
-          console.log(_this3.props.stock_data);
-          console.log(_this3.props.canvas_id);
-          console.log(_this3.props.stock_data.charts[_this3.props.canvas_id]);
-          var chart_data = _this3.props.stock_data.charts[_this3.props.canvas_id].chart_data;
+          clearInterval(spinner_timmer);
+
+          _this3.setState({
+            spinner_timmer: false
+          });
+
+          console.log(stock_data);
+          console.log(canvas_id);
+          console.log(stock_data.charts[canvas_id]);
+          var chart_data = _this3.props.data.chart_data;
           console.log({
             chart_data: chart_data
           });
-          var MA_data = add_MA_data_to_model(chart_data);
-          console.log(MA_data);
-
-          _this3.setState({
-            MA_data: MA_data
-          });
-
           return _this3.draw_chart(_this3.state.chart_background);
         }
 
@@ -17726,9 +17729,6 @@ function (_React$Component) {
       };
 
       var spinner_timmer = setInterval(draw_spinner, 1000 / 30);
-      this.setState({
-        spinner_timmer: spinner_timmer
-      });
     }
   }, {
     key: "render_canvas",
@@ -17741,7 +17741,7 @@ function (_React$Component) {
         height: canvas_height,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 113
+          lineNumber: 124
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("canvas", {
@@ -17752,7 +17752,7 @@ function (_React$Component) {
         height: canvas_height,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 120
+          lineNumber: 131
         },
         __self: this
       }));
@@ -17761,6 +17761,7 @@ function (_React$Component) {
     key: "draw_cross_hair",
     value: function draw_cross_hair(e) {
       var _this$state = this.state,
+          vol_canvas_share = _this$state.vol_canvas_share,
           overlay_offset = _this$state.overlay_offset,
           crosshair_overlay = _this$state.crosshair_overlay,
           min_price = _this$state.min_price,
@@ -17774,8 +17775,10 @@ function (_React$Component) {
       var left = pos.left,
           top = pos.top;
       var canvas = crosshair_overlay;
+      if (!canvas) return;
+      var chart_height = canvas.height * (1 - vol_canvas_share);
 
-      var price_label = _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()(min_price + (canvas.height - top) * pennies_per_pixel / 100).toFixed(2);
+      var price_label = _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()(min_price + (chart_height - top) * pennies_per_pixel / 100).toFixed(2);
 
       var x_hair_ctx = canvas.getContext("2d");
       x_hair_ctx.clearRect(0, 0, canvas.width, canvas.height); //horizontal crosshair line on chart
@@ -17795,28 +17798,62 @@ function (_React$Component) {
       if (left + 50 > canvas.width) label_x_pos = left - 50;else label_x_pos = left + 10;
       if (top + 50 > canvas.height) label_y_pos = top - 50;else label_y_pos = top + 15;
       var candle_id = Math.floor(left / (candle_width + space_between_bars));
-      console.log({
-        candle_id: candle_id
-      });
-      console.log(bar_data);
       write_label(price_label, "black", 14, x_hair_ctx, label_x_pos, label_y_pos);
-      var bar_data = this.props.data.chart_data[candle_id];
-      if (bar_data) write_label(bar_data.date, "black", 14, x_hair_ctx, left, canvas.height);
+      var bar_data;
+      if (this.props.data) bar_data = this.props.data.chart_data[candle_id];
+
+      if (bar_data) {
+        write_label(bar_data.date, "black", 14, x_hair_ctx, left, canvas.height);
+        /* info box */
+
+        var info_box_width = 80;
+        var info_box_height = 80;
+        /* Need to figure out widest label first */
+
+        var info_label_data = ["date", "open", "high", "low", "close"];
+        info_label_data.forEach(function (label_data, index) {
+          var label = bar_data[label_data];
+          if (!isNaN(label)) label = "".concat(label_data, ": ").concat(label.toFixed(2));
+          var label_width = x_hair_ctx.measureText(label).width;
+          /* Adjust label_infor_box width accordingly */
+
+          if (label_width > info_box_width) info_box_width = label_width + 3;
+        });
+        x_hair_ctx.strokeStyle = "black";
+        /* flip label near edges */
+
+        var info_box_x_pos, info_box_y_pos;
+        if (left < info_box_width) info_box_x_pos = left;else info_box_x_pos = left - info_box_width;
+        if (top < 100) info_box_y_pos = top;else info_box_y_pos = top - info_box_height;
+        /* Bar data labels inside info box */
+
+        info_label_data.forEach(function (label_data, index) {
+          var label = bar_data[label_data];
+          if (!isNaN(label)) label = "".concat(label_data, ": ").concat(label.toFixed(2));
+          write_label(label, "black", 14, x_hair_ctx, info_box_x_pos + 3, info_box_y_pos + 15 * (index + 1));
+        });
+        x_hair_ctx.strokeRect(info_box_x_pos, info_box_y_pos, info_box_width, info_box_height);
+      }
     }
   }, {
     key: "draw_chart",
-    value: function draw_chart(canvas_background_color) {
+    value: function draw_chart() {
       var _this4 = this;
 
       var chart_data = this.props.data.chart_data;
       var _this$state2 = this.state,
+          chart_background = _this$state2.chart_background,
           canvas = _this$state2.canvas,
           vol_canvas_share = _this$state2.vol_canvas_share,
           candle_width = _this$state2.candle_width,
           space_between_bars = _this$state2.space_between_bars;
       console.log("DRAW CART");
+      if (!canvas) return console.log('no canvas');
       var context = canvas.getContext("2d", false);
-      clear_canvas(context, canvas_background_color);
+      clear_canvas(context, chart_background);
+      /* Figure out how many bars are going to fin in the visible space */
+      // let total_bar_count =  /(space_between_bars + candle_width)
+
       /* get min and max values */
 
       var min_price = this.get_min_price(chart_data);
@@ -17830,19 +17867,16 @@ function (_React$Component) {
       /* price / Time markers */
 
       var date_marker_position = Math.floor(chart_data.length / 10);
-      console.log({
-        date_marker_position: date_marker_position
-      });
-      console.log(chart_data.length % date_marker_position);
-      console.log("chart_data length ".concat(chart_data.length));
-      console.log("Candle width = ".concat(candle_width));
       var volume_canvas_height = canvas.height * vol_canvas_share; //volume will be lower 20% (should be adjustable)
 
       var chart_height = canvas.height * (1 - vol_canvas_share);
-      var number_of_pennies = (max_price - min_price) * 100;
-      var pennies_per_pixel = number_of_pennies / chart_height;
-      var pixels_per_penny = chart_height / number_of_pennies;
-      var pixels_per_vol = volume_canvas_height / max_vol;
+      var number_of_pennies = Math.floor((max_price - min_price) * 100);
+      var pennies_per_pixel = (number_of_pennies / chart_height).toFixed(3);
+      var pixels_per_penny = (chart_height / number_of_pennies).toFixed(3);
+      var pixels_per_vol = (volume_canvas_height / max_vol).toFixed(10);
+      var MA_data = add_MA_data_to_model(chart_data);
+      console.log(MA_data); // this.props.dispatch(add_MA_data_action(MA_data, this.props.canvas_id))
+
       console.log({
         number_of_pennies: number_of_pennies,
         pennies_per_pixel: pennies_per_pixel,
@@ -17850,6 +17884,7 @@ function (_React$Component) {
         pixels_per_vol: pixels_per_vol
       });
       this.setState({
+        MA_data: MA_data,
         volume_canvas_height: volume_canvas_height,
         chart_height: chart_height,
         min_price: min_price,
@@ -17860,30 +17895,38 @@ function (_React$Component) {
         pixels_per_penny: pixels_per_penny,
         pixels_per_vol: pixels_per_vol
       });
-      this.draw_price_markers(context, min_price, max_price);
-      var _this$state$MA_data = this.state.MA_data,
-          MA_20 = _this$state$MA_data.MA_20,
-          MA_50 = _this$state$MA_data.MA_50,
-          MA_200 = _this$state$MA_data.MA_200;
-      this.draw_MA(MA_20, "green", context);
-      this.draw_MA(MA_50, "blue", context);
-      this.draw_MA(MA_200, "red", context);
-      chart_data.forEach(function (data, count) {
-        var candle_position = count * candle_width + space_between_bars * count;
-        if (count % date_marker_position == 0) _this4.draw_date_marker(candle_position, candle_width, data, canvas);
+      /* wait for setSate */
 
-        _this4.draw_candle(context, candle_position, data, candle_width, pixels_per_penny, pixels_per_vol);
-      });
+      setTimeout(function () {
+        _this4.draw_price_markers(context, min_price, max_price);
+
+        var _this4$state$MA_data = _this4.state.MA_data,
+            MA_20 = _this4$state$MA_data.MA_20,
+            MA_50 = _this4$state$MA_data.MA_50,
+            MA_200 = _this4$state$MA_data.MA_200;
+        console.log(_this4.props);
+        if (!MA_20) return;
+
+        _this4.draw_MA(MA_20, "green", context);
+
+        _this4.draw_MA(MA_50, "blue", context);
+
+        _this4.draw_MA(MA_200, "red", context);
+
+        chart_data.forEach(function (data, count) {
+          var candle_position = count * candle_width + space_between_bars * count;
+          if (count % date_marker_position == 0) _this4.draw_date_marker(candle_position, candle_width, data, canvas);
+
+          _this4.draw_candle(context, candle_position, data, candle_width, pixels_per_penny, pixels_per_vol);
+        });
+      }, 0);
     }
   }, {
     key: "draw_date_marker",
     value: function draw_date_marker(candle_position, candle_width, data, canvas) {
-      console.log(candle_position);
-      console.log(data); // console.log(canvas)
-
+      // console.log(canvas)
       var context = canvas.getContext("2d");
       var date_time = this.parsed_date_time(data.date, data.label);
-      console.log(date_time);
       context.beginPath();
       context.moveTo(candle_position + candle_width / 2, 0);
       context.lineTo(candle_position + candle_width / 2, canvas.height);
@@ -17916,7 +17959,7 @@ function (_React$Component) {
           var price_label = _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()(min + marker_count * intervals).toFixed(2);
 
           var text = context.measureText(price_label);
-          write_label(price_label, 'black', 10, context, canvas.width - text.width, chart_height - x);
+          write_label(price_label, "black", 10, context, canvas.width - text.width, chart_height - x);
           marker_count++;
         }
       }
@@ -17942,7 +17985,6 @@ function (_React$Component) {
   }, {
     key: "get_min_price",
     value: function get_min_price(data) {
-      console.log(data);
       return data.reduce(function (min, p) {
         return p.low < min ? p.low : min;
       }, data[0].low);
@@ -18030,6 +18072,10 @@ function (_React$Component) {
 
       if (x_offset == 0) {
         new_data = MA_data.slice(candle_count * -1);
+        console.log({
+          new_data: new_data,
+          MA_data: MA_data
+        });
       } else {
         var end_of_data = data_length - x_offset - candle_count;
         if (end_of_data < 0) end_of_data = 0;
@@ -18058,21 +18104,21 @@ function (_React$Component) {
       var _this$state5 = this.state,
           canvas_width = _this$state5.canvas_width,
           canvas_height = _this$state5.canvas_height;
-      var _this$props = this.props,
-          canvas_id = _this$props.canvas_id,
-          chart_data = _this$props.chart_data,
-          meta = _this$props.meta;
+      var _this$props3 = this.props,
+          canvas_id = _this$props3.canvas_id,
+          chart_data = _this$props3.chart_data,
+          meta = _this$props3.meta;
       var is_loading = meta.is_loading;
       return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 477
+          lineNumber: 543
         },
         __self: this
       }, is_loading && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("p", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 477
+          lineNumber: 543
         },
         __self: this
       }, "Loading Data...."), " "), " ", canvas_width && canvas_height && this.render_canvas(canvas_id, canvas_width, canvas_height));
@@ -18164,9 +18210,8 @@ function add_MA_data_to_model(daily_data) {
     }
   }
 
-  console.log("done with ");
+  console.log("done with calcculating moving averages in ".concat(after_cal - before_cal, " miliseconds"));
   var after_cal = new Date().getTime();
-  console.log(after_cal - before_cal);
   return MA_obj;
 }
 /* average all 4 price types */
@@ -18290,12 +18335,12 @@ function _fetch_selected_chart_data() {
             if (router) router.push("/chart?symbol=".concat(symbol));
             iex_server = meta.iex_server;
             _context2.next = 6;
-            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/book\n  "));
+            return fetch("  ".concat(iex_server, "/stock/").concat(symbol, "/book\n  "));
 
           case 6:
             book_data_json = _context2.sent;
             _context2.next = 9;
-            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/chart/1y\n  "));
+            return fetch("  ".concat(iex_server, "/stock/").concat(symbol, "/chart/1y\n  "));
 
           case 9:
             chart_data_json = _context2.sent;
@@ -18305,12 +18350,12 @@ function _fetch_selected_chart_data() {
           case 12:
             chart_logo_json = _context2.sent;
             _context2.next = 15;
-            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/stats\n  "));
+            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/stats"));
 
           case 15:
             chart_stats_json = _context2.sent;
             _context2.next = 18;
-            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/largest-trades\n  "));
+            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/largest-trades"));
 
           case 18:
             chart_larget_trades_json = _context2.sent;
@@ -18613,59 +18658,63 @@ function (_React$Component) {
       var _this$props = this.props,
           symbol = _this$props.symbol,
           stock_data = _this$props.stock_data;
+      console.log({
+        symbol: symbol,
+        stock_data: stock_data
+      });
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_12__["default"], {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 39
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "p-5",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 40
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "row flex_center",
+        className: "p-5",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 41
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "col flex_center",
+        className: "row flex_center",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 42
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h1", {
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col flex_center",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 43
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h1", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 44
         },
         __self: this
       }, symbol))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "row flex_center",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 46
+          lineNumber: 47
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col-sm-12 vh_100",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 47
+          lineNumber: 48
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_charts_Canvas_Chart_js__WEBPACK_IMPORTED_MODULE_14__["default"], {
         canvas_id: symbol,
-        data: stock_data.charts[symbol],
+        data: stock_data.charts[this.props.symbol],
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 48
+          lineNumber: 49
         },
         __self: this
       })))));
@@ -18745,188 +18794,6 @@ function mapStateToProps(state) {
 
 /***/ }),
 
-/***/ "./redux/actions/MA_analysis_actions.js":
-/*!**********************************************!*\
-  !*** ./redux/actions/MA_analysis_actions.js ***!
-  \**********************************************/
-/*! exports provided: set_MA_query, add_query, sort_by, load_more_MA_results, remove_query, submit_query */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "set_MA_query", function() { return set_MA_query; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add_query", function() { return add_query; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sort_by", function() { return sort_by; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "load_more_MA_results", function() { return load_more_MA_results; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remove_query", function() { return remove_query; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "submit_query", function() { return submit_query; });
-/* harmony import */ var _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/json/stringify */ "../node_modules/@babel/runtime-corejs2/core-js/json/stringify.js");
-/* harmony import */ var _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "../node_modules/@babel/runtime-corejs2/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/asyncToGenerator */ "../node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux-toastr */ "../node_modules/react-redux-toastr/lib/index.js");
-/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_redux_toastr__WEBPACK_IMPORTED_MODULE_3__);
-
-
-
-
-function set_MA_query(queries) {
-  return {
-    type: "SET_MA_QUERY",
-    queries: queries
-  };
-}
-function add_query(queries) {
-  if (queries.length >= 3) return react_redux_toastr__WEBPACK_IMPORTED_MODULE_3__["toastr"].info("Three is enough");
-  var new_query = {
-    MA: "50",
-    g_l: "g",
-    perc: 20
-  };
-  queries.push(new_query);
-  return {
-    type: "ADD_QUERY",
-    queries: queries
-  };
-}
-function sort_by(prop, flag) {
-  return {
-    type: "SORT_BY",
-    prop: prop,
-    flag: flag
-  };
-}
-function load_more_MA_results(sorted_prop) {
-  return (
-    /*#__PURE__*/
-    function () {
-      var _ref = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
-      /*#__PURE__*/
-      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee(dispatch) {
-        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                dispatch({
-                  type: "IS_LOADING",
-                  is_loading: true
-                });
-                /* Wait for next loops cycle to update state... */
-
-                setTimeout(function () {
-                  dispatch({
-                    type: "SORT_BY",
-                    prop: sorted_prop,
-                    flag: true
-                  });
-                  dispatch({
-                    type: "IS_LOADING",
-                    is_loading: false
-                  });
-                }, 0);
-                dispatch({
-                  type: "LOAD_MORE_MA_RESULTS"
-                });
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      return function (_x) {
-        return _ref.apply(this, arguments);
-      };
-    }()
-  );
-}
-function remove_query(index, queries) {
-  queries.splice(index, 1);
-  return {
-    type: "REMOVE_QUERY",
-    queries: queries
-  };
-}
-function submit_query(query_data, saved_queries) {
-  var query = query_data.query;
-  return (
-    /*#__PURE__*/
-    function () {
-      var _ref2 = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
-      /*#__PURE__*/
-      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee2(dispatch) {
-        var resp_json, query_results;
-        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                dispatch({
-                  type: "IS_LOADING",
-                  is_loading: true
-                });
-                /* clear current and sorted results */
-
-                dispatch({
-                  type: "CLEAR_RESULTS"
-                });
-                _context2.prev = 2;
-                _context2.next = 5;
-                return fetch("/MA-query", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json" // "Content-Type": "application/x-www-form-urlencoded",
-
-                  },
-                  body: _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(query_data)
-                });
-
-              case 5:
-                resp_json = _context2.sent;
-                _context2.next = 8;
-                return resp_json.json();
-
-              case 8:
-                query_results = _context2.sent;
-                console.log(query_results);
-                dispatch({
-                  type: "IS_LOADING",
-                  is_loading: false
-                });
-                dispatch({
-                  type: "QUERY_SUBMITTED",
-                  query_results: query_results,
-                  saved_queries: saved_queries
-                });
-                _context2.next = 19;
-                break;
-
-              case 14:
-                _context2.prev = 14;
-                _context2.t0 = _context2["catch"](2);
-                console.log("err");
-                console.log(_context2.t0);
-                react_redux_toastr__WEBPACK_IMPORTED_MODULE_3__["toastr"].error("N/A");
-
-              case 19:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, null, [[2, 14]]);
-      }));
-
-      return function (_x2) {
-        return _ref2.apply(this, arguments);
-      };
-    }()
-  );
-}
-
-/***/ }),
-
 /***/ "./redux/actions/meta_actions.js":
 /*!***************************************!*\
   !*** ./redux/actions/meta_actions.js ***!
@@ -18972,7 +18839,7 @@ function is_loading(is_loading) {
 /*!****************************************!*\
   !*** ./redux/actions/stock_actions.js ***!
   \****************************************/
-/*! exports provided: set_symbols_data, set_search_symbol, get_sector_data, set_sector_data, add_chart_data, set_home_page_data */
+/*! exports provided: set_symbols_data, set_search_symbol, get_sector_data, set_sector_data, add_chart_data, add_MA_data_action, set_home_page_data */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18982,6 +18849,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "get_sector_data", function() { return get_sector_data; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "set_sector_data", function() { return set_sector_data; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add_chart_data", function() { return add_chart_data; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add_MA_data_action", function() { return add_MA_data_action; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "set_home_page_data", function() { return set_home_page_data; });
 /* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "../node_modules/@babel/runtime-corejs2/regenerator/index.js");
 /* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -19053,6 +18921,13 @@ function add_chart_data(chart_data) {
     chart_data: chart_data
   };
 }
+function add_MA_data_action(MA_data, symbol) {
+  return {
+    type: "ADD_MA_DATA",
+    MA_data: MA_data,
+    symbol: symbol
+  };
+}
 function set_home_page_data(home_page_data) {
   var home_page_data_set_at = new Date().getTime();
   return {
@@ -19064,7 +18939,7 @@ function set_home_page_data(home_page_data) {
 
 /***/ }),
 
-/***/ 0:
+/***/ 5:
 /*!***************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fchart&absolutePagePath=%2Fhome%2Fdave%2Fcode%2Fnext_stocks%2Fnext_app%2Fpages%2Fchart.js ***!
   \***************************************************************************************************************************************/
@@ -19087,5 +18962,5 @@ module.exports = dll_eca3f212c83fe644b694;
 
 /***/ })
 
-},[[0,"static/runtime/webpack.js"]]]));;
+},[[5,"static/runtime/webpack.js"]]]));;
 //# sourceMappingURL=chart.js.map

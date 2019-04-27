@@ -21,9 +21,7 @@ class Main_Nav extends React.Component {
       stock_selected: false
       // show_filter_list: false
     };
-    this.handle_search_input_keydown = this.handle_search_input_keydown.bind(
-      this
-    );
+ 
     this.handle_seach_symbol_input = this.handle_seach_symbol_input.bind(this);
     this.make_filter_list = this.make_filter_list.bind(this);
     this.highlight_search_letters = this.highlight_search_letters.bind(this);
@@ -41,16 +39,14 @@ class Main_Nav extends React.Component {
         /stock/get_symbols_data
       `);
       let all_stock_symbols = await all_stock_symbols_json.json();
-      console.log(all_stock_symbols);
+      // console.log(all_stock_symbols);
       this.props.dispatch(set_symbols_data(all_stock_symbols));
     } catch (err) {
       console.log("err");
       console.log(err);
     }
   }
-  handle_search_input_keydown(e) {
-    console.log(e);
-  }
+
 
   handle_seach_symbol_input(e) {
     if (!this.props.meta.show_filter_list)
@@ -71,7 +67,7 @@ class Main_Nav extends React.Component {
       setTimeout(() => this.make_filter_list(search_text), 100);
       return;
     }
-    console.log(full_list);
+    // console.log(full_list);
     /* list of possible arrays with data */
     var symbol_starts_with = [];
     var name_starts_with = [];
@@ -83,14 +79,14 @@ class Main_Nav extends React.Component {
     symbol_starts_with = full_list.filter(list_item =>
       list_item.symbol.toLowerCase().startsWith(search_text)
     );
-    console.log(symbol_starts_with);
+    // console.log(symbol_starts_with);
     filtered_stock_list = [...filtered_stock_list, ...symbol_starts_with];
     if (filtered_stock_list.length < 100) {
       /* check name starts with */
       name_starts_with = full_list.filter(list_item =>
         list_item.name.toLowerCase().startsWith(search_text)
       );
-      console.log(name_starts_with);
+      // console.log(name_starts_with);
       filtered_stock_list = [...filtered_stock_list, ...name_starts_with];
     }
 
@@ -99,7 +95,7 @@ class Main_Nav extends React.Component {
       symbol_list = full_list.filter(list_item =>
         list_item.symbol.toLowerCase().includes(search_text)
       );
-      console.log(symbol_list);
+      // console.log(symbol_list);
       filtered_stock_list = [...filtered_stock_list, ...symbol_list];
     }
 
@@ -108,7 +104,7 @@ class Main_Nav extends React.Component {
       name_list = full_list.filter(list_item =>
         list_item.name.toLowerCase().includes(search_text)
       );
-      console.log(name_list);
+      // console.log(name_list);
       filtered_stock_list = [...filtered_stock_list, ...name_list];
     }
     /* Combine the lists */
@@ -221,7 +217,6 @@ class Main_Nav extends React.Component {
           handle_search_input_blur={() =>
             setTimeout(() => this.props.dispatch(show_filter_list(false)), 200)
           }
-          handle_search_input_keydown={e => this.handle_search_input_keydown(e)}
           handle_search_input={e => this.handle_seach_symbol_input(e)}
           search_symbol={this.props.stock_data.search_symbol}
           handle_search={e => this.handle_search(e)}
@@ -251,12 +246,10 @@ const Navbar_Search = ({
   handle_search,
   search_symbol,
   handle_search_input_blur,
-  handle_search_input_keydown
 }) => (
   <div className="form-inline my-2 my-lg-0 absolute right_10_px z_index_100">
     <input
       onBlur={handle_search_input_blur}
-      onKeyDown={e => handle_search_input_keydown(e)}
       onChange={e => handle_search_input(e)}
       className="form-control mr-sm-2"
       type="search"
