@@ -23,23 +23,7 @@ const MA_data_Schema = mongoose.Schema({
     }
   
 });
-/*     
-    price_type:String,
-    MA:Number,
-    most_time_above: Number,
-    most_time_below: Number,
-    average_time_above: Number,
-    average_time_below: Number,
-    total_above: Number,
-    total_below: Number,
-    total_time_equal: Number,
-    percent_ranges: {},
-    consecutive_days_tracker: 
-     [ String],
-    all_data: 
-     [ String],
-    current_status: { state: Number, consecutive_days: Number } 
-*/
+
 
 const MA_Data_Model = mongoose.model("MA_data", MA_data_Schema);
 module.exports = MA_Data_Model;

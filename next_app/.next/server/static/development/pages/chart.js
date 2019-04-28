@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2103,6 +2103,8 @@ function (_React$Component) {
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__["default"])(Canvas_Chart).call(this, props));
     _this.state = {
+      mouseDown: false,
+      //listen for drag events
       canvas_width: null,
       canvas_height: null,
       chart_height: "",
@@ -2111,18 +2113,22 @@ function (_React$Component) {
       context: {},
       candle_width: 3,
       space_between_bars: 0.5,
-      x_offset: 0,
+      x_offset: 100,
       data_loaded: false,
       crosshair_overlay: "",
       volume_canvas: "",
       volume_canvas_overlay: "",
       vol_canvas_share: 0.2,
       overlay_offset: "",
+      scrollY_offset: '',
       symbol: "",
       spinner_timmer: false,
       MA_data: {},
-      chart_background: "white"
+      chart_style: "light"
     };
+    _this.change_x_offset = _this.change_x_offset.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this));
+    _this.stop_drag = _this.stop_drag.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this));
+    _this.listen_for_chart_drag = _this.listen_for_chart_drag.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this));
     _this.draw_cross_hair = _this.draw_cross_hair.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this));
     return _this;
   }
@@ -2130,8 +2136,14 @@ function (_React$Component) {
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(Canvas_Chart, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      var chart_data = this.props.data.chart_data;
       console.log("canvas mounted");
       this.make_canvas_full_screen();
+      var MA_data = add_MA_data_to_model(chart_data);
+      console.log(MA_data);
+      this.setState({
+        MA_data: MA_data
+      });
     }
   }, {
     key: "componentDidUpdate",
@@ -2144,17 +2156,17 @@ function (_React$Component) {
       console.log(this.props);
 
       if (!prevProps.meta.is_loading && meta.is_loading) {
-        console.log('new chart data is being loaded');
+        console.log("new chart data is being loaded");
         this.run_spinner();
       } else if (!prevProps.meta.is_loading && !meta.is_loading && canvas_id != prevProps.canvas_id) {
         /* must have loaded a new chart?  Draw chart */
-        console.log('new  chart selected form chache');
+        console.log("new  chart selected form chache");
         this.draw_chart();
       } else if (prevProps.meta.is_loading && !meta.is_loading) {
-        console.log('Done loading new data, draw chart ');
+        console.log("Done loading new data, draw chart ");
         this.draw_chart();
       } else {
-        console.log('render what is happeneing');
+        console.log("render what is happeneing");
       }
     }
   }, {
@@ -2166,7 +2178,7 @@ function (_React$Component) {
         var dom_node = react_dom__WEBPACK_IMPORTED_MODULE_9___default.a.findDOMNode(this);
         var canvas_id = this.props.canvas_id;
         var canvas_width = dom_node.parentElement.clientWidth * 0.95;
-        var canvas_height = dom_node.parentElement.clientHeight;
+        var canvas_height = dom_node.parentElement.clientHeight * .5;
         this.setState({
           canvas_width: canvas_width,
           canvas_height: canvas_height
@@ -2174,9 +2186,21 @@ function (_React$Component) {
         setTimeout(function () {
           var canvas = document.getElementById(_this2.props.canvas_id);
           var crosshair_overlay = document.getElementById("".concat(_this2.props.canvas_id, "_crosshair_overlay"));
+          console.log(document.querySelectorAll('.crosshair_overlay')[0].getBoundingClientRect());
+          var scrollY_offset = window.scrollY;
+          console.log({
+            scrollY_offset: scrollY_offset
+          });
+          console.log({
+            scrollY_offset: scrollY_offset
+          });
+          console.log({
+            scrollY_offset: scrollY_offset
+          });
           var overlay_offset = crosshair_overlay.getBoundingClientRect();
 
           _this2.setState({
+            scrollY_offset: scrollY_offset,
             overlay_offset: overlay_offset,
             canvas: canvas,
             crosshair_overlay: crosshair_overlay
@@ -2221,7 +2245,7 @@ function (_React$Component) {
           console.log({
             chart_data: chart_data
           });
-          return _this3.draw_chart(_this3.state.chart_background);
+          return _this3.draw_chart(_this3.state.chart_style);
         }
 
         var rotation = _babel_runtime_corejs2_core_js_parse_int__WEBPACK_IMPORTED_MODULE_1___default()((new Date() - start) / 1000 * lines) / lines;
@@ -2246,9 +2270,56 @@ function (_React$Component) {
       var spinner_timmer = setInterval(draw_spinner, 1000 / 30);
     }
   }, {
+    key: "change_x_offset",
+    value: function change_x_offset(e) {
+      console.log(e);
+    }
+  }, {
+    key: "stop_drag",
+    value: function stop_drag(e) {
+      var canvas = this.state.canvas;
+      canvas.removeEventListener("mouseup", this.stop_drag);
+      canvas.removeEventListener("mousemove", this.change_x_offset);
+      console.log("remove listeners");
+    }
+  }, {
+    key: "listen_for_chart_drag",
+    value: function listen_for_chart_drag(e) {
+      var _this$state = this.state,
+          x_offset = _this$state.x_offset,
+          candle_width = _this$state.candle_width; // if(!prev_clientX)return this.setState({prev_clientX:e.clientX})
+
+      console.log({
+        x_offset: x_offset
+      });
+      e.preventDefault();
+      x_offset = x_offset + e.movementX;
+      console.log({
+        x_offset: x_offset
+      });
+      if (x_offset < 0) x_offset = 0;
+      console.log({
+        x_offset: x_offset
+      });
+      this.state.x_offset = x_offset;
+      this.draw_chart();
+    }
+  }, {
     key: "render_canvas",
     value: function render_canvas(canvas_id, canvas_width, canvas_height) {
+      var _this4 = this;
+
       return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("canvas", {
+        onMouseDown: function onMouseDown() {
+          return _this4.setState({
+            mouseDown: true
+          });
+        },
+        onMouseUp: function onMouseUp() {
+          return _this4.setState({
+            mouseDown: false
+          });
+        },
         onMouseMove: this.draw_cross_hair,
         className: "crosshair_overlay absolute",
         id: "".concat(canvas_id, "_crosshair_overlay"),
@@ -2256,18 +2327,17 @@ function (_React$Component) {
         height: canvas_height,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 124
+          lineNumber: 167
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("canvas", {
-        onMouseMove: this.draw_cross_hair,
         className: "chart_canvas",
         id: canvas_id,
         width: canvas_width,
         height: canvas_height,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 131
+          lineNumber: 176
         },
         __self: this
       }));
@@ -2275,20 +2345,26 @@ function (_React$Component) {
   }, {
     key: "draw_cross_hair",
     value: function draw_cross_hair(e) {
-      var _this$state = this.state,
-          vol_canvas_share = _this$state.vol_canvas_share,
-          overlay_offset = _this$state.overlay_offset,
-          crosshair_overlay = _this$state.crosshair_overlay,
-          min_price = _this$state.min_price,
-          pennies_per_pixel = _this$state.pennies_per_pixel,
-          candle_width = _this$state.candle_width,
-          space_between_bars = _this$state.space_between_bars;
+      var _this$state2 = this.state,
+          mouseDown = _this$state2.mouseDown,
+          vol_canvas_share = _this$state2.vol_canvas_share,
+          overlay_offset = _this$state2.overlay_offset,
+          scrollY_offset = _this$state2.scrollY_offset,
+          crosshair_overlay = _this$state2.crosshair_overlay,
+          min_price = _this$state2.min_price,
+          pennies_per_pixel = _this$state2.pennies_per_pixel,
+          candle_width = _this$state2.candle_width,
+          space_between_bars = _this$state2.space_between_bars,
+          chart_style = _this$state2.chart_style; // console.log(window.scrollY);
+
+      if (mouseDown) return this.listen_for_chart_drag(e);
       var pos = {
         left: e.pageX - overlay_offset.left,
-        top: e.pageY - overlay_offset.top
+        top: e.pageY - overlay_offset.top - scrollY_offset
       };
       var left = pos.left,
-          top = pos.top;
+          top = pos.top; // console.log({ left, top });
+
       var canvas = crosshair_overlay;
       if (!canvas) return;
       var chart_height = canvas.height * (1 - vol_canvas_share);
@@ -2313,12 +2389,12 @@ function (_React$Component) {
       if (left + 50 > canvas.width) label_x_pos = left - 50;else label_x_pos = left + 10;
       if (top + 50 > canvas.height) label_y_pos = top - 50;else label_y_pos = top + 15;
       var candle_id = Math.floor(left / (candle_width + space_between_bars));
-      write_label(price_label, "black", 14, x_hair_ctx, label_x_pos, label_y_pos);
+      write_label(price_label, chart_style, 14, x_hair_ctx, label_x_pos, label_y_pos);
       var bar_data;
       if (this.props.data) bar_data = this.props.data.chart_data[candle_id];
 
       if (bar_data) {
-        write_label(bar_data.date, "black", 14, x_hair_ctx, left, canvas.height);
+        write_label(bar_data.date, chart_style, 14, x_hair_ctx, left, canvas.height);
         /* info box */
 
         var info_box_width = 80;
@@ -2334,7 +2410,7 @@ function (_React$Component) {
 
           if (label_width > info_box_width) info_box_width = label_width + 3;
         });
-        x_hair_ctx.strokeStyle = "black";
+        x_hair_ctx.strokeStyle = chart_style == "light" ? "black" : "white";
         /* flip label near edges */
 
         var info_box_x_pos, info_box_y_pos;
@@ -2345,7 +2421,7 @@ function (_React$Component) {
         info_label_data.forEach(function (label_data, index) {
           var label = bar_data[label_data];
           if (!isNaN(label)) label = "".concat(label_data, ": ").concat(label.toFixed(2));
-          write_label(label, "black", 14, x_hair_ctx, info_box_x_pos + 3, info_box_y_pos + 15 * (index + 1));
+          write_label(label, chart_style, 14, x_hair_ctx, info_box_x_pos + 3, info_box_y_pos + 15 * (index + 1));
         });
         x_hair_ctx.strokeRect(info_box_x_pos, info_box_y_pos, info_box_width, info_box_height);
       }
@@ -2353,27 +2429,51 @@ function (_React$Component) {
   }, {
     key: "draw_chart",
     value: function draw_chart() {
-      var _this4 = this;
+      var _this5 = this;
 
       var chart_data = this.props.data.chart_data;
-      var _this$state2 = this.state,
-          chart_background = _this$state2.chart_background,
-          canvas = _this$state2.canvas,
-          vol_canvas_share = _this$state2.vol_canvas_share,
-          candle_width = _this$state2.candle_width,
-          space_between_bars = _this$state2.space_between_bars;
+      var _this$state3 = this.state,
+          chart_style = _this$state3.chart_style,
+          canvas = _this$state3.canvas,
+          vol_canvas_share = _this$state3.vol_canvas_share,
+          candle_width = _this$state3.candle_width,
+          space_between_bars = _this$state3.space_between_bars,
+          x_offset = _this$state3.x_offset;
       console.log("DRAW CART");
-      if (!canvas) return console.log('no canvas');
+      if (!canvas) return console.log("no canvas");
       var context = canvas.getContext("2d", false);
-      clear_canvas(context, chart_background);
+      clear_canvas(context, chart_style);
       /* Figure out how many bars are going to fin in the visible space */
-      // let total_bar_count =  /(space_between_bars + candle_width)
 
+      var candle_count = canvas.width / (candle_width + space_between_bars); // let candle_count = Math.floor(canvas.witdh /(space_between_bars + candle_width))
+
+      console.log({
+        chart_data: chart_data,
+        candle_count: candle_count
+      });
+
+      if (x_offset == 0) {
+        chart_data = chart_data.slice(candle_count * -1);
+      } else {
+        var data_length = chart_data.length;
+        var end_of_data = data_length - x_offset - candle_count;
+        if (end_of_data < 0) end_of_data = 0;
+        chart_data = chart_data.slice(end_of_data, x_offset * -1);
+      }
+
+      console.log({
+        chart_data: chart_data
+      });
       /* get min and max values */
 
-      var min_price = this.get_min_price(chart_data);
-      var max_price = this.get_max_price(chart_data);
-      var max_vol = this.get_max_vol(chart_data);
+      var _this$get_min_max = this.get_min_max(chart_data),
+          min_price = _this$get_min_max.min_price,
+          max_price = _this$get_min_max.max_price,
+          max_vol = _this$get_min_max.max_vol; // let min_price = this.get_min_price(chart_data);
+      // let max_price = this.get_max_price(chart_data);
+      // let max_vol = this.get_max_vol(chart_data);
+
+
       console.log({
         min_price: min_price,
         max_price: max_price,
@@ -2389,52 +2489,40 @@ function (_React$Component) {
       var pennies_per_pixel = (number_of_pennies / chart_height).toFixed(3);
       var pixels_per_penny = (chart_height / number_of_pennies).toFixed(3);
       var pixels_per_vol = (volume_canvas_height / max_vol).toFixed(10);
-      var MA_data = add_MA_data_to_model(chart_data);
-      console.log(MA_data); // this.props.dispatch(add_MA_data_action(MA_data, this.props.canvas_id))
-
       console.log({
         number_of_pennies: number_of_pennies,
         pennies_per_pixel: pennies_per_pixel,
         pixels_per_penny: pixels_per_penny,
         pixels_per_vol: pixels_per_vol
       });
-      this.setState({
-        MA_data: MA_data,
-        volume_canvas_height: volume_canvas_height,
-        chart_height: chart_height,
-        min_price: min_price,
-        max_price: max_price,
-        max_vol: max_vol,
-        number_of_pennies: number_of_pennies,
-        pennies_per_pixel: pennies_per_pixel,
-        pixels_per_penny: pixels_per_penny,
-        pixels_per_vol: pixels_per_vol
-      });
+      this.state.volume_canvas_height = volume_canvas_height;
+      this.state.chart_height = chart_height;
+      this.state.min_price = min_price;
+      this.state.max_price = max_price;
+      this.state.max_vol = max_vol;
+      this.state.number_of_pennies = number_of_pennies;
+      this.state.pennies_per_pixel = pennies_per_pixel;
+      this.state.pixels_per_penny = pixels_per_penny;
+      this.state.pixels_per_vol = pixels_per_vol;
       /* wait for setSate */
+      // setTimeout(() => {
 
-      setTimeout(function () {
-        _this4.draw_price_markers(context, min_price, max_price);
+      this.draw_price_markers(context, min_price, max_price);
+      var _this$state$MA_data = this.state.MA_data,
+          MA_20 = _this$state$MA_data.MA_20,
+          MA_50 = _this$state$MA_data.MA_50,
+          MA_200 = _this$state$MA_data.MA_200;
+      console.log(this.props);
+      if (!MA_20) return;
+      this.draw_MA(MA_20, "green", context);
+      this.draw_MA(MA_50, "blue", context);
+      this.draw_MA(MA_200, "red", context);
+      chart_data.forEach(function (data, count) {
+        var candle_position = count * candle_width + space_between_bars * count;
+        if (count % date_marker_position == 0) _this5.draw_date_marker(candle_position, candle_width, data, canvas);
 
-        var _this4$state$MA_data = _this4.state.MA_data,
-            MA_20 = _this4$state$MA_data.MA_20,
-            MA_50 = _this4$state$MA_data.MA_50,
-            MA_200 = _this4$state$MA_data.MA_200;
-        console.log(_this4.props);
-        if (!MA_20) return;
-
-        _this4.draw_MA(MA_20, "green", context);
-
-        _this4.draw_MA(MA_50, "blue", context);
-
-        _this4.draw_MA(MA_200, "red", context);
-
-        chart_data.forEach(function (data, count) {
-          var candle_position = count * candle_width + space_between_bars * count;
-          if (count % date_marker_position == 0) _this4.draw_date_marker(candle_position, candle_width, data, canvas);
-
-          _this4.draw_candle(context, candle_position, data, candle_width, pixels_per_penny, pixels_per_vol);
-        });
-      }, 0);
+        _this5.draw_candle(context, candle_position, data, candle_width, pixels_per_penny, pixels_per_vol);
+      }); // }, 0);
     }
   }, {
     key: "draw_date_marker",
@@ -2442,18 +2530,22 @@ function (_React$Component) {
       // console.log(canvas)
       var context = canvas.getContext("2d");
       var date_time = this.parsed_date_time(data.date, data.label);
+      var date_line_color = this.state.chart_style == "light" ? "grey" : "white";
       context.beginPath();
+      context.setLineDash([5, 15]);
+      context.strokeStyle = date_line_color;
       context.moveTo(candle_position + candle_width / 2, 0);
       context.lineTo(candle_position + candle_width / 2, canvas.height);
-      context.stroke(); // context.fillStyle = "white";
-      // context.font = "bold 10px Arial";
+      context.stroke(); // context.font = "bold 10px Arial";
       // let text = context.measureText(date_time)
       // context.fillText(date_time, candle_position - (text.width/2), canvas.height);
     }
   }, {
     key: "draw_price_markers",
     value: function draw_price_markers(context, min, max) {
-      var chart_height = this.state.chart_height;
+      var _this$state4 = this.state,
+          chart_height = _this$state4.chart_height,
+          chart_style = _this$state4.chart_style;
       var canvas = context.canvas;
       var range = max - min;
 
@@ -2474,7 +2566,7 @@ function (_React$Component) {
           var price_label = _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()(min + marker_count * intervals).toFixed(2);
 
           var text = context.measureText(price_label);
-          write_label(price_label, "black", 10, context, canvas.width - text.width, chart_height - x);
+          write_label(price_label, chart_style, 10, context, canvas.width - text.width, chart_height - x);
           marker_count++;
         }
       }
@@ -2498,33 +2590,52 @@ function (_React$Component) {
       return "".concat(month, "/").concat(day, "/").concat(year, " - ").concat(label);
     }
   }, {
-    key: "get_min_price",
-    value: function get_min_price(data) {
-      return data.reduce(function (min, p) {
-        return p.low < min ? p.low : min;
-      }, data[0].low);
-    }
-  }, {
-    key: "get_max_price",
-    value: function get_max_price(data) {
-      return data.reduce(function (max, p) {
-        return p.high > max ? p.high : max;
-      }, data[0].high);
-    }
-  }, {
-    key: "get_max_vol",
-    value: function get_max_vol(data) {
-      return data.reduce(function (max, p) {
-        return p.volume > max ? p.volume : max;
-      }, data[0].volume);
-    } // draw_candle(1, 100, 0, {low:0, high:80, open:75, close:80})
+    key: "get_min_max",
+    value: function get_min_max(data) {
+      var max_price = 0; //low number that is lower than any high
+
+      var min_price = 10000000; //some big number that is larger than any lows
+
+      var max_vol = 0; //some big number that is larger than any lows
+
+      data.forEach(function (data_point) {
+        if (data_point.high > max_price) {
+          max_price = data_point.high;
+        }
+
+        if (data_point.low < min_price && data_point.low > 0) {
+          min_price = data_point.low;
+        }
+
+        if (data_point.volume > max_vol) {
+          max_vol = data_point.volume;
+        }
+      });
+      return {
+        max_price: max_price,
+        min_price: min_price,
+        max_vol: max_vol
+      };
+    } // get_min_price(data) {
+    //   return data.reduce((min, p) => (p.low < min ? p.low : min), data[0].low);
+    // }
+    // get_max_price(data) {
+    //   return data.reduce((max, p) => (p.high > max ? p.high : max), data[0].high);
+    // }
+    // get_max_vol(data) {
+    //   return data.reduce(
+    //     (max, p) => (p.volume > max ? p.volume : max),
+    //     data[0].volume
+    //   );
+    // }
+    // draw_candle(1, 100, 0, {low:0, high:80, open:75, close:80})
 
   }, {
     key: "draw_candle",
     value: function draw_candle(context, candle_position, candle_data, candle_width, pixels_per_penny, pixels_per_vol) {
-      var _this$state3 = this.state,
-          max_price = _this$state3.max_price,
-          max_vol = _this$state3.max_vol; // console.log({ pennies_per_pixel })
+      var _this$state5 = this.state,
+          max_price = _this$state5.max_price,
+          max_vol = _this$state5.max_vol; // console.log({ pennies_per_pixel })
       // console.log({ pixels_per_penny })
       // const total_range_in_pennies = canvas.height*pennies_per_pixel
       // console.log({total_range_in_pennies})
@@ -2534,6 +2645,10 @@ function (_React$Component) {
       // console.log(candle_position + (candle_width / 2))
 
       context.beginPath();
+      context.setLineDash([]);
+      if (candle_data.open > candle_data.close) context.strokeStyle = "red";
+      if (candle_data.open < candle_data.close) context.strokeStyle = "green";
+      if (candle_data.open == candle_data.close) context.strokeStyle = "gray";
       context.moveTo(candle_position + candle_width / 2, (max_price - candle_data.high) * 100 * pixels_per_penny);
       context.lineTo(candle_position + candle_width / 2, (max_price - candle_data.low) * 100 * pixels_per_penny);
       context.stroke(); //candle rect
@@ -2543,38 +2658,33 @@ function (_React$Component) {
       if (candle_data.open > candle_data.close) {
         // console.log('red')
         context.fillStyle = "red";
+        context.strokeStyle = "red";
         candle_height = (candle_data.open - candle_data.close) * 100 * pixels_per_penny;
       } else if (candle_data.open == candle_data.close) {
         // console.log('black')
         context.fillStyle = "black";
+        context.strokeStyle = "black";
         candle_height = 1;
       } else {
         // console.log('green')
         context.fillStyle = "green";
-        candle_height = (candle_data.close - candle_data.open) * 100 * pixels_per_penny;
+        context.strokeStyle = "green";
+        candle_height = (candle_data.close - candle_data.open) * 100 * pixels_per_penny * -1;
       }
 
       this.draw_volume(candle_position, max_vol, candle_data, candle_width, context, pixels_per_vol);
-      context.fillRect(candle_position, (max_price - candle_data.open) * 100 * pixels_per_penny, candle_width, candle_height); //open line
-      // context.moveTo((candle_position + (candle_width/2))-(candle_width/2), high - candle_data.open);
-      // context.lineTo((candle_position + (candle_width/2)) + (candle_width / 2), high - candle_data.open)
-      // context.stroke();
-      //closing line
+      context.fillRect(candle_position, (max_price - candle_data.open) * 100 * pixels_per_penny, candle_width, candle_height);
     }
   }, {
     key: "draw_MA",
     value: function draw_MA(data, color, context) {
       var canvas = context.canvas;
-      var _this$state4 = this.state,
-          candle_width = _this$state4.candle_width,
-          space_between_bars = _this$state4.space_between_bars,
-          min_price = _this$state4.min_price,
-          max_price = _this$state4.max_price,
-          number_of_pennies = _this$state4.number_of_pennies,
-          pennies_per_pixel = _this$state4.pennies_per_pixel,
-          pixels_per_penny = _this$state4.pixels_per_penny,
-          pixels_per_vol = _this$state4.pixels_per_vol,
-          x_offset = _this$state4.x_offset;
+      var _this$state6 = this.state,
+          candle_width = _this$state6.candle_width,
+          space_between_bars = _this$state6.space_between_bars,
+          max_price = _this$state6.max_price,
+          pixels_per_penny = _this$state6.pixels_per_penny,
+          x_offset = _this$state6.x_offset;
       var symbol = this.props.chart_id;
       var width = canvas.width;
       var candle_count = width / (candle_width + space_between_bars);
@@ -2587,17 +2697,17 @@ function (_React$Component) {
 
       if (x_offset == 0) {
         new_data = MA_data.slice(candle_count * -1);
-        console.log({
-          new_data: new_data,
-          MA_data: MA_data
-        });
       } else {
         var end_of_data = data_length - x_offset - candle_count;
         if (end_of_data < 0) end_of_data = 0;
-        if (x_offset + candle_count > data_length) Main_data.canvas_data[0].x_offset = x_offset = data_length - candle_count;
+        if (x_offset + candle_count > data_length) x_offset = data_length - candle_count;
         new_data = MA_data.slice(end_of_data, x_offset * -1);
       }
 
+      console.log({
+        new_data: new_data,
+        MA_data: MA_data
+      });
       context.strokeStyle = "".concat(color);
       new_data.forEach(function (d, count) {
         if (!new_data[count - 1]) return console.log("COUNT IS 0");
@@ -2616,9 +2726,9 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$state5 = this.state,
-          canvas_width = _this$state5.canvas_width,
-          canvas_height = _this$state5.canvas_height;
+      var _this$state7 = this.state,
+          canvas_width = _this$state7.canvas_width,
+          canvas_height = _this$state7.canvas_height;
       var _this$props3 = this.props,
           canvas_id = _this$props3.canvas_id,
           chart_data = _this$props3.chart_data,
@@ -2627,13 +2737,13 @@ function (_React$Component) {
       return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 543
+          lineNumber: 640
         },
         __self: this
       }, is_loading && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("p", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 543
+          lineNumber: 640
         },
         __self: this
       }, "Loading Data...."), " "), " ", canvas_width && canvas_height && this.render_canvas(canvas_id, canvas_width, canvas_height));
@@ -2654,21 +2764,25 @@ function mapStateToProps(state) {
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_10__["connect"])(mapStateToProps)(Object(next_router__WEBPACK_IMPORTED_MODULE_12__["withRouter"])(Canvas_Chart)));
 
-function clear_canvas(context, canvas_background_color) {
+function clear_canvas(context, chart_style) {
+  var background_color = chart_style == "light" ? "white" : "black";
   var cW = context.canvas.width,
       cH = context.canvas.height;
   context.clearRect(0, 0, cW, cH);
-  context.fillStyle = canvas_background_color;
+  context.fillStyle = background_color;
   context.fillRect(0, 0, cW, cH);
 }
 
-function write_label(text, color, size, ctx, x, y) {
-  ctx.fillStyle = "white";
+function write_label(text, chart_style, size, ctx, x, y) {
+  /* fill the label background with same as chart style */
+  var label_background = chart_style == "light" ? "white" : "black";
+  ctx.fillStyle = label_background;
   ctx.font = "bold ".concat(size, "px Arial");
   var label = text;
   var text_width = ctx.measureText(label).width;
   ctx.fillRect(x, y, text_width, -14);
-  ctx.fillStyle = "black";
+  var text_color = chart_style == "light" ? "black" : "white";
+  ctx.fillStyle = text_color;
   ctx.fillText(label, x, y);
 }
 
@@ -2855,7 +2969,7 @@ function _fetch_selected_chart_data() {
           case 6:
             book_data_json = _context2.sent;
             _context2.next = 9;
-            return fetch("  ".concat(iex_server, "/stock/").concat(symbol, "/chart/1y\n  "));
+            return fetch("  ".concat(iex_server, "/stock/").concat(symbol, "/chart/5y\n  "));
 
           case 9:
             chart_data_json = _context2.sent;
@@ -3166,9 +3280,7 @@ function (_React$Component) {
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(Account_Profile, [{
     key: "componentDidMount",
-    value: function componentDidMount() {
-      window.scrollTo(0, 0);
-    }
+    value: function componentDidMount() {}
   }, {
     key: "render",
     value: function render() {
@@ -3456,7 +3568,7 @@ function set_home_page_data(home_page_data) {
 
 /***/ }),
 
-/***/ 8:
+/***/ 3:
 /*!******************************!*\
   !*** multi ./pages/chart.js ***!
   \******************************/

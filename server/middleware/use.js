@@ -11,7 +11,7 @@ const passport = require('passport')
 const express_validator = require('express-validator')
 const Page_views_model = require('../models/page_views_model.js')
 const {ensure_admin} = require('./router_middleware.js')
-
+const DB_NAME = process.env.DB_NAME
 
 const helper = require('./helper.js')
 module.exports = (app, next_app) => {
@@ -49,7 +49,7 @@ app.use(express_validator(
   })
 
   app.use(cookie_parser());
-  const mongo_store = new mongoStore({ url: "mongodb://localhost/qaltfi" });
+  const mongo_store = new mongoStore({ url: `mongodb://localhost/${DB_NAME}` });
   const session_options = {
     name:'Della_Session',
     store: mongo_store,

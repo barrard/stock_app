@@ -125,7 +125,7 @@ class Auth_Controller {
         //may not need?
         // req.session.messages.push({ success: "You are now logged in" });
         //  res.redirect('/edit-accounts/' + req.user.username);
-        logger.log('WE LOHING IN')
+        logger.log('WE LOGING IN')
         return res.json({success: "You are now logged in", user })
       });
  
