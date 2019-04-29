@@ -3,8 +3,7 @@ import ReactDOM from "react-dom";
 
 import Link from "next/link";
 import Router from "next/router";
-import { view_selected_stock_symbol } from "../charts/chart_data_utils.js";
-import { fetch_sector_data } from "../../components/charts/chart_data_utils.js";
+import { view_selected_stock_symbol, fetch_sector_data} from "../charts/chart_data_utils.js";
 
 export class List_Stock_Data extends React.Component {
   constructor(props) {

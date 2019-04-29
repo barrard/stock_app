@@ -10,7 +10,7 @@ class Canvas_Chart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mouseDown:false,//listen for drag events
+      mouseDown: false, //listen for drag events
       canvas_width: null,
       canvas_height: null,
       chart_height: "",
@@ -26,26 +26,20 @@ class Canvas_Chart extends React.Component {
       volume_canvas_overlay: "",
       vol_canvas_share: 0.2,
       overlay_offset: "",
-      scrollY_offset:'',
+      scrollY_offset: "",
       symbol: "",
       spinner_timmer: false,
       MA_data: {},
-      chart_style: "light"
+      chart_style: "light", chart_data_length:0
     };
-    this.change_x_offset = this.change_x_offset.bind(this);
-    this.stop_drag = this.stop_drag.bind(this);
 
     this.listen_for_chart_drag = this.listen_for_chart_drag.bind(this);
     this.draw_cross_hair = this.draw_cross_hair.bind(this);
   }
   componentDidMount() {
-    var { chart_data } = this.props.data;
-
     console.log("canvas mounted");
     this.make_canvas_full_screen();
-    let MA_data = add_MA_data_to_model(chart_data);
-    console.log(MA_data);
-    this.setState({ MA_data });
+    this.calc_MA_data();
   }
   componentDidUpdate(prevProps) {
     let { meta, canvas_id } = this.props;
@@ -62,36 +56,47 @@ class Canvas_Chart extends React.Component {
     ) {
       /* must have loaded a new chart?  Draw chart */
       console.log("new  chart selected form chache");
-      this.draw_chart();
+      this.calc_MA_data();
     } else if (prevProps.meta.is_loading && !meta.is_loading) {
-      console.log("Done loading new data, draw chart ");
+      console.log("Done loading new data, draw chart righ meow");
       this.draw_chart();
     } else {
       console.log("render what is happeneing");
     }
+  }
+  calc_MA_data() {
+    if (!this.props.data) return setTimeout(() => this.calc_MA_data(), 500);
+    var { chart_data } = this.props.data;
+    let chart_data_length = chart_data.length
+    let MA_data = add_MA_data_to_model(chart_data);
+    console.log(MA_data);
+    this.setState({ MA_data, chart_data_length });
+    setTimeout(() => this.draw_chart(), 100);
   }
   make_canvas_full_screen() {
     if (typeof window !== "undefined") {
       let dom_node = ReactDOM.findDOMNode(this);
       let { canvas_id } = this.props;
       let canvas_width = dom_node.parentElement.clientWidth * 0.95;
-      let canvas_height = dom_node.parentElement.clientHeight * .5;
+      let canvas_height = dom_node.parentElement.clientHeight * 0.5;
       this.setState({ canvas_width, canvas_height });
       setTimeout(() => {
         let canvas = document.getElementById(this.props.canvas_id);
         let crosshair_overlay = document.getElementById(
           `${this.props.canvas_id}_crosshair_overlay`
         );
-        console.log(document.querySelectorAll('.crosshair_overlay')[0].getBoundingClientRect())
-        let scrollY_offset = window.scrollY
-        console.log({scrollY_offset})
-        console.log({scrollY_offset})
-        console.log({scrollY_offset})
+        let scrollY_offset = window.scrollY;
+        // console.log({scrollY_offset})
         let overlay_offset = crosshair_overlay.getBoundingClientRect();
-        this.setState({ scrollY_offset, overlay_offset, canvas, crosshair_overlay });
+        this.setState({
+          scrollY_offset,
+          overlay_offset,
+          canvas,
+          crosshair_overlay
+        });
         this.run_spinner();
-        console.log("does this run?");
-        console.log(this);
+        // console.log("does this run?");
+        // console.log(this);
       }, 0);
     }
   }
@@ -108,13 +113,14 @@ class Canvas_Chart extends React.Component {
       if (!this.props.meta.is_loading) {
         clearInterval(spinner_timmer);
         this.setState({ spinner_timmer: false });
-        console.log(stock_data);
-        console.log(canvas_id);
-        console.log(stock_data.charts[canvas_id]);
+        // console.log(stock_data);
+        // console.log(canvas_id);
+        // console.log(stock_data.charts[canvas_id]);
         let chart_data = this.props.data.chart_data;
-        console.log({ chart_data });
+        // console.log({ chart_data });
 
-        return this.draw_chart(this.state.chart_style);
+        return       this.calc_MA_data();
+
       }
       var rotation = parseInt(((new Date() - start) / 1000) * lines) / lines;
       context.save();
@@ -134,39 +140,33 @@ class Canvas_Chart extends React.Component {
     };
     let spinner_timmer = setInterval(draw_spinner, 1000 / 30);
   }
-  change_x_offset(e) {
-    console.log(e);
-  }
-  stop_drag(e) {
-    let { canvas } = this.state;
-    canvas.removeEventListener("mouseup", this.stop_drag);
-
-    canvas.removeEventListener("mousemove", this.change_x_offset);
-
-    console.log("remove listeners");
-  }
 
   listen_for_chart_drag(e) {
-    let { x_offset, candle_width } = this.state;
+    if(!this.props.data)return
+    let { x_offset, candle_width, space_between_bars, canvas, chart_data_length } = this.state;
     // if(!prev_clientX)return this.setState({prev_clientX:e.clientX})
-    console.log({x_offset})
-    e.preventDefault();
-     x_offset = x_offset + (e.movementX );
-     console.log({x_offset})
-    if (x_offset < 0) x_offset = 0;
-console.log({x_offset})
-    this.state.x_offset = x_offset
-    this.draw_chart()
+    console.log(chart_data_length);
+    let max_x_offset =
+    chart_data_length * (candle_width + space_between_bars) -
+      canvas.width;
 
-    
+    // console.log({x_offset})
+    e.preventDefault();
+    x_offset = x_offset + e.movementX;
+    //  console.log({x_offset})
+    if (x_offset < 0) x_offset = 0;
+    if (x_offset > max_x_offset) x_offset = max_x_offset;
+    console.log({ x_offset });
+    this.state.x_offset = x_offset;
+    this.draw_chart();
   }
 
   render_canvas(canvas_id, canvas_width, canvas_height) {
     return (
       <>
         <canvas
-          onMouseDown={()=>this.setState({mouseDown:true})}
-          onMouseUp={()=>this.setState({mouseDown:false})}
+          onMouseDown={() => this.setState({ mouseDown: true })}
+          onMouseUp={() => this.setState({ mouseDown: false })}
           onMouseMove={this.draw_cross_hair}
           className="crosshair_overlay absolute"
           id={`${canvas_id}_crosshair_overlay`}
@@ -186,16 +186,17 @@ console.log({x_offset})
     let {
       mouseDown,
       vol_canvas_share,
-      overlay_offset, scrollY_offset,
+      overlay_offset,
+      scrollY_offset,
       crosshair_overlay,
       min_price,
       pennies_per_pixel,
       candle_width,
       space_between_bars,
-      chart_style
+      chart_style, x_offset, chart_data_length
     } = this.state;
     // console.log(window.scrollY);
-    if(mouseDown) return this.listen_for_chart_drag(e)
+    if (mouseDown) return this.listen_for_chart_drag(e);
     let pos = {
       left: e.pageX - overlay_offset.left,
       top: e.pageY - overlay_offset.top - scrollY_offset
@@ -230,8 +231,10 @@ console.log({x_offset})
     else label_x_pos = left + 10;
     if (top + 50 > canvas.height) label_y_pos = top - 50;
     else label_y_pos = top + 15;
+    let bar_size = candle_width + space_between_bars
+    let bar_offset = Math.floor(x_offset/(bar_size))
+    let candle_id = Math.floor((left / (bar_size))+((chart_data_length-bar_offset)-(canvas.width/(bar_size))));
 
-    let candle_id = Math.floor(left / (candle_width + space_between_bars));
 
     write_label(
       price_label,
@@ -307,41 +310,41 @@ console.log({x_offset})
       vol_canvas_share,
       candle_width,
       space_between_bars,
-      x_offset
+      x_offset, chart_data_length
     } = this.state;
 
-    console.log("DRAW CART");
     if (!canvas) return console.log("no canvas");
+    console.log("DRAW CART");
     let context = canvas.getContext("2d", false);
     clear_canvas(context, chart_style);
     /* Figure out how many bars are going to fin in the visible space */
     let candle_count = canvas.width / (candle_width + space_between_bars);
 
     // let candle_count = Math.floor(canvas.witdh /(space_between_bars + candle_width))
-    console.log({ chart_data, candle_count });
+    // console.log({ chart_data, candle_count });
+    let bar_offset = x_offset / (candle_width + space_between_bars);
 
-    if (x_offset == 0) {
+    if (bar_offset == 0) {
       chart_data = chart_data.slice(candle_count * -1);
     } else {
-      let data_length = chart_data.length;
-      let end_of_data = data_length - x_offset - candle_count;
-      if (end_of_data < 0) end_of_data = 0;        
+      let end_of_data = chart_data_length - bar_offset - candle_count;
+      if (end_of_data < 0) end_of_data = 0;
+      if (bar_offset + candle_count > chart_data_length)
+        bar_offset = chart_data_length - candle_count;
 
-      chart_data = chart_data.slice(end_of_data, x_offset * -1);
+      chart_data = chart_data.slice(end_of_data, bar_offset * -1);
     }
-    console.log({ chart_data });
+    // console.log({ chart_data });
 
     /* get min and max values */
-    let {min_price,
-      max_price,
-      max_vol} = this.get_min_max(chart_data);
+    let { min_price, max_price, max_vol } = this.get_min_max(chart_data);
     // let min_price = this.get_min_price(chart_data);
     // let max_price = this.get_max_price(chart_data);
     // let max_vol = this.get_max_vol(chart_data);
-    console.log({ min_price, max_price, max_vol });
+    // console.log({ min_price, max_price, max_vol });
 
     /* price / Time markers */
-    let date_marker_position = Math.floor(chart_data.length / 10);
+    let date_marker_position = Math.floor(chart_data_length / 10);
 
     const volume_canvas_height = canvas.height * vol_canvas_share; //volume will be lower 20% (should be adjustable)
     const chart_height = canvas.height * (1 - vol_canvas_share);
@@ -350,49 +353,48 @@ console.log({x_offset})
     let pixels_per_penny = (chart_height / number_of_pennies).toFixed(3);
     let pixels_per_vol = (volume_canvas_height / max_vol).toFixed(10);
 
-    console.log({
-      number_of_pennies,
-      pennies_per_pixel,
-      pixels_per_penny,
-      pixels_per_vol
-    });
+    // console.log({
+    //   number_of_pennies,
+    //   pennies_per_pixel,
+    //   pixels_per_penny,
+    //   pixels_per_vol
+    // });
 
-    this.state.volume_canvas_height = volume_canvas_height
-     this.state.chart_height = chart_height
-     this.state.min_price = min_price
-     this.state.max_price = max_price
-     this.state.max_vol = max_vol
-     this.state.number_of_pennies = number_of_pennies
-     this.state.pennies_per_pixel = pennies_per_pixel
-     this.state.pixels_per_penny = pixels_per_penny
-     this.state.pixels_per_vol = pixels_per_vol
+    this.state.volume_canvas_height = volume_canvas_height;
+    this.state.chart_height = chart_height;
+    this.state.min_price = min_price;
+    this.state.max_price = max_price;
+    this.state.max_vol = max_vol;
+    this.state.number_of_pennies = number_of_pennies;
+    this.state.pennies_per_pixel = pennies_per_pixel;
+    this.state.pixels_per_penny = pixels_per_penny;
+    this.state.pixels_per_vol = pixels_per_vol;
 
     /* wait for setSate */
     // setTimeout(() => {
-      this.draw_price_markers(context, min_price, max_price);
-      let { MA_20, MA_50, MA_200 } = this.state.MA_data;
-      console.log(this.props);
-      if (!MA_20) return;
-      this.draw_MA(MA_20, "green", context);
-      this.draw_MA(MA_50, "blue", context);
-      this.draw_MA(MA_200, "red", context);
+    this.draw_price_markers(context, min_price, max_price);
+    let { MA_20, MA_50, MA_200 } = this.state.MA_data;
+    // console.log(this.props);
+    if (!MA_20) return console.log('AHAHAAHAHA NOO MAAAAA');
+    this.draw_MA(MA_20, "green", context, bar_offset);
+    this.draw_MA(MA_50, "blue", context, bar_offset);
+    this.draw_MA(MA_200, "red", context, bar_offset);
 
-      chart_data.forEach((data, count) => {
-        const candle_position =
-          count * candle_width + space_between_bars * count;
+    chart_data.forEach((data, count) => {
+      const candle_position = count * candle_width + space_between_bars * count;
 
-        if (count % date_marker_position == 0)
-          this.draw_date_marker(candle_position, candle_width, data, canvas);
+      if (count % date_marker_position == 0)
+        this.draw_date_marker(candle_position, candle_width, data, canvas);
 
-        this.draw_candle(
-          context,
-          candle_position,
-          data,
-          candle_width,
-          pixels_per_penny,
-          pixels_per_vol
-        );
-      });
+      this.draw_candle(
+        context,
+        candle_position,
+        data,
+        candle_width,
+        pixels_per_penny,
+        pixels_per_vol
+      );
+    });
     // }, 0);
   }
   draw_date_marker(candle_position, candle_width, data, canvas) {
@@ -473,8 +475,7 @@ console.log({x_offset})
     return `${month}/${day}/${year} - ${label}`;
   }
 
-  get_min_max(data){
-
+  get_min_max(data) {
     let max_price = 0; //low number that is lower than any high
     let min_price = 10000000; //some big number that is larger than any lows
 
@@ -489,10 +490,8 @@ console.log({x_offset})
       if (data_point.volume > max_vol) {
         max_vol = data_point.volume;
       }
-  
     });
-    return {max_price, min_price, max_vol}
-
+    return { max_price, min_price, max_vol };
   }
   // get_min_price(data) {
   //   return data.reduce((min, p) => (p.low < min ? p.low : min), data[0].low);
@@ -579,7 +578,7 @@ console.log({x_offset})
     );
   }
 
-  draw_MA(data, color, context) {
+  draw_MA(data, color, context, bar_offset) {
     let { canvas } = context;
 
     let {
@@ -587,32 +586,34 @@ console.log({x_offset})
       space_between_bars,
       max_price,
       pixels_per_penny,
-      x_offset
+      x_offset, chart_data_length
     } = this.state;
 
     let symbol = this.props.chart_id;
 
     let width = canvas.width;
     let candle_count = width / (candle_width + space_between_bars);
-    console.log({ candle_count });
+    // console.log({ candle_count });
     let MA_data = data;
-    let data_length = MA_data.length;
+    let data_length = chart_data_length;
     let new_data;
-    if (x_offset == 0) {
+    // let bar_offset = x_offset / (candle_width+space_between_bars)
+
+    if (bar_offset == 0) {
       new_data = MA_data.slice(candle_count * -1);
     } else {
-      let end_of_data = data_length - x_offset - candle_count;
+      let end_of_data = data_length - bar_offset - candle_count;
       if (end_of_data < 0) end_of_data = 0;
-      if (x_offset + candle_count > data_length)
-        x_offset = data_length - candle_count;
+      if (bar_offset + candle_count > data_length)
+        bar_offset = data_length - candle_count;
 
-      new_data = MA_data.slice(end_of_data, x_offset * -1);
+      new_data = MA_data.slice(end_of_data, bar_offset * -1);
     }
-    console.log({ new_data, MA_data });
+    // console.log({ new_data, MA_data });
 
     context.strokeStyle = `${color}`;
     new_data.forEach((d, count) => {
-      if (!new_data[count - 1]) return console.log("COUNT IS 0");
+      if (!new_data[count - 1]) return;
       const candle_position = count * candle_width + space_between_bars * count;
       const prev_candle_position =
         (count - 1) * candle_width + space_between_bars * (count - 1);
@@ -636,13 +637,12 @@ console.log({x_offset})
     let { is_loading } = meta;
 
     return (
-      <>
-        <span>{is_loading && <p>Loading Data....</p>} </span>{" "}
+      <div>
         {/* this is here to make it work, dont remove */}
         {canvas_width &&
           canvas_height &&
           this.render_canvas(canvas_id, canvas_width, canvas_height)}
-      </>
+      </div>
     );
   }
 }
@@ -720,11 +720,11 @@ function add_MA_data_to_model(daily_data) {
     }
   }
 
+  let after_cal = new Date().getTime();
   console.log(
     `done with calcculating moving averages in ${after_cal -
       before_cal} miliseconds`
   );
-  let after_cal = new Date().getTime();
   return MA_obj;
 }
 

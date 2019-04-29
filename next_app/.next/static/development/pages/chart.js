@@ -17605,14 +17605,13 @@ function (_React$Component) {
       volume_canvas_overlay: "",
       vol_canvas_share: 0.2,
       overlay_offset: "",
-      scrollY_offset: '',
+      scrollY_offset: "",
       symbol: "",
       spinner_timmer: false,
       MA_data: {},
-      chart_style: "light"
+      chart_style: "light",
+      chart_data_length: 0
     };
-    _this.change_x_offset = _this.change_x_offset.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this));
-    _this.stop_drag = _this.stop_drag.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this));
     _this.listen_for_chart_drag = _this.listen_for_chart_drag.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this));
     _this.draw_cross_hair = _this.draw_cross_hair.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__["default"])(_this));
     return _this;
@@ -17621,14 +17620,9 @@ function (_React$Component) {
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(Canvas_Chart, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var chart_data = this.props.data.chart_data;
       console.log("canvas mounted");
       this.make_canvas_full_screen();
-      var MA_data = add_MA_data_to_model(chart_data);
-      console.log(MA_data);
-      this.setState({
-        MA_data: MA_data
-      });
+      this.calc_MA_data();
     }
   }, {
     key: "componentDidUpdate",
@@ -17646,62 +17640,72 @@ function (_React$Component) {
       } else if (!prevProps.meta.is_loading && !meta.is_loading && canvas_id != prevProps.canvas_id) {
         /* must have loaded a new chart?  Draw chart */
         console.log("new  chart selected form chache");
-        this.draw_chart();
+        this.calc_MA_data();
       } else if (prevProps.meta.is_loading && !meta.is_loading) {
-        console.log("Done loading new data, draw chart ");
+        console.log("Done loading new data, draw chart righ meow");
         this.draw_chart();
       } else {
         console.log("render what is happeneing");
       }
     }
   }, {
+    key: "calc_MA_data",
+    value: function calc_MA_data() {
+      var _this2 = this;
+
+      if (!this.props.data) return setTimeout(function () {
+        return _this2.calc_MA_data();
+      }, 500);
+      var chart_data = this.props.data.chart_data;
+      var chart_data_length = chart_data.length;
+      var MA_data = add_MA_data_to_model(chart_data);
+      console.log(MA_data);
+      this.setState({
+        MA_data: MA_data,
+        chart_data_length: chart_data_length
+      });
+      setTimeout(function () {
+        return _this2.draw_chart();
+      }, 100);
+    }
+  }, {
     key: "make_canvas_full_screen",
     value: function make_canvas_full_screen() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (typeof window !== "undefined") {
         var dom_node = react_dom__WEBPACK_IMPORTED_MODULE_9___default.a.findDOMNode(this);
         var canvas_id = this.props.canvas_id;
         var canvas_width = dom_node.parentElement.clientWidth * 0.95;
-        var canvas_height = dom_node.parentElement.clientHeight * .5;
+        var canvas_height = dom_node.parentElement.clientHeight * 0.5;
         this.setState({
           canvas_width: canvas_width,
           canvas_height: canvas_height
         });
         setTimeout(function () {
-          var canvas = document.getElementById(_this2.props.canvas_id);
-          var crosshair_overlay = document.getElementById("".concat(_this2.props.canvas_id, "_crosshair_overlay"));
-          console.log(document.querySelectorAll('.crosshair_overlay')[0].getBoundingClientRect());
-          var scrollY_offset = window.scrollY;
-          console.log({
-            scrollY_offset: scrollY_offset
-          });
-          console.log({
-            scrollY_offset: scrollY_offset
-          });
-          console.log({
-            scrollY_offset: scrollY_offset
-          });
+          var canvas = document.getElementById(_this3.props.canvas_id);
+          var crosshair_overlay = document.getElementById("".concat(_this3.props.canvas_id, "_crosshair_overlay"));
+          var scrollY_offset = window.scrollY; // console.log({scrollY_offset})
+
           var overlay_offset = crosshair_overlay.getBoundingClientRect();
 
-          _this2.setState({
+          _this3.setState({
             scrollY_offset: scrollY_offset,
             overlay_offset: overlay_offset,
             canvas: canvas,
             crosshair_overlay: crosshair_overlay
           });
 
-          _this2.run_spinner();
+          _this3.run_spinner(); // console.log("does this run?");
+          // console.log(this);
 
-          console.log("does this run?");
-          console.log(_this2);
         }, 0);
       }
     }
   }, {
     key: "run_spinner",
     value: function run_spinner() {
-      var _this3 = this;
+      var _this4 = this;
 
       var _this$props2 = this.props,
           canvas_id = _this$props2.canvas_id,
@@ -17716,21 +17720,19 @@ function (_React$Component) {
           cH = context.canvas.height;
 
       var draw_spinner = function draw_spinner() {
-        if (!_this3.props.meta.is_loading) {
+        if (!_this4.props.meta.is_loading) {
           clearInterval(spinner_timmer);
 
-          _this3.setState({
+          _this4.setState({
             spinner_timmer: false
-          });
+          }); // console.log(stock_data);
+          // console.log(canvas_id);
+          // console.log(stock_data.charts[canvas_id]);
 
-          console.log(stock_data);
-          console.log(canvas_id);
-          console.log(stock_data.charts[canvas_id]);
-          var chart_data = _this3.props.data.chart_data;
-          console.log({
-            chart_data: chart_data
-          });
-          return _this3.draw_chart(_this3.state.chart_style);
+
+          var chart_data = _this4.props.data.chart_data; // console.log({ chart_data });
+
+          return _this4.calc_MA_data();
         }
 
         var rotation = _babel_runtime_corejs2_core_js_parse_int__WEBPACK_IMPORTED_MODULE_1___default()((new Date() - start) / 1000 * lines) / lines;
@@ -17755,34 +17757,24 @@ function (_React$Component) {
       var spinner_timmer = setInterval(draw_spinner, 1000 / 30);
     }
   }, {
-    key: "change_x_offset",
-    value: function change_x_offset(e) {
-      console.log(e);
-    }
-  }, {
-    key: "stop_drag",
-    value: function stop_drag(e) {
-      var canvas = this.state.canvas;
-      canvas.removeEventListener("mouseup", this.stop_drag);
-      canvas.removeEventListener("mousemove", this.change_x_offset);
-      console.log("remove listeners");
-    }
-  }, {
     key: "listen_for_chart_drag",
     value: function listen_for_chart_drag(e) {
+      if (!this.props.data) return;
       var _this$state = this.state,
           x_offset = _this$state.x_offset,
-          candle_width = _this$state.candle_width; // if(!prev_clientX)return this.setState({prev_clientX:e.clientX})
+          candle_width = _this$state.candle_width,
+          space_between_bars = _this$state.space_between_bars,
+          canvas = _this$state.canvas,
+          chart_data_length = _this$state.chart_data_length; // if(!prev_clientX)return this.setState({prev_clientX:e.clientX})
 
-      console.log({
-        x_offset: x_offset
-      });
+      console.log(chart_data_length);
+      var max_x_offset = chart_data_length * (candle_width + space_between_bars) - canvas.width; // console.log({x_offset})
+
       e.preventDefault();
-      x_offset = x_offset + e.movementX;
-      console.log({
-        x_offset: x_offset
-      });
+      x_offset = x_offset + e.movementX; //  console.log({x_offset})
+
       if (x_offset < 0) x_offset = 0;
+      if (x_offset > max_x_offset) x_offset = max_x_offset;
       console.log({
         x_offset: x_offset
       });
@@ -17792,16 +17784,16 @@ function (_React$Component) {
   }, {
     key: "render_canvas",
     value: function render_canvas(canvas_id, canvas_width, canvas_height) {
-      var _this4 = this;
+      var _this5 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("canvas", {
         onMouseDown: function onMouseDown() {
-          return _this4.setState({
+          return _this5.setState({
             mouseDown: true
           });
         },
         onMouseUp: function onMouseUp() {
-          return _this4.setState({
+          return _this5.setState({
             mouseDown: false
           });
         },
@@ -17840,7 +17832,9 @@ function (_React$Component) {
           pennies_per_pixel = _this$state2.pennies_per_pixel,
           candle_width = _this$state2.candle_width,
           space_between_bars = _this$state2.space_between_bars,
-          chart_style = _this$state2.chart_style; // console.log(window.scrollY);
+          chart_style = _this$state2.chart_style,
+          x_offset = _this$state2.x_offset,
+          chart_data_length = _this$state2.chart_data_length; // console.log(window.scrollY);
 
       if (mouseDown) return this.listen_for_chart_drag(e);
       var pos = {
@@ -17873,7 +17867,9 @@ function (_React$Component) {
       var label_x_pos, label_y_pos;
       if (left + 50 > canvas.width) label_x_pos = left - 50;else label_x_pos = left + 10;
       if (top + 50 > canvas.height) label_y_pos = top - 50;else label_y_pos = top + 15;
-      var candle_id = Math.floor(left / (candle_width + space_between_bars));
+      var bar_size = candle_width + space_between_bars;
+      var bar_offset = Math.floor(x_offset / bar_size);
+      var candle_id = Math.floor(left / bar_size + (chart_data_length - bar_offset - canvas.width / bar_size));
       write_label(price_label, chart_style, 14, x_hair_ctx, label_x_pos, label_y_pos);
       var bar_data;
       if (this.props.data) bar_data = this.props.data.chart_data[candle_id];
@@ -17914,7 +17910,7 @@ function (_React$Component) {
   }, {
     key: "draw_chart",
     value: function draw_chart() {
-      var _this5 = this;
+      var _this6 = this;
 
       var chart_data = this.props.data.chart_data;
       var _this$state3 = this.state,
@@ -17923,33 +17919,30 @@ function (_React$Component) {
           vol_canvas_share = _this$state3.vol_canvas_share,
           candle_width = _this$state3.candle_width,
           space_between_bars = _this$state3.space_between_bars,
-          x_offset = _this$state3.x_offset;
-      console.log("DRAW CART");
+          x_offset = _this$state3.x_offset,
+          chart_data_length = _this$state3.chart_data_length;
       if (!canvas) return console.log("no canvas");
+      console.log("DRAW CART");
       var context = canvas.getContext("2d", false);
       clear_canvas(context, chart_style);
       /* Figure out how many bars are going to fin in the visible space */
 
       var candle_count = canvas.width / (candle_width + space_between_bars); // let candle_count = Math.floor(canvas.witdh /(space_between_bars + candle_width))
+      // console.log({ chart_data, candle_count });
 
-      console.log({
-        chart_data: chart_data,
-        candle_count: candle_count
-      });
+      var bar_offset = x_offset / (candle_width + space_between_bars);
 
-      if (x_offset == 0) {
+      if (bar_offset == 0) {
         chart_data = chart_data.slice(candle_count * -1);
       } else {
-        var data_length = chart_data.length;
-        var end_of_data = data_length - x_offset - candle_count;
+        var end_of_data = chart_data_length - bar_offset - candle_count;
         if (end_of_data < 0) end_of_data = 0;
-        chart_data = chart_data.slice(end_of_data, x_offset * -1);
-      }
+        if (bar_offset + candle_count > chart_data_length) bar_offset = chart_data_length - candle_count;
+        chart_data = chart_data.slice(end_of_data, bar_offset * -1);
+      } // console.log({ chart_data });
 
-      console.log({
-        chart_data: chart_data
-      });
       /* get min and max values */
+
 
       var _this$get_min_max = this.get_min_max(chart_data),
           min_price = _this$get_min_max.min_price,
@@ -17957,29 +17950,25 @@ function (_React$Component) {
           max_vol = _this$get_min_max.max_vol; // let min_price = this.get_min_price(chart_data);
       // let max_price = this.get_max_price(chart_data);
       // let max_vol = this.get_max_vol(chart_data);
+      // console.log({ min_price, max_price, max_vol });
 
-
-      console.log({
-        min_price: min_price,
-        max_price: max_price,
-        max_vol: max_vol
-      });
       /* price / Time markers */
 
-      var date_marker_position = Math.floor(chart_data.length / 10);
+
+      var date_marker_position = Math.floor(chart_data_length / 10);
       var volume_canvas_height = canvas.height * vol_canvas_share; //volume will be lower 20% (should be adjustable)
 
       var chart_height = canvas.height * (1 - vol_canvas_share);
       var number_of_pennies = Math.floor((max_price - min_price) * 100);
       var pennies_per_pixel = (number_of_pennies / chart_height).toFixed(3);
       var pixels_per_penny = (chart_height / number_of_pennies).toFixed(3);
-      var pixels_per_vol = (volume_canvas_height / max_vol).toFixed(10);
-      console.log({
-        number_of_pennies: number_of_pennies,
-        pennies_per_pixel: pennies_per_pixel,
-        pixels_per_penny: pixels_per_penny,
-        pixels_per_vol: pixels_per_vol
-      });
+      var pixels_per_vol = (volume_canvas_height / max_vol).toFixed(10); // console.log({
+      //   number_of_pennies,
+      //   pennies_per_pixel,
+      //   pixels_per_penny,
+      //   pixels_per_vol
+      // });
+
       this.state.volume_canvas_height = volume_canvas_height;
       this.state.chart_height = chart_height;
       this.state.min_price = min_price;
@@ -17996,17 +17985,17 @@ function (_React$Component) {
       var _this$state$MA_data = this.state.MA_data,
           MA_20 = _this$state$MA_data.MA_20,
           MA_50 = _this$state$MA_data.MA_50,
-          MA_200 = _this$state$MA_data.MA_200;
-      console.log(this.props);
-      if (!MA_20) return;
-      this.draw_MA(MA_20, "green", context);
-      this.draw_MA(MA_50, "blue", context);
-      this.draw_MA(MA_200, "red", context);
+          MA_200 = _this$state$MA_data.MA_200; // console.log(this.props);
+
+      if (!MA_20) return console.log('AHAHAAHAHA NOO MAAAAA');
+      this.draw_MA(MA_20, "green", context, bar_offset);
+      this.draw_MA(MA_50, "blue", context, bar_offset);
+      this.draw_MA(MA_200, "red", context, bar_offset);
       chart_data.forEach(function (data, count) {
         var candle_position = count * candle_width + space_between_bars * count;
-        if (count % date_marker_position == 0) _this5.draw_date_marker(candle_position, candle_width, data, canvas);
+        if (count % date_marker_position == 0) _this6.draw_date_marker(candle_position, candle_width, data, canvas);
 
-        _this5.draw_candle(context, candle_position, data, candle_width, pixels_per_penny, pixels_per_vol);
+        _this6.draw_candle(context, candle_position, data, candle_width, pixels_per_penny, pixels_per_vol);
       }); // }, 0);
     }
   }, {
@@ -18162,40 +18151,36 @@ function (_React$Component) {
     }
   }, {
     key: "draw_MA",
-    value: function draw_MA(data, color, context) {
+    value: function draw_MA(data, color, context, bar_offset) {
       var canvas = context.canvas;
       var _this$state6 = this.state,
           candle_width = _this$state6.candle_width,
           space_between_bars = _this$state6.space_between_bars,
           max_price = _this$state6.max_price,
           pixels_per_penny = _this$state6.pixels_per_penny,
-          x_offset = _this$state6.x_offset;
+          x_offset = _this$state6.x_offset,
+          chart_data_length = _this$state6.chart_data_length;
       var symbol = this.props.chart_id;
       var width = canvas.width;
-      var candle_count = width / (candle_width + space_between_bars);
-      console.log({
-        candle_count: candle_count
-      });
-      var MA_data = data;
-      var data_length = MA_data.length;
-      var new_data;
+      var candle_count = width / (candle_width + space_between_bars); // console.log({ candle_count });
 
-      if (x_offset == 0) {
+      var MA_data = data;
+      var data_length = chart_data_length;
+      var new_data; // let bar_offset = x_offset / (candle_width+space_between_bars)
+
+      if (bar_offset == 0) {
         new_data = MA_data.slice(candle_count * -1);
       } else {
-        var end_of_data = data_length - x_offset - candle_count;
+        var end_of_data = data_length - bar_offset - candle_count;
         if (end_of_data < 0) end_of_data = 0;
-        if (x_offset + candle_count > data_length) x_offset = data_length - candle_count;
-        new_data = MA_data.slice(end_of_data, x_offset * -1);
-      }
+        if (bar_offset + candle_count > data_length) bar_offset = data_length - candle_count;
+        new_data = MA_data.slice(end_of_data, bar_offset * -1);
+      } // console.log({ new_data, MA_data });
 
-      console.log({
-        new_data: new_data,
-        MA_data: MA_data
-      });
+
       context.strokeStyle = "".concat(color);
       new_data.forEach(function (d, count) {
-        if (!new_data[count - 1]) return console.log("COUNT IS 0");
+        if (!new_data[count - 1]) return;
         var candle_position = count * candle_width + space_between_bars * count;
         var prev_candle_position = (count - 1) * candle_width + space_between_bars * (count - 1);
         context.beginPath();
@@ -18219,19 +18204,13 @@ function (_React$Component) {
           chart_data = _this$props3.chart_data,
           meta = _this$props3.meta;
       var is_loading = meta.is_loading;
-      return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+      return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 640
         },
         __self: this
-      }, is_loading && react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("p", {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 640
-        },
-        __self: this
-      }, "Loading Data...."), " "), " ", canvas_width && canvas_height && this.render_canvas(canvas_id, canvas_width, canvas_height));
+      }, canvas_width && canvas_height && this.render_canvas(canvas_id, canvas_width, canvas_height));
     }
   }]);
 
@@ -18324,8 +18303,8 @@ function add_MA_data_to_model(daily_data) {
     }
   }
 
-  console.log("done with calcculating moving averages in ".concat(after_cal - before_cal, " miliseconds"));
   var after_cal = new Date().getTime();
+  console.log("done with calcculating moving averages in ".concat(after_cal - before_cal, " miliseconds"));
   return MA_obj;
 }
 /* average all 4 price types */
