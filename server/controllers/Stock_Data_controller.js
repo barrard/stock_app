@@ -4,7 +4,7 @@ logger = require("tracer").colorConsole({
     "{{timestamp.green}} <{{title.yellow}}> {{message.cyan}} (in {{file.red}}:{{line}})",
   dateformat: "HH:MM:ss.L"
 });
-
+const redis = require("../db/redis.js");
 // const sendgrid = require('../services/sendgrid.js');
 const Daily_Stock_Data_Model = require("../models/daily_stock_data_model.js");
 const Stocks_Symbols_Model = require("../models/stock_symbols_model.js");
@@ -13,6 +13,7 @@ const Tags_Model = require("../models/tags_model.js");
 const rp = require("request-promise");
 require("../db/db.js");
 const MA_Data_Model = require("../models/MA_data_model.js");
+const iex_server = `https://api.iextrading.com/1.0`;
 
 class Stock_Data_Controller {
   constructor() {
@@ -149,6 +150,103 @@ class Stock_Data_Controller {
     }
   }
 
+  /* 
+  Controllers for caching 24-hr data
+
+*/
+/* LARGET TRADE */
+async get_largest_trades(req, res, next) {
+  let symbol = req.params.symbol.toUpperCase();
+  logger.log(symbol);
+  var largest_trades = await redis.get(`${symbol}_largest_trades`);
+  if (!largest_trades) {
+    largest_trades = await rp(`  
+    ${iex_server}/stock/${symbol}/largest-trades
+  `);
+    //  stats = await stats_json.json();
+    redis.set(`${symbol}_largest_trades`, largest_trades);
+  }
+
+  res.send(largest_trades);
+}
+/* SECOR DATA */
+async get_sector_data(req, res, next) {
+  let sector = req.query.collectionName
+  logger.log(sector);
+  var sector_data = await redis.get(`${sector}_data`);
+  if (!sector_data) {
+    sector_data = await rp(`  
+    ${iex_server}/stock/market/collection/sector?collectionName=${sector}
+  `);
+    //  stats = await stats_json.json();
+    redis.set(`${sector}_data`, sector_data);
+  }
+
+  res.send(sector_data);
+}
+/* GET STATS */
+async get_stats(req, res, next) {
+  let symbol = req.params.symbol.toUpperCase();
+  logger.log(symbol);
+  var stats = await redis.get(`${symbol}_stats`);
+  if (!stats) {
+    stats = await rp(`  
+    ${iex_server}/stock/${symbol}/stats
+  `);
+    //  stats = await stats_json.json();
+    redis.set(`${symbol}_stats`, stats);
+  }
+
+  res.send(stats);
+}
+/* GET CHART 5Y */
+
+async get_chart_5y(req, res, next) {
+  let symbol = req.params.symbol.toUpperCase();
+  logger.log(symbol);
+  var chart_5y = await redis.get(`${symbol}_chart_5y`);
+  if (!chart_5y) {
+    chart_5y = await rp(`  
+    ${iex_server}/stock/${symbol}/chart/5y
+  `);
+    //  chart_5y = await chart_5y_json.json();
+    redis.set(`${symbol}_chart_5y`, chart_5y);
+  }
+
+  res.send(chart_5y);
+}
+  /* BOOK DATA */
+  async get_book_data(req, res, next) {
+    let symbol = req.params.symbol.toUpperCase();
+    logger.log(symbol);
+    var book_data = await redis.get(`${symbol}_book_data`);
+    if (!book_data) {
+      book_data = await rp(`  
+      ${iex_server}/stock/${symbol}/book
+    `);
+      //  book_data = await book_data_json.json();
+      redis.set(`${symbol}_book_data`, book_data);
+    }
+
+    res.send(book_data);
+  }
+
+    /* LOGO URL */
+    async get_logo_url(req, res, next) {
+      let symbol = req.params.symbol.toUpperCase();
+      logger.log(symbol);
+      var logo_url = await redis.get(`${symbol}_logo_url`);
+      if (!logo_url) {
+        logo_url = await rp(`  
+        ${iex_server}/stock/${symbol}/logo
+      `);
+        //  logo_url = await logo_url_json.json();
+        redis.set(`${symbol}_logo_url`, logo_url);
+      }
+  
+      res.send(logo_url);
+    }
+
   /* Helper functions */
   iex_api() {
     return "https://api.iextrading.com/1.0";
@@ -197,13 +295,13 @@ class Stock_Data_Controller {
 
   async add_all_previous_daily_data_to_db() {
     let previous_data = await this.fetch_iex_previous();
-  /* Verify were getting new data */
+    /* Verify were getting new data */
     /* check the date of the previous data */
-    let new_date = previous_data["FB"].date
+    let new_date = previous_data["FB"].date;
     /* check the date of last data */
-    let result = await Daily_Stock_Data_Model.get_symbol("FB")
-    let old_date = result.daily_data[result.daily_data.length-1]['date']
-     if(new_date == old_date) return
+    let result = await Daily_Stock_Data_Model.get_symbol("FB");
+    let old_date = result.daily_data[result.daily_data.length - 1]["date"];
+    if (new_date == old_date) return;
 
     var counter = -1;
     let symbol_list = Object.keys(previous_data);
@@ -283,8 +381,6 @@ class Stock_Data_Controller {
 const stock_data_controller = (module.exports = new Stock_Data_Controller());
 // stock_data_controller.fix_fuck_ups();
 
-
-
 // stock_data_controller.get_one_5y_data('A')
 
 /* Hits the /stock/symbol/log api for all symbols */
@@ -301,4 +397,3 @@ const stock_data_controller = (module.exports = new Stock_Data_Controller());
 
 /* Add All previous one-day daily data */
 // stock_data_controller.add_all_previous_daily_data_to_db()
-

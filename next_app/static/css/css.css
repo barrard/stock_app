@@ -65,9 +65,12 @@ body { height: 100%; }
 .min_height_full_screen{
   min-height: 100vh;
 }
-.vh_100{
-  height: 100%;
-  min-height: 100vh;
+.vh_30{
+  /* height: 10%; */
+  min-height: 30vh;
+}
+.vh_50{
+  min-height: 50vh;
 }
 .grid{
   display: grid;
@@ -102,6 +105,7 @@ body { height: 100%; }
 
 }
 .chart_canvas{
+  /* min-height: 30vh; */
   border:1px solid black;
 }
 .arrow-down {

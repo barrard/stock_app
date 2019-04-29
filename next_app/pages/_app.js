@@ -16,6 +16,7 @@ class MyApp extends App {
       logger.log('isServer')
       let _csrf = ctx.res.locals.csrf_token_function()
       let api_server = ctx.res.locals.API_SERVER
+      console.log(api_server)
       // logger.log(ctx.store)
       ctx.store.dispatch(set_api_server(api_server))
       ctx.store.dispatch(set_csrf(_csrf))

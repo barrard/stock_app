@@ -1208,14 +1208,14 @@ function (_App) {
       return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(next_app__WEBPACK_IMPORTED_MODULE_9__["Container"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 37
+          lineNumber: 38
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_10__["Provider"], {
         store: store,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 38
+          lineNumber: 39
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react_redux_toastr__WEBPACK_IMPORTED_MODULE_12___default.a, {
@@ -1230,13 +1230,13 @@ function (_App) {
         closeOnToastrClick: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 41
+          lineNumber: 42
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(Component, Object(_babel_runtime_corejs2_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_2__["default"])({}, pageProps, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 52
+          lineNumber: 53
         },
         __self: this
       })))));
@@ -1258,7 +1258,8 @@ function (_App) {
                 if (ctx.isServer) {
                   logger.log('isServer');
                   _csrf = ctx.res.locals.csrf_token_function();
-                  api_server = ctx.res.locals.API_SERVER; // logger.log(ctx.store)
+                  api_server = ctx.res.locals.API_SERVER;
+                  console.log(api_server); // logger.log(ctx.store)
 
                   ctx.store.dispatch(Object(_redux_actions_meta_actions_js__WEBPACK_IMPORTED_MODULE_14__["set_api_server"])(api_server));
                   ctx.store.dispatch(Object(_redux_actions_meta_actions_js__WEBPACK_IMPORTED_MODULE_14__["set_csrf"])(_csrf));

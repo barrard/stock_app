@@ -17618,10 +17618,17 @@ function (_React$Component) {
   }
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(Canvas_Chart, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this._ismounted = false;
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      this._ismounted = true;
       console.log("canvas mounted");
       this.make_canvas_full_screen();
+      window.addEventListener("resize", this.make_canvas_full_screen.bind(this));
       this.calc_MA_data();
     }
   }, {
@@ -17629,23 +17636,21 @@ function (_React$Component) {
     value: function componentDidUpdate(prevProps) {
       var _this$props = this.props,
           meta = _this$props.meta,
-          canvas_id = _this$props.canvas_id;
-      console.log("----------------componentDidUpdate=====================");
-      console.log(prevProps);
-      console.log(this.props);
+          canvas_id = _this$props.canvas_id; // console.log("----------------componentDidUpdate=====================");
+      // console.log(prevProps);
+      // console.log(this.props);
 
       if (!prevProps.meta.is_loading && meta.is_loading) {
-        console.log("new chart data is being loaded");
+        // console.log("new chart data is being loaded");
         this.run_spinner();
       } else if (!prevProps.meta.is_loading && !meta.is_loading && canvas_id != prevProps.canvas_id) {
         /* must have loaded a new chart?  Draw chart */
-        console.log("new  chart selected form chache");
+        // console.log("new  chart selected form chache");
         this.calc_MA_data();
       } else if (prevProps.meta.is_loading && !meta.is_loading) {
-        console.log("Done loading new data, draw chart righ meow");
+        // console.log("Done loading new data, draw chart righ meow");
         this.draw_chart();
-      } else {
-        console.log("render what is happeneing");
+      } else {// console.log("render what is happeneing");
       }
     }
   }, {
@@ -17658,8 +17663,8 @@ function (_React$Component) {
       }, 500);
       var chart_data = this.props.data.chart_data;
       var chart_data_length = chart_data.length;
-      var MA_data = add_MA_data_to_model(chart_data);
-      console.log(MA_data);
+      var MA_data = add_MA_data_to_model(chart_data); // console.log(MA_data);
+
       this.setState({
         MA_data: MA_data,
         chart_data_length: chart_data_length
@@ -17674,14 +17679,19 @@ function (_React$Component) {
       var _this3 = this;
 
       if (typeof window !== "undefined") {
+        if (!this._ismounted) return;
+        console.log(this);
         var dom_node = react_dom__WEBPACK_IMPORTED_MODULE_9___default.a.findDOMNode(this);
         var canvas_id = this.props.canvas_id;
-        var canvas_width = dom_node.parentElement.clientWidth * 0.95;
-        var canvas_height = dom_node.parentElement.clientHeight * 0.5;
-        this.setState({
-          canvas_width: canvas_width,
-          canvas_height: canvas_height
+        var canvas_width = dom_node.parentElement.clientWidth - 30; //15px padding left/right
+
+        var canvas_height = dom_node.parentElement.clientHeight - 15;
+        console.log({
+          canvas_height: canvas_height,
+          canvas_width: canvas_width
         });
+        this.state.canvas_width = canvas_width;
+        this.state.canvas_height = canvas_height;
         setTimeout(function () {
           var canvas = document.getElementById(_this3.props.canvas_id);
           var crosshair_overlay = document.getElementById("".concat(_this3.props.canvas_id, "_crosshair_overlay"));
@@ -17767,8 +17777,17 @@ function (_React$Component) {
           canvas = _this$state.canvas,
           chart_data_length = _this$state.chart_data_length; // if(!prev_clientX)return this.setState({prev_clientX:e.clientX})
 
-      console.log(chart_data_length);
-      var max_x_offset = chart_data_length * (candle_width + space_between_bars) - canvas.width; // console.log({x_offset})
+      console.log({
+        chart_data_length: chart_data_length
+      });
+      var max_x_offset = chart_data_length * (candle_width + space_between_bars) - canvas.width;
+      console.log({
+        max_x_offset: max_x_offset
+      });
+      console.log({
+        candle_width: candle_width,
+        space_between_bars: space_between_bars
+      }); // console.log({x_offset})
 
       e.preventDefault();
       x_offset = x_offset + e.movementX; //  console.log({x_offset})
@@ -17798,23 +17817,23 @@ function (_React$Component) {
           });
         },
         onMouseMove: this.draw_cross_hair,
-        className: "crosshair_overlay absolute",
+        className: "crosshair_overlay absolute ",
         id: "".concat(canvas_id, "_crosshair_overlay"),
         width: canvas_width,
         height: canvas_height,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 167
+          lineNumber: 185
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("canvas", {
-        className: "chart_canvas",
+        className: "chart_canvas ",
         id: canvas_id,
         width: canvas_width,
         height: canvas_height,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 176
+          lineNumber: 194
         },
         __self: this
       }));
@@ -17959,7 +17978,7 @@ function (_React$Component) {
       var volume_canvas_height = canvas.height * vol_canvas_share; //volume will be lower 20% (should be adjustable)
 
       var chart_height = canvas.height * (1 - vol_canvas_share);
-      var number_of_pennies = Math.floor((max_price - min_price) * 100);
+      var number_of_pennies = (max_price - min_price) * 100;
       var pennies_per_pixel = (number_of_pennies / chart_height).toFixed(3);
       var pixels_per_penny = (chart_height / number_of_pennies).toFixed(3);
       var pixels_per_vol = (volume_canvas_height / max_vol).toFixed(10); // console.log({
@@ -17987,7 +18006,7 @@ function (_React$Component) {
           MA_50 = _this$state$MA_data.MA_50,
           MA_200 = _this$state$MA_data.MA_200; // console.log(this.props);
 
-      if (!MA_20) return console.log('AHAHAAHAHA NOO MAAAAA');
+      if (!MA_20) return console.log("AHAHAAHAHA NOO MAAAAA");
       this.draw_MA(MA_20, "green", context, bar_offset);
       this.draw_MA(MA_50, "blue", context, bar_offset);
       this.draw_MA(MA_200, "red", context, bar_offset);
@@ -18205,9 +18224,10 @@ function (_React$Component) {
           meta = _this$props3.meta;
       var is_loading = meta.is_loading;
       return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        className: "vh_30",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 640
+          lineNumber: 664
         },
         __self: this
       }, canvas_width && canvas_height && this.render_canvas(canvas_id, canvas_width, canvas_height));
@@ -18304,7 +18324,6 @@ function add_MA_data_to_model(daily_data) {
   }
 
   var after_cal = new Date().getTime();
-  console.log("done with calcculating moving averages in ".concat(after_cal - before_cal, " miliseconds"));
   return MA_obj;
 }
 /* average all 4 price types */
@@ -18330,6 +18349,237 @@ function get_price_type_averages(array_of_price_data) {
 function slice_data(start, end, array) {
   return array.slice(start, end);
 }
+
+/***/ }),
+
+/***/ "./components/charts/Company_Stats.js":
+/*!********************************************!*\
+  !*** ./components/charts/Company_Stats.js ***!
+  \********************************************/
+/*! exports provided: Company_Stats */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Company_Stats", function() { return Company_Stats; });
+/* harmony import */ var _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/parse-float */ "../node_modules/@babel/runtime-corejs2/core-js/parse-float.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+var _jsxFileName = "/home/dave/code/next_stocks/next_app/components/charts/Company_Stats.js";
+
+var Company_Stats = function Company_Stats(_ref) {
+  var stats = _ref.stats;
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row ",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 3
+    },
+    __self: this
+  }, !stats && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 5
+    },
+    __self: this
+  }, "LOADING"), stats && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 ",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 8
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row ",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 9
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 flex_center",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 10
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Company_Name, {
+    name: stats.companyName,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 11
+    },
+    __self: this
+  }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row ",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 14
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-3 flex_center",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 15
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 16
+    },
+    __self: this
+  }, "Current Price"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
+    price: stats.week52high,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 17
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-3 flex_center",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 19
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 20
+    },
+    __self: this
+  }, "52 wk high"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
+    price: stats.week52high,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 21
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-3 flex_center",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 23
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 24
+    },
+    __self: this
+  }, "52 wk low"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
+    price: stats.week52low,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 25
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-3 flex_center",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 27
+    },
+    __self: this
+  }))));
+};
+
+var Company_Name = function Company_Name(_ref2) {
+  var name = _ref2.name;
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
+    className: "company_name",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 37
+    },
+    __self: this
+  }, name);
+};
+
+var Volume = function Volume(_ref3) {
+  var vol = _ref3.vol;
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "ticker_vol",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 40
+    },
+    __self: this
+  }, vol.toLocaleString("en-US"));
+};
+
+var Price = function Price(_ref4) {
+  var price = _ref4.price;
+  console.log(price);
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "ticker_price",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 46
+    },
+    __self: this
+  }, "$", _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()(price).toFixed(2).toLocaleString("en-US"));
+};
+
+var Percent_Change = function Percent_Change(_ref5) {
+  var precent_change = _ref5.precent_change;
+  var class_name;
+  if (precent_change > 0) class_name = "percentage_up";
+  if (precent_change < 0) class_name = "percentage_down";
+  if (precent_change == 0) class_name = "percentage_neutral";
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: class_name,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 61
+    },
+    __self: this
+  }, "".concat(_babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()((precent_change * 100).toLocaleString("en-US")).toFixed(2), "%"));
+};
+
+var Symbol = function Symbol(_ref6) {
+  var symbol = _ref6.symbol;
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "ticker_symbol",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 69
+    },
+    __self: this
+  }, symbol);
+};
+
+/***/ }),
+
+/***/ "./components/charts/Stock_Quote.js":
+/*!******************************************!*\
+  !*** ./components/charts/Stock_Quote.js ***!
+  \******************************************/
+/*! exports provided: Stock_Quote */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Stock_Quote", function() { return Stock_Quote; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _jsxFileName = "/home/dave/code/next_stocks/next_app/components/charts/Stock_Quote.js";
+
+var Stock_Quote = function Stock_Quote(_ref) {
+  var book_data = _ref.book_data;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 4
+    },
+    __self: this
+  }, "Book Data");
+};
 
 /***/ }),
 
@@ -18377,16 +18627,16 @@ function _fetch_sector_data() {
   _fetch_sector_data = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
   /*#__PURE__*/
   _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee(sector, props) {
-    var meta, dispatch, router, iex_server, sector_data_json, sector_data;
+    var meta, dispatch, router, api_server, sector_data_json, sector_data;
     return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             meta = props.meta, dispatch = props.dispatch, router = props.router;
-            iex_server = meta.iex_server;
+            api_server = meta.api_server;
             router.push("/sector?sector=".concat(encodeURIComponent(sector)));
             _context.next = 5;
-            return fetch("\n  ".concat(iex_server, "/stock/market/collection/sector?collectionName=").concat(sector, "\n  "));
+            return fetch("\n  ".concat(api_server, "/stock/market/collection/sector?collectionName=").concat(sector, "\n  "));
 
           case 5:
             sector_data_json = _context.sent;
@@ -18416,7 +18666,7 @@ function _fetch_selected_chart_data() {
   _fetch_selected_chart_data = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
   /*#__PURE__*/
   _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee2(symbol, props) {
-    var meta, dispatch, router, iex_server, book_data_json, chart_data_json, chart_logo_json, chart_stats_json, chart_larget_trades_json, chart_larget_trades, chart_stats, chart_logo, book_data, chart_data;
+    var meta, dispatch, router, api_server, book_data_json, chart_data_json, chart_logo_json, chart_stats_json, chart_larget_trades_json, chart_larget_trades, chart_stats, chart_logo, book_data, chart_data;
     return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -18426,57 +18676,63 @@ function _fetch_selected_chart_data() {
 
             dispatch(Object(_redux_actions_meta_actions_js__WEBPACK_IMPORTED_MODULE_3__["is_loading"])(true));
             if (router) router.push("/chart?symbol=".concat(symbol));
-            iex_server = meta.iex_server;
+            api_server = meta.api_server;
             _context2.next = 6;
-            return fetch("  ".concat(iex_server, "/stock/").concat(symbol, "/book\n  "));
+            return fetch("  \n    ".concat(api_server, "/stock/").concat(symbol, "/book\n  "));
 
           case 6:
             book_data_json = _context2.sent;
-            _context2.next = 9;
-            return fetch("  ".concat(iex_server, "/stock/").concat(symbol, "/chart/5y\n  "));
+            console.log("done fetch");
+            _context2.next = 10;
+            return fetch("  ".concat(api_server, "/stock/").concat(symbol, "/chart/5y\n  "));
 
-          case 9:
+          case 10:
             chart_data_json = _context2.sent;
-            _context2.next = 12;
-            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/logo\n  "));
+            console.log("done fetch");
+            _context2.next = 14;
+            return fetch("\n  ".concat(api_server, "/stock/").concat(symbol, "/logo\n  "));
 
-          case 12:
+          case 14:
             chart_logo_json = _context2.sent;
-            _context2.next = 15;
-            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/stats"));
-
-          case 15:
-            chart_stats_json = _context2.sent;
+            console.log("done fetch");
             _context2.next = 18;
-            return fetch("\n  ".concat(iex_server, "/stock/").concat(symbol, "/largest-trades"));
+            return fetch("\n    ".concat(api_server, "/stock/").concat(symbol, "/stats\n  "));
 
           case 18:
+            chart_stats_json = _context2.sent;
+            console.log('done fetch');
+            _context2.next = 22;
+            return fetch("\n    ".concat(api_server, "/stock/").concat(symbol, "/largest-trades\n  "));
+
+          case 22:
             chart_larget_trades_json = _context2.sent;
-            _context2.next = 21;
+            console.log("done fetch");
+            _context2.next = 26;
             return chart_larget_trades_json.json();
 
-          case 21:
+          case 26:
             chart_larget_trades = _context2.sent;
-            _context2.next = 24;
+            _context2.next = 29;
             return chart_stats_json.json();
 
-          case 24:
+          case 29:
             chart_stats = _context2.sent;
-            _context2.next = 27;
+            _context2.next = 32;
             return chart_logo_json.json();
 
-          case 27:
+          case 32:
             chart_logo = _context2.sent;
-            _context2.next = 30;
+            _context2.next = 35;
             return book_data_json.json();
 
-          case 30:
+          case 35:
             book_data = _context2.sent;
-            _context2.next = 33;
+            _context2.next = 38;
             return chart_data_json.json();
 
-          case 33:
+          case 38:
             chart_data = _context2.sent;
+            console.log('done fetch');
             dispatch(Object(_redux_actions_stock_actions_js__WEBPACK_IMPORTED_MODULE_4__["add_chart_data"])(Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, symbol, {
               book_data: book_data,
               chart_data: chart_data,
@@ -18493,7 +18749,7 @@ function _fetch_selected_chart_data() {
               chart_larget_trades: chart_larget_trades
             });
 
-          case 37:
+          case 43:
           case "end":
             return _context2.stop();
         }
@@ -18707,6 +18963,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../layouts/Main_Layout.js */ "./layouts/Main_Layout.js");
 /* harmony import */ var _components_charts_chart_data_utils_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/charts/chart_data_utils.js */ "./components/charts/chart_data_utils.js");
 /* harmony import */ var _components_charts_Canvas_Chart_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/charts/Canvas_Chart.js */ "./components/charts/Canvas_Chart.js");
+/* harmony import */ var _components_charts_Company_Stats_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/charts/Company_Stats.js */ "./components/charts/Company_Stats.js");
+/* harmony import */ var _components_charts_Stock_Quote_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/charts/Stock_Quote.js */ "./components/charts/Stock_Quote.js");
 
 
 
@@ -18715,6 +18973,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _jsxFileName = "/home/dave/code/next_stocks/next_app/pages/chart.js";
+
+
 
 
 
@@ -18749,6 +19009,22 @@ function (_React$Component) {
       var _this$props = this.props,
           symbol = _this$props.symbol,
           stock_data = _this$props.stock_data;
+      var book_data, chart_logo, chart_stats, chart_largest_trades;
+
+      if (stock_data.charts[this.props.symbol]) {
+        var _stock_data$charts$th = stock_data.charts[this.props.symbol],
+            book_data = _stock_data$charts$th.book_data,
+            chart_logo = _stock_data$charts$th.chart_logo,
+            chart_stats = _stock_data$charts$th.chart_stats,
+            chart_largest_trades = _stock_data$charts$th.chart_largest_trades;
+      }
+
+      console.log({
+        book_data: book_data,
+        chart_logo: chart_logo,
+        chart_stats: chart_stats,
+        chart_largest_trades: chart_largest_trades
+      });
       console.log({
         symbol: symbol,
         stock_data: stock_data
@@ -18756,48 +19032,55 @@ function (_React$Component) {
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_12__["default"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 40
+          lineNumber: 48
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "p-5",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 41
+          lineNumber: 49
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "row flex_center",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 42
+          lineNumber: 50
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "col flex_center",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 43
+          lineNumber: 51
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h1", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 44
+          lineNumber: 52
         },
         __self: this
-      }, symbol))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "row flex_center",
+      }, symbol), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Stock_Logo, {
+        logo: chart_logo,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 47
+          lineNumber: 53
+        },
+        __self: this
+      }))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "row ",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 56
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "col-sm-12 vh_100",
+        className: "col-sm-6 vh_50",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 48
+          lineNumber: 57
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_charts_Canvas_Chart_js__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -18805,7 +19088,28 @@ function (_React$Component) {
         data: stock_data.charts[this.props.symbol],
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 49
+          lineNumber: 58
+        },
+        __self: this
+      })), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "col-sm-6 ",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 63
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_charts_Company_Stats_js__WEBPACK_IMPORTED_MODULE_15__["Company_Stats"], {
+        stats: chart_stats,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 64
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_charts_Stock_Quote_js__WEBPACK_IMPORTED_MODULE_16__["Stock_Quote"], {
+        book_data: book_data,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 67
         },
         __self: this
       })))));
@@ -18882,6 +19186,28 @@ function mapStateToProps(state) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_8__["connect"])(mapStateToProps)(Object(next_router__WEBPACK_IMPORTED_MODULE_10__["withRouter"])(Account_Profile)));
+
+var Stock_Logo = function Stock_Logo(_ref) {
+  var logo = _ref.logo;
+  if (!logo) return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 86
+    },
+    __self: this
+  });
+  var url = logo ? logo.url : "/static/trade_post_imgs/upload_0b696dc6c946a6834d7e7ba8f21c13a9";
+  return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("img", {
+    width: "100px",
+    src: url,
+    alt: "logo",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 88
+    },
+    __self: this
+  });
+};
 
 /***/ }),
 

@@ -28,7 +28,7 @@ class Trade_Posts extends React.Component {
   static async getInitialProps(ctx) {
     console.log("TRADE_POSTS");
     try {
-      let json_posts = await fetch("http://localhost:3000/trade_posts");
+      let json_posts = await fetch("http://localhost:3003/trade_posts");
       let { posts } = await json_posts.json();
       console.log({ posts });
       return { posts };

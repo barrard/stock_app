@@ -21,7 +21,7 @@ client.on('error', function (err) {
      }else{
        logger.log('Data found')
        let data = JSON.parse(resp)
-        logger.log(data)
+        // logger.log(data)
        return data
      }
     
