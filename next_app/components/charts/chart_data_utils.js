@@ -53,6 +53,11 @@ export async function fetch_selected_chart_data(symbol, props) {
   let chart_stats_json = await fetch(`
     ${api_server}/stock/${symbol}/stats
   `);
+  console.log("done fetch");
+
+  let company_json = await fetch(`
+    ${api_server}/stock/${symbol}/company
+  `);
   console.log('done fetch')
   let chart_larget_trades_json = await fetch(`
     ${api_server}/stock/${symbol}/largest-trades
@@ -60,6 +65,7 @@ export async function fetch_selected_chart_data(symbol, props) {
   console.log("done fetch");
 
   let chart_larget_trades = await chart_larget_trades_json.json();
+  let company = await company_json.json();
   let chart_stats = await chart_stats_json.json();
   let chart_logo = await chart_logo_json.json();
   let book_data = await book_data_json.json();
@@ -69,6 +75,7 @@ export async function fetch_selected_chart_data(symbol, props) {
   dispatch(
     add_chart_data({
       [symbol]: {
+        company,
         book_data,
         chart_data,
         chart_logo,

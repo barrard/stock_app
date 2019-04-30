@@ -154,67 +154,82 @@ class Stock_Data_Controller {
   Controllers for caching 24-hr data
 
 */
-/* LARGET TRADE */
-async get_largest_trades(req, res, next) {
-  let symbol = req.params.symbol.toUpperCase();
-  logger.log(symbol);
-  var largest_trades = await redis.get(`${symbol}_largest_trades`);
-  if (!largest_trades) {
-    largest_trades = await rp(`  
+  /* LARGET TRADE */
+  async get_largest_trades(req, res, next) {
+    let symbol = req.params.symbol.toUpperCase();
+    logger.log(symbol);
+    var largest_trades = await redis.get(`${symbol}_largest_trades`);
+    if (!largest_trades) {
+      largest_trades = await rp(`  
     ${iex_server}/stock/${symbol}/largest-trades
   `);
-    //  stats = await stats_json.json();
-    redis.set(`${symbol}_largest_trades`, largest_trades);
-  }
 
-  res.send(largest_trades);
-}
-/* SECOR DATA */
-async get_sector_data(req, res, next) {
-  let sector = req.query.collectionName
-  logger.log(sector);
-  var sector_data = await redis.get(`${sector}_data`);
-  if (!sector_data) {
-    sector_data = await rp(`  
+      redis.set(`${symbol}_largest_trades`, largest_trades);
+    }
+
+    res.send(largest_trades);
+  }
+  /* SECOR DATA */
+  async get_sector_data(req, res, next) {
+    let sector = req.query.collectionName;
+    logger.log(sector);
+    var sector_data = await redis.get(`${sector}_data`);
+    if (!sector_data) {
+      sector_data = await rp(`  
     ${iex_server}/stock/market/collection/sector?collectionName=${sector}
   `);
-    //  stats = await stats_json.json();
-    redis.set(`${sector}_data`, sector_data);
-  }
 
-  res.send(sector_data);
-}
-/* GET STATS */
-async get_stats(req, res, next) {
-  let symbol = req.params.symbol.toUpperCase();
-  logger.log(symbol);
-  var stats = await redis.get(`${symbol}_stats`);
-  if (!stats) {
-    stats = await rp(`  
+      redis.set(`${sector}_data`, sector_data);
+    }
+
+    res.send(sector_data);
+  }
+  /* GET COMPANY DATA */
+  async get_company(req, res, next) {
+    let symbol = req.params.symbol.toUpperCase();
+    logger.log(symbol);
+    var company = await redis.get(`${symbol}_company`);
+    if (!company) {
+      company = await rp(`  
+    ${iex_server}/stock/${symbol}/company
+  `);
+
+      redis.set(`${symbol}_company`, company);
+    }
+
+    res.send(company);
+  }
+  /* GET STATS */
+  async get_stats(req, res, next) {
+    let symbol = req.params.symbol.toUpperCase();
+    logger.log(symbol);
+    var stats = await redis.get(`${symbol}_stats`);
+    if (!stats) {
+      stats = await rp(`  
     ${iex_server}/stock/${symbol}/stats
   `);
-    //  stats = await stats_json.json();
-    redis.set(`${symbol}_stats`, stats);
+
+      redis.set(`${symbol}_stats`, stats);
+    }
+
+    res.send(stats);
   }
+  /* GET CHART 5Y */
 
-  res.send(stats);
-}
-/* GET CHART 5Y */
-
-async get_chart_5y(req, res, next) {
-  let symbol = req.params.symbol.toUpperCase();
-  logger.log(symbol);
-  var chart_5y = await redis.get(`${symbol}_chart_5y`);
-  if (!chart_5y) {
-    chart_5y = await rp(`  
+  async get_chart_5y(req, res, next) {
+    let symbol = req.params.symbol.toUpperCase();
+    logger.log(symbol);
+    var chart_5y = await redis.get(`${symbol}_chart_5y`);
+    if (!chart_5y) {
+      chart_5y = await rp(`  
     ${iex_server}/stock/${symbol}/chart/5y
   `);
-    //  chart_5y = await chart_5y_json.json();
-    redis.set(`${symbol}_chart_5y`, chart_5y);
-  }
 
-  res.send(chart_5y);
-}
+      redis.set(`${symbol}_chart_5y`, chart_5y);
+    }
+
+    res.send(chart_5y);
+  }
   /* BOOK DATA */
   async get_book_data(req, res, next) {
     let symbol = req.params.symbol.toUpperCase();
@@ -224,28 +239,28 @@ async get_chart_5y(req, res, next) {
       book_data = await rp(`  
       ${iex_server}/stock/${symbol}/book
     `);
-      //  book_data = await book_data_json.json();
+
       redis.set(`${symbol}_book_data`, book_data);
     }
 
     res.send(book_data);
   }
 
-    /* LOGO URL */
-    async get_logo_url(req, res, next) {
-      let symbol = req.params.symbol.toUpperCase();
-      logger.log(symbol);
-      var logo_url = await redis.get(`${symbol}_logo_url`);
-      if (!logo_url) {
-        logo_url = await rp(`  
+  /* LOGO URL */
+  async get_logo_url(req, res, next) {
+    let symbol = req.params.symbol.toUpperCase();
+    logger.log(symbol);
+    var logo_url = await redis.get(`${symbol}_logo_url`);
+    if (!logo_url) {
+      logo_url = await rp(`  
         ${iex_server}/stock/${symbol}/logo
       `);
-        //  logo_url = await logo_url_json.json();
-        redis.set(`${symbol}_logo_url`, logo_url);
-      }
-  
-      res.send(logo_url);
+
+      redis.set(`${symbol}_logo_url`, logo_url);
     }
+
+    res.send(logo_url);
+  }
 
   /* Helper functions */
   iex_api() {
@@ -301,7 +316,9 @@ async get_chart_5y(req, res, next) {
     /* check the date of last data */
     let result = await Daily_Stock_Data_Model.get_symbol("FB");
     let old_date = result.daily_data[result.daily_data.length - 1]["date"];
-    if (new_date == old_date) return;
+    if (new_date == old_date) return logger.log("data still the same");
+
+    return logger.log("test complete?");
 
     var counter = -1;
     let symbol_list = Object.keys(previous_data);

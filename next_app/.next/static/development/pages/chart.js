@@ -17152,12 +17152,26 @@ function (_React$Component) {
         className: "filtered_stock_list",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 119
+          lineNumber: 118
         },
         __self: this
-      }, filtered_stock_list.map(function (data, index) {
+      }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_11___default.a.Fragment, null, filtered_stock_list.length == 0 && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", {
+        className: "filtered_stock_list_item",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 121
+        },
+        __self: this
+      }, "Sorry there aren't any stocks matching", " ", react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("span", {
+        className: "highlight_search",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 123
+        },
+        __self: this
+      }, search_symbol)), filtered_stock_list.map(function (data, index) {
         return _this3.filtered_stock_list_item(data, index, search_symbol);
-      }));
+      })));
     }
     /* Items that make the list of filtered stocks, on click event resets some things */
 
@@ -17174,21 +17188,21 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 130
+          lineNumber: 137
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("span", {
         dangerouslySetInnerHTML: this.highlight_search_letters(data.symbol, search),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 135
+          lineNumber: 142
         },
         __self: this
       }), " - ", react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("span", {
         dangerouslySetInnerHTML: this.highlight_search_letters(data.name, search),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 142
+          lineNumber: 149
         },
         __self: this
       }));
@@ -17224,7 +17238,7 @@ function (_React$Component) {
         className: "navbar navbar-expand-lg navbar-light bg-light relative",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 188
+          lineNumber: 195
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_15___default.a, {
@@ -17233,35 +17247,35 @@ function (_React$Component) {
         as: "/",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 189
+          lineNumber: 196
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
         className: "navbar-brand",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 190
+          lineNumber: 197
         },
         __self: this
       }, "Home")), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("ul", {
         className: "nav-bar-links",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 205
+          lineNumber: 212
         },
         __self: this
       }, !is_loggedin && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Register_Login_Links, {
         pathname: pathname,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 206
+          lineNumber: 213
         },
         __self: this
       }), is_loggedin && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Logout_Link, {
         pathname: pathname,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 207
+          lineNumber: 214
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Charts_Dropdown, {
@@ -17269,13 +17283,13 @@ function (_React$Component) {
         charts: this.props.stock_data.charts,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 209
+          lineNumber: 216
         },
         __self: this
       }), is_loggedin && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(MA_Analysis_Link, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 213
+          lineNumber: 220
         },
         __self: this
       })), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Navbar_Search
@@ -17295,7 +17309,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 215
+          lineNumber: 222
         },
         __self: this
       }), this.props.meta.show_filter_list && this.Filtered_Stock_List({
@@ -17331,7 +17345,7 @@ var Navbar_Search = function Navbar_Search(_ref2) {
     className: "form-inline my-2 my-lg-0 absolute right_10_px z_index_100",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 250
+      lineNumber: 257
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("input", {
@@ -17346,7 +17360,7 @@ var Navbar_Search = function Navbar_Search(_ref2) {
     value: search_symbol,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 251
+      lineNumber: 258
     },
     __self: this
   }));
@@ -17359,7 +17373,7 @@ var Charts_Dropdown = function Charts_Dropdown(_ref3) {
     className: "nav-item dropdown margin_right_4em",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 264
+      lineNumber: 271
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
@@ -17372,7 +17386,7 @@ var Charts_Dropdown = function Charts_Dropdown(_ref3) {
     "aria-expanded": "false",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 265
+      lineNumber: 272
     },
     __self: this
   }, "Charts"), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", {
@@ -17380,7 +17394,7 @@ var Charts_Dropdown = function Charts_Dropdown(_ref3) {
     "aria-labelledby": "navbarDropdown",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 276
+      lineNumber: 283
     },
     __self: this
   }, charts && _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(charts).map(function (symbol, index) {
@@ -17389,28 +17403,28 @@ var Charts_Dropdown = function Charts_Dropdown(_ref3) {
       key: index,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 279
+        lineNumber: 286
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
       className: "stock-list-dropdown",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 280
+        lineNumber: 287
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("p", {
       className: "justify_center zero_margin",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 281
+        lineNumber: 288
       },
       __self: this
     }, symbol), index + 1 != _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(charts).length && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", {
       className: "dropdown-divider",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 283
+        lineNumber: 290
       },
       __self: this
     })));
@@ -17425,7 +17439,7 @@ var MA_Analysis_Link = function MA_Analysis_Link(_ref4) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 293
+      lineNumber: 300
     },
     __self: this
   });
@@ -17439,7 +17453,7 @@ var Logout_Link = function Logout_Link(_ref5) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 302
+      lineNumber: 309
     },
     __self: this
   }), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Navbar_Links, {
@@ -17449,7 +17463,7 @@ var Logout_Link = function Logout_Link(_ref5) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 308
+      lineNumber: 315
     },
     __self: this
   }));
@@ -17463,7 +17477,7 @@ var Register_Login_Links = function Register_Login_Links(_ref6) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 319
+      lineNumber: 326
     },
     __self: this
   }), react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(Navbar_Links, {
@@ -17472,7 +17486,7 @@ var Register_Login_Links = function Register_Login_Links(_ref6) {
     pathname: pathname,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 321
+      lineNumber: 328
     },
     __self: this
   }));
@@ -17487,7 +17501,7 @@ var Navbar_Links = function Navbar_Links(_ref7) {
     className: "nav-item",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 328
+      lineNumber: 335
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_15___default.a, {
@@ -17495,35 +17509,35 @@ var Navbar_Links = function Navbar_Links(_ref7) {
     href: path,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 329
+      lineNumber: 336
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
     className: "".concat(pathname == path ? "active " : " ", "\" nav-link dropdown-item\""),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 330
+      lineNumber: 337
     },
     __self: this
   }, name))), nofetch && react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("li", {
     className: "nav-item",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 342
+      lineNumber: 349
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_15___default.a, {
     href: path,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 343
+      lineNumber: 350
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("a", {
     className: "".concat(pathname == path ? "active " : " ", "\" nav-link dropdown-item\""),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 344
+      lineNumber: 351
     },
     __self: this
   }, name))));
@@ -17598,7 +17612,7 @@ function (_React$Component) {
       context: {},
       candle_width: 3,
       space_between_bars: 0.5,
-      x_offset: 100,
+      x_offset: 0,
       data_loaded: false,
       crosshair_overlay: "",
       volume_canvas: "",
@@ -17776,27 +17790,16 @@ function (_React$Component) {
           space_between_bars = _this$state.space_between_bars,
           canvas = _this$state.canvas,
           chart_data_length = _this$state.chart_data_length; // if(!prev_clientX)return this.setState({prev_clientX:e.clientX})
+      // console.log(chart_data_length);
 
-      console.log({
-        chart_data_length: chart_data_length
-      });
-      var max_x_offset = chart_data_length * (candle_width + space_between_bars) - canvas.width;
-      console.log({
-        max_x_offset: max_x_offset
-      });
-      console.log({
-        candle_width: candle_width,
-        space_between_bars: space_between_bars
-      }); // console.log({x_offset})
+      var max_x_offset = chart_data_length * (candle_width + space_between_bars) - canvas.width; // console.log({x_offset})
 
       e.preventDefault();
       x_offset = x_offset + e.movementX; //  console.log({x_offset})
 
       if (x_offset < 0) x_offset = 0;
-      if (x_offset > max_x_offset) x_offset = max_x_offset;
-      console.log({
-        x_offset: x_offset
-      });
+      if (x_offset > max_x_offset) x_offset = max_x_offset; // console.log({ x_offset });
+
       this.state.x_offset = x_offset;
       this.draw_chart();
     }
@@ -17823,7 +17826,7 @@ function (_React$Component) {
         height: canvas_height,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 185
+          lineNumber: 183
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("canvas", {
@@ -17833,7 +17836,7 @@ function (_React$Component) {
         height: canvas_height,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 194
+          lineNumber: 192
         },
         __self: this
       }));
@@ -17940,8 +17943,8 @@ function (_React$Component) {
           space_between_bars = _this$state3.space_between_bars,
           x_offset = _this$state3.x_offset,
           chart_data_length = _this$state3.chart_data_length;
-      if (!canvas) return console.log("no canvas");
-      console.log("DRAW CART");
+      if (!canvas) return console.log("no canvas"); // console.log("DRAW CART");
+
       var context = canvas.getContext("2d", false);
       clear_canvas(context, chart_style);
       /* Figure out how many bars are going to fin in the visible space */
@@ -17951,7 +17954,7 @@ function (_React$Component) {
 
       var bar_offset = x_offset / (candle_width + space_between_bars);
 
-      if (bar_offset == 0) {
+      if (bar_offset < 1) {
         chart_data = chart_data.slice(candle_count * -1);
       } else {
         var end_of_data = chart_data_length - bar_offset - candle_count;
@@ -18187,7 +18190,7 @@ function (_React$Component) {
       var data_length = chart_data_length;
       var new_data; // let bar_offset = x_offset / (candle_width+space_between_bars)
 
-      if (bar_offset == 0) {
+      if (bar_offset < 1) {
         new_data = MA_data.slice(candle_count * -1);
       } else {
         var end_of_data = data_length - bar_offset - candle_count;
@@ -18227,7 +18230,7 @@ function (_React$Component) {
         className: "vh_30",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 664
+          lineNumber: 661
         },
         __self: this
       }, canvas_width && canvas_height && this.render_canvas(canvas_id, canvas_width, canvas_height));
@@ -18370,164 +18373,428 @@ __webpack_require__.r(__webpack_exports__);
 var _jsxFileName = "/home/dave/code/next_stocks/next_app/components/charts/Company_Stats.js";
 
 var Company_Stats = function Company_Stats(_ref) {
-  var stats = _ref.stats;
+  var stats = _ref.stats,
+      quote = _ref.quote,
+      company = _ref.company,
+      set_active_tab = _ref.set_active_tab,
+      active_tab = _ref.active_tab;
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "row ",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 3
-    },
-    __self: this
-  }, !stats && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 5
-    },
-    __self: this
-  }, "LOADING"), stats && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-sm-12 ",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 8
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "row ",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 9
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-sm-12 flex_center",
+  }, !stats && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
     __source: {
       fileName: _jsxFileName,
       lineNumber: 10
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Company_Name, {
-    name: stats.companyName,
+  }, "LOADING"), stats && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 ",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 11
+      lineNumber: 12
     },
     __self: this
-  }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "row ",
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Stock_Data_Tabs, {
+    set_active_tab: set_active_tab,
+    active_tab: active_tab,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 14
+      lineNumber: 13
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-sm-3 flex_center",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 15
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 16
-    },
-    __self: this
-  }, "Current Price"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
-    price: stats.week52high,
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "tab-content",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 17
     },
     __self: this
-  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-sm-3 flex_center",
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "tab-pane show active ",
+    id: "info",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 18
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Company_Data, {
+    company: company,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 19
     },
     __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "tab-pane  ",
+    id: "price",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 22
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Historical_Price_Data, {
+    stats: stats,
+    quote: quote,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 23
+    },
+    __self: this
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Todays_Price_data, {
+    quote: quote,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 24
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "tab-pane  ",
+    id: "book",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 26
+    },
+    __self: this
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 20
+      lineNumber: 27
+    },
+    __self: this
+  }, "BOOK")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "tab-pane  ",
+    id: "news",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 29
+    },
+    __self: this
+  }, "news"))));
+};
+
+var Stock_Data_Tabs = function Stock_Data_Tabs(_ref2) {
+  var set_active_tab = _ref2.set_active_tab,
+      active_tab = _ref2.active_tab;
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
+    className: "nav nav-tabs",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 40
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
+    onClick: function onClick() {
+      return set_active_tab("info");
+    },
+    className: "nav-item",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 41
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    href: "#info",
+    "data-toggle": "tab",
+    className: "".concat(active_tab == "info" ? "active" : " ", " nav-link  clickable"),
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 42
+    },
+    __self: this
+  }, "Info")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
+    onClick: function onClick() {
+      return set_active_tab("price");
+    },
+    className: "nav-item",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 52
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    href: "#price",
+    "data-toggle": "tab",
+    className: "".concat(active_tab == "price" ? "active" : " ", " nav-link clickable"),
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 53
+    },
+    __self: this
+  }, "Price")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
+    onClick: function onClick() {
+      return set_active_tab("book");
+    },
+    className: "nav-item",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 63
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    href: "#book",
+    "data-toggle": "tab",
+    className: "".concat(active_tab == "book" ? "active" : " ", " nav-link clickable"),
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 64
+    },
+    __self: this
+  }, "Book")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
+    onClick: function onClick() {
+      return set_active_tab("news");
+    },
+    className: "nav-item",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 74
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    href: "#news",
+    "data-toggle": "tab",
+    className: "".concat(active_tab == "news" ? "active" : " ", " nav-link clickable"),
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 75
+    },
+    __self: this
+  }, "News")));
+};
+
+var Company_Data = function Company_Data(_ref3) {
+  var company = _ref3.company;
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 90
+    },
+    __self: this
+  }, "cocopo");
+};
+
+var Historical_Price_Data = function Historical_Price_Data(_ref4) {
+  var stats = _ref4.stats,
+      quote = _ref4.quote;
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row flex_center",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 95
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 col-md-3 stats_box p-3",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 96
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "underline whitesmoke",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 97
+    },
+    __self: this
+  }, "Current"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
+    price: stats.week52high,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 99
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 col-md-3 stats_box p-3",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 101
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "underline whitesmoke",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 102
     },
     __self: this
   }, "52 wk high"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
     price: stats.week52high,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 21
+      lineNumber: 103
     },
     __self: this
   })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-sm-3 flex_center",
+    className: "col-sm-6 col-md-3 stats_box p-3",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23
+      lineNumber: 105
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "underline whitesmoke",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24
+      lineNumber: 106
     },
     __self: this
   }, "52 wk low"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
     price: stats.week52low,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25
+      lineNumber: 107
     },
     __self: this
   })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-sm-3 flex_center",
+    className: "col-sm-6 col-md-3 stats_box p-3",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27
+      lineNumber: 109
     },
     __self: this
-  }))));
-};
-
-var Company_Name = function Company_Name(_ref2) {
-  var name = _ref2.name;
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
-    className: "company_name",
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "underline whitesmoke",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 37
+      lineNumber: 110
     },
     __self: this
-  }, name);
+  }, "ytd chng."), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Percent_Change, {
+    precent_change: quote.ytdChange,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 111
+    },
+    __self: this
+  })));
 };
 
-var Volume = function Volume(_ref3) {
-  var vol = _ref3.vol;
+var Todays_Price_data = function Todays_Price_data(_ref5) {
+  var quote = _ref5.quote;
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "row flex_center",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 119
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 col-md-3 stats_box p-3",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 120
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "underline whitesmoke",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 121
+    },
+    __self: this
+  }, "Open"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
+    price: quote.open,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 122
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 col-md-3 stats_box p-3",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 124
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "underline whitesmoke",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 125
+    },
+    __self: this
+  }, "High"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
+    price: quote.high,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 126
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 col-md-3 stats_box p-3",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 128
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "underline whitesmoke",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 129
+    },
+    __self: this
+  }, "Low"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
+    price: quote.low,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 130
+    },
+    __self: this
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 col-md-3 stats_box p-3",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 132
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "underline whitesmoke",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 133
+    },
+    __self: this
+  }, "Close"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Price, {
+    price: quote.close,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 134
+    },
+    __self: this
+  })));
+};
+
+var Volume = function Volume(_ref6) {
+  var vol = _ref6.vol;
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
     className: "ticker_vol",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 40
+      lineNumber: 141
     },
     __self: this
   }, vol.toLocaleString("en-US"));
 };
 
-var Price = function Price(_ref4) {
-  var price = _ref4.price;
-  console.log(price);
+var Price = function Price(_ref7) {
+  var price = _ref7.price;
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
     className: "ticker_price",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 46
+      lineNumber: 146
     },
     __self: this
   }, "$", _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()(price).toFixed(2).toLocaleString("en-US"));
 };
 
-var Percent_Change = function Percent_Change(_ref5) {
-  var precent_change = _ref5.precent_change;
+var Percent_Change = function Percent_Change(_ref8) {
+  var precent_change = _ref8.precent_change;
   var class_name;
   if (precent_change > 0) class_name = "percentage_up";
   if (precent_change < 0) class_name = "percentage_down";
@@ -18536,49 +18803,22 @@ var Percent_Change = function Percent_Change(_ref5) {
     className: class_name,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 61
+      lineNumber: 161
     },
     __self: this
   }, "".concat(_babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()((precent_change * 100).toLocaleString("en-US")).toFixed(2), "%"));
 };
 
-var Symbol = function Symbol(_ref6) {
-  var symbol = _ref6.symbol;
+var Symbol = function Symbol(_ref9) {
+  var symbol = _ref9.symbol;
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
     className: "ticker_symbol",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 69
+      lineNumber: 169
     },
     __self: this
   }, symbol);
-};
-
-/***/ }),
-
-/***/ "./components/charts/Stock_Quote.js":
-/*!******************************************!*\
-  !*** ./components/charts/Stock_Quote.js ***!
-  \******************************************/
-/*! exports provided: Stock_Quote */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Stock_Quote", function() { return Stock_Quote; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "/home/dave/code/next_stocks/next_app/components/charts/Stock_Quote.js";
-
-var Stock_Quote = function Stock_Quote(_ref) {
-  var book_data = _ref.book_data;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 4
-    },
-    __self: this
-  }, "Book Data");
 };
 
 /***/ }),
@@ -18666,7 +18906,7 @@ function _fetch_selected_chart_data() {
   _fetch_selected_chart_data = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
   /*#__PURE__*/
   _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee2(symbol, props) {
-    var meta, dispatch, router, api_server, book_data_json, chart_data_json, chart_logo_json, chart_stats_json, chart_larget_trades_json, chart_larget_trades, chart_stats, chart_logo, book_data, chart_data;
+    var meta, dispatch, router, api_server, book_data_json, chart_data_json, chart_logo_json, chart_stats_json, company_json, chart_larget_trades_json, chart_larget_trades, company, chart_stats, chart_logo, book_data, chart_data;
     return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -18700,40 +18940,52 @@ function _fetch_selected_chart_data() {
 
           case 18:
             chart_stats_json = _context2.sent;
-            console.log('done fetch');
+            console.log("done fetch");
             _context2.next = 22;
-            return fetch("\n    ".concat(api_server, "/stock/").concat(symbol, "/largest-trades\n  "));
+            return fetch("\n    ".concat(api_server, "/stock/").concat(symbol, "/company\n  "));
 
           case 22:
-            chart_larget_trades_json = _context2.sent;
-            console.log("done fetch");
+            company_json = _context2.sent;
+            console.log('done fetch');
             _context2.next = 26;
-            return chart_larget_trades_json.json();
+            return fetch("\n    ".concat(api_server, "/stock/").concat(symbol, "/largest-trades\n  "));
 
           case 26:
+            chart_larget_trades_json = _context2.sent;
+            console.log("done fetch");
+            _context2.next = 30;
+            return chart_larget_trades_json.json();
+
+          case 30:
             chart_larget_trades = _context2.sent;
-            _context2.next = 29;
+            _context2.next = 33;
+            return company_json.json();
+
+          case 33:
+            company = _context2.sent;
+            _context2.next = 36;
             return chart_stats_json.json();
 
-          case 29:
+          case 36:
             chart_stats = _context2.sent;
-            _context2.next = 32;
+            _context2.next = 39;
             return chart_logo_json.json();
 
-          case 32:
+          case 39:
             chart_logo = _context2.sent;
-            _context2.next = 35;
+            _context2.next = 42;
             return book_data_json.json();
 
-          case 35:
+          case 42:
             book_data = _context2.sent;
-            _context2.next = 38;
+            _context2.next = 45;
             return chart_data_json.json();
 
-          case 38:
+          case 45:
             chart_data = _context2.sent;
             console.log('done fetch');
             dispatch(Object(_redux_actions_stock_actions_js__WEBPACK_IMPORTED_MODULE_4__["add_chart_data"])(Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, symbol, {
+              company: company,
               book_data: book_data,
               chart_data: chart_data,
               chart_logo: chart_logo,
@@ -18749,7 +19001,7 @@ function _fetch_selected_chart_data() {
               chart_larget_trades: chart_larget_trades
             });
 
-          case 43:
+          case 50:
           case "end":
             return _context2.stop();
         }
@@ -18944,27 +19196,31 @@ function mapStateToProps(state) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "../node_modules/@babel/runtime-corejs2/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/asyncToGenerator */ "../node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "../node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "../node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "../node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "../node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "../node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-redux */ "../node_modules/react-redux/es/index.js");
-/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-redux-toastr */ "../node_modules/react-redux-toastr/lib/index.js");
-/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(react_redux_toastr__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! next/router */ "../node_modules/next/dist/client/router.js");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _components_utils_auth_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../components/utils/auth.js */ "./components/utils/auth.js");
-/* harmony import */ var _layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../layouts/Main_Layout.js */ "./layouts/Main_Layout.js");
-/* harmony import */ var _components_charts_chart_data_utils_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/charts/chart_data_utils.js */ "./components/charts/chart_data_utils.js");
-/* harmony import */ var _components_charts_Canvas_Chart_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/charts/Canvas_Chart.js */ "./components/charts/Canvas_Chart.js");
-/* harmony import */ var _components_charts_Company_Stats_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/charts/Company_Stats.js */ "./components/charts/Company_Stats.js");
-/* harmony import */ var _components_charts_Stock_Quote_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/charts/Stock_Quote.js */ "./components/charts/Stock_Quote.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/parse-float */ "../node_modules/@babel/runtime-corejs2/core-js/parse-float.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "../node_modules/@babel/runtime-corejs2/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/asyncToGenerator */ "../node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "../node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "../node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "../node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "../node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/assertThisInitialized */ "../node_modules/@babel/runtime-corejs2/helpers/esm/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "../node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react */ "../node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-redux */ "../node_modules/react-redux/es/index.js");
+/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-redux-toastr */ "../node_modules/react-redux-toastr/lib/index.js");
+/* harmony import */ var react_redux_toastr__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react_redux_toastr__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! next/router */ "../node_modules/next/dist/client/router.js");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _components_utils_auth_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/utils/auth.js */ "./components/utils/auth.js");
+/* harmony import */ var _layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../layouts/Main_Layout.js */ "./layouts/Main_Layout.js");
+/* harmony import */ var _components_charts_chart_data_utils_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/charts/chart_data_utils.js */ "./components/charts/chart_data_utils.js");
+/* harmony import */ var _components_charts_Canvas_Chart_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/charts/Canvas_Chart.js */ "./components/charts/Canvas_Chart.js");
+/* harmony import */ var _components_charts_Company_Stats_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../components/charts/Company_Stats.js */ "./components/charts/Company_Stats.js");
+
+
 
 
 
@@ -18984,35 +19240,47 @@ var _jsxFileName = "/home/dave/code/next_stocks/next_app/pages/chart.js";
 
 
 
-
 var Account_Profile =
 /*#__PURE__*/
 function (_React$Component) {
-  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_6__["default"])(Account_Profile, _React$Component);
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_8__["default"])(Account_Profile, _React$Component);
 
   function Account_Profile(props) {
     var _this;
 
-    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Account_Profile);
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_3__["default"])(this, Account_Profile);
 
-    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__["default"])(Account_Profile).call(this, props));
-    _this.state = {};
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__["default"])(Account_Profile).call(this, props));
+    _this.state = {
+      active_tab: "info"
+    };
+    _this.set_active_tab = _this.set_active_tab.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7__["default"])(_this));
     return _this;
   }
 
-  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(Account_Profile, [{
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_4__["default"])(Account_Profile, [{
     key: "componentDidMount",
     value: function componentDidMount() {}
   }, {
+    key: "set_active_tab",
+    value: function set_active_tab(tab) {
+      console.log(tab);
+      this.setState({
+        active_tab: tab
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var active_tab = this.state.active_tab;
       var _this$props = this.props,
           symbol = _this$props.symbol,
           stock_data = _this$props.stock_data;
-      var book_data, chart_logo, chart_stats, chart_largest_trades;
+      var book_data, chart_logo, chart_stats, chart_largest_trades, company;
 
       if (stock_data.charts[this.props.symbol]) {
         var _stock_data$charts$th = stock_data.charts[this.props.symbol],
+            company = _stock_data$charts$th.company,
             book_data = _stock_data$charts$th.book_data,
             chart_logo = _stock_data$charts$th.chart_logo,
             chart_stats = _stock_data$charts$th.chart_stats,
@@ -19023,93 +19291,106 @@ function (_React$Component) {
         book_data: book_data,
         chart_logo: chart_logo,
         chart_stats: chart_stats,
-        chart_largest_trades: chart_largest_trades
+        chart_largest_trades: chart_largest_trades,
+        company: company
       });
       console.log({
         symbol: symbol,
         stock_data: stock_data
       });
-      return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(_layouts_Main_Layout_js__WEBPACK_IMPORTED_MODULE_14__["default"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 48
+          lineNumber: 55
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("div", {
         className: "p-5",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 49
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "row flex_center",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 50
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "col flex_center",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 51
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("h1", {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 52
-        },
-        __self: this
-      }, symbol), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Stock_Logo, {
-        logo: chart_logo,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 53
-        },
-        __self: this
-      }))), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "row ",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 56
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "col-sm-6 vh_50",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 57
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_charts_Canvas_Chart_js__WEBPACK_IMPORTED_MODULE_14__["default"], {
-        canvas_id: symbol,
-        data: stock_data.charts[this.props.symbol],
+      }, company && react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("div", {
+        className: "row flex_center",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 58
         },
         __self: this
-      })), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("div", {
+        className: "col flex_center",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 59
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("h1", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 60
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("a", {
+        target: "_blank",
+        href: company.website,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 60
+        },
+        __self: this
+      }, company.companyName)), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(Stock_Logo, {
+        logo: chart_logo,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 61
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(Percent_Change, {
+        precent_change: book_data.quote.changePercent,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 62
+        },
+        __self: this
+      }))), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("div", {
+        className: "row ",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 68
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("div", {
+        className: "col-sm-6 vh_50",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 69
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(_components_charts_Canvas_Chart_js__WEBPACK_IMPORTED_MODULE_16__["default"], {
+        canvas_id: symbol,
+        data: stock_data.charts[this.props.symbol],
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 70
+        },
+        __self: this
+      })), react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("div", {
         className: "col-sm-6 ",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 63
+          lineNumber: 75
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_charts_Company_Stats_js__WEBPACK_IMPORTED_MODULE_15__["Company_Stats"], {
+      }, react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement(_components_charts_Company_Stats_js__WEBPACK_IMPORTED_MODULE_17__["Company_Stats"], {
+        active_tab: active_tab,
+        set_active_tab: this.set_active_tab,
+        company: company,
         stats: chart_stats,
+        quote: book_data ? book_data.quote : {},
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 64
-        },
-        __self: this
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_components_charts_Stock_Quote_js__WEBPACK_IMPORTED_MODULE_16__["Stock_Quote"], {
-        book_data: book_data,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 67
+          lineNumber: 76
         },
         __self: this
       })))));
@@ -19117,11 +19398,11 @@ function (_React$Component) {
   }], [{
     key: "getInitialProps",
     value: function () {
-      var _getInitialProps = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])(
+      var _getInitialProps = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
       /*#__PURE__*/
-      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(ctx) {
+      _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee(ctx) {
         var symbol, store, req, state, dispatch, stock_data, meta, symbol_data;
-        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -19138,7 +19419,7 @@ function (_React$Component) {
                 }
 
                 _context.next = 9;
-                return Object(_components_charts_chart_data_utils_js__WEBPACK_IMPORTED_MODULE_13__["fetch_selected_chart_data"])(symbol, {
+                return Object(_components_charts_chart_data_utils_js__WEBPACK_IMPORTED_MODULE_15__["fetch_selected_chart_data"])(symbol, {
                   meta: meta,
                   dispatch: dispatch
                 });
@@ -19172,7 +19453,7 @@ function (_React$Component) {
   }]);
 
   return Account_Profile;
-}(react__WEBPACK_IMPORTED_MODULE_7___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_9___default.a.Component);
 
 function mapStateToProps(state) {
   var user = state.user,
@@ -19185,28 +19466,44 @@ function mapStateToProps(state) {
   };
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_8__["connect"])(mapStateToProps)(Object(next_router__WEBPACK_IMPORTED_MODULE_10__["withRouter"])(Account_Profile)));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_10__["connect"])(mapStateToProps)(Object(next_router__WEBPACK_IMPORTED_MODULE_12__["withRouter"])(Account_Profile)));
 
 var Stock_Logo = function Stock_Logo(_ref) {
   var logo = _ref.logo;
-  if (!logo) return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+  if (!logo) return react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("span", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 86
+      lineNumber: 100
     },
     __self: this
   });
   var url = logo ? logo.url : "/static/trade_post_imgs/upload_0b696dc6c946a6834d7e7ba8f21c13a9";
-  return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("img", {
-    width: "100px",
+  return react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("img", {
+    height: "60px",
     src: url,
     alt: "logo",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 88
+      lineNumber: 102
     },
     __self: this
   });
+};
+
+var Percent_Change = function Percent_Change(_ref2) {
+  var precent_change = _ref2.precent_change;
+  var class_name;
+  if (precent_change > 0) class_name = "percentage_up";
+  if (precent_change < 0) class_name = "percentage_down";
+  if (precent_change == 0) class_name = "percentage_neutral";
+  return react__WEBPACK_IMPORTED_MODULE_9___default.a.createElement("span", {
+    className: class_name,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 115
+    },
+    __self: this
+  }, "".concat(_babel_runtime_corejs2_core_js_parse_float__WEBPACK_IMPORTED_MODULE_0___default()((precent_change * 100).toLocaleString("en-US")).toFixed(2), "%"));
 };
 
 /***/ }),

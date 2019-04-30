@@ -19,7 +19,7 @@ class Canvas_Chart extends React.Component {
       context: {},
       candle_width: 3,
       space_between_bars: 0.5,
-      x_offset: 100,
+      x_offset: 0,
       data_loaded: false,
       crosshair_overlay: "",
       volume_canvas: "",
@@ -162,19 +162,17 @@ class Canvas_Chart extends React.Component {
       chart_data_length
     } = this.state;
     // if(!prev_clientX)return this.setState({prev_clientX:e.clientX})
-    console.log({chart_data_length});
+    // console.log(chart_data_length);
     let max_x_offset =
       chart_data_length * (candle_width + space_between_bars) - canvas.width;
-      console.log({max_x_offset})
-console.log({candle_width,
-  space_between_bars})
+
     // console.log({x_offset})
     e.preventDefault();
     x_offset = x_offset + e.movementX;
     //  console.log({x_offset})
     if (x_offset < 0) x_offset = 0;
     if (x_offset > max_x_offset) x_offset = max_x_offset;
-    console.log({ x_offset });
+    // console.log({ x_offset });
     this.state.x_offset = x_offset;
     this.draw_chart();
   }
@@ -337,7 +335,7 @@ console.log({candle_width,
     } = this.state;
 
     if (!canvas) return console.log("no canvas");
-    console.log("DRAW CART");
+    // console.log("DRAW CART");
     let context = canvas.getContext("2d", false);
     clear_canvas(context, chart_style);
     /* Figure out how many bars are going to fin in the visible space */
@@ -346,8 +344,7 @@ console.log({candle_width,
     // let candle_count = Math.floor(canvas.witdh /(space_between_bars + candle_width))
     // console.log({ chart_data, candle_count });
     let bar_offset = x_offset / (candle_width + space_between_bars);
-
-    if (bar_offset == 0) {
+    if (bar_offset <1 ) {
       chart_data = chart_data.slice(candle_count * -1);
     } else {
       let end_of_data = chart_data_length - bar_offset - candle_count;
@@ -623,7 +620,7 @@ console.log({candle_width,
     let new_data;
     // let bar_offset = x_offset / (candle_width+space_between_bars)
 
-    if (bar_offset == 0) {
+    if (bar_offset < 1) {
       new_data = MA_data.slice(candle_count * -1);
     } else {
       let end_of_data = data_length - bar_offset - candle_count;

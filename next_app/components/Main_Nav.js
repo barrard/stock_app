@@ -21,7 +21,7 @@ class Main_Nav extends React.Component {
       stock_selected: false
       // show_filter_list: false
     };
- 
+
     this.handle_seach_symbol_input = this.handle_seach_symbol_input.bind(this);
     this.make_filter_list = this.make_filter_list.bind(this);
     this.highlight_search_letters = this.highlight_search_letters.bind(this);
@@ -46,7 +46,6 @@ class Main_Nav extends React.Component {
       console.log(err);
     }
   }
-
 
   handle_seach_symbol_input(e) {
     if (!this.props.meta.show_filter_list)
@@ -117,9 +116,17 @@ class Main_Nav extends React.Component {
   Filtered_Stock_List({ filtered_stock_list, search_symbol }) {
     return (
       <div className="filtered_stock_list">
-        {filtered_stock_list.map((data, index) =>
-          this.filtered_stock_list_item(data, index, search_symbol)
-        )}
+        <>
+          {filtered_stock_list.length == 0 && (
+            <div className="filtered_stock_list_item">
+              Sorry there aren't any stocks matching{" "}
+              <span className="highlight_search">{search_symbol}</span>
+            </div>
+          )}
+          {filtered_stock_list.map((data, index) =>
+            this.filtered_stock_list_item(data, index, search_symbol)
+          )}
+        </>
       </div>
     );
   }
@@ -245,7 +252,7 @@ const Navbar_Search = ({
   handle_search_input,
   handle_search,
   search_symbol,
-  handle_search_input_blur,
+  handle_search_input_blur
 }) => (
   <div className="form-inline my-2 my-lg-0 absolute right_10_px z_index_100">
     <input

@@ -15,22 +15,28 @@ class Stock_Data_Router {
 
   buildRoutes() {
     /* Lareget trade */
-        this.stock_data_router.get(
-          "/:symbol/largest-trades",
-          Stock_Data_Controller.get_largest_trades
+    this.stock_data_router.get(
+      "/:symbol/largest-trades",
+      Stock_Data_Controller.get_largest_trades
     );
 
     this.stock_data_router.get(
       "/market/collection/sector",
       Stock_Data_Controller.get_sector_data
     );
+    
 
-
-    /* get stats */
+    /* get company */
     this.stock_data_router.get(
-      "/:symbol/stats",
-      Stock_Data_Controller.get_stats
+      "/:symbol/company",
+      Stock_Data_Controller.get_company
     );
+
+        /* get stats */
+        this.stock_data_router.get(
+          "/:symbol/stats",
+          Stock_Data_Controller.get_stats
+        );
     /* logo url */
     this.stock_data_router.get(
       "/:symbol/chart/5y",
