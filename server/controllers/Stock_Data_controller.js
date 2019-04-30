@@ -164,7 +164,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/${symbol}/largest-trades
   `);
 
-      redis.set(`${symbol}_largest_trades`, largest_trades);
+      redis.set(`${symbol}_largest_trades`, largest_trades, (1*60*60));
     }
 
     res.send(largest_trades);
@@ -179,7 +179,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/market/collection/sector?collectionName=${sector}
   `);
 
-      redis.set(`${sector}_data`, sector_data);
+      redis.set(`${sector}_data`, sector_data, (1*60*60));
     }
 
     res.send(sector_data);
@@ -194,7 +194,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/${symbol}/company
   `);
 
-      redis.set(`${symbol}_company`, company);
+      redis.set(`${symbol}_company`, company, (1*60*60*24*7));
     }
 
     res.send(company);
@@ -209,7 +209,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/${symbol}/stats
   `);
 
-      redis.set(`${symbol}_stats`, stats);
+      redis.set(`${symbol}_stats`, stats,  (1*60*60*24*7));
     }
 
     res.send(stats);
@@ -225,7 +225,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/${symbol}/chart/5y
   `);
 
-      redis.set(`${symbol}_chart_5y`, chart_5y);
+      redis.set(`${symbol}_chart_5y`, chart_5y,  (1*60*60*24));
     }
 
     res.send(chart_5y);
@@ -240,7 +240,7 @@ class Stock_Data_Controller {
       ${iex_server}/stock/${symbol}/book
     `);
 
-      redis.set(`${symbol}_book_data`, book_data);
+      redis.set(`${symbol}_book_data`, book_data,  (1*60*5));
     }
 
     res.send(book_data);
@@ -256,7 +256,7 @@ class Stock_Data_Controller {
         ${iex_server}/stock/${symbol}/logo
       `);
 
-      redis.set(`${symbol}_logo_url`, logo_url);
+      redis.set(`${symbol}_logo_url`, logo_url,  (1*60*60*24*7));
     }
 
     res.send(logo_url);
