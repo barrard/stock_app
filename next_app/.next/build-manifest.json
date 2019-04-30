@@ -10,10 +10,6 @@
     "/_error": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
-    ],
-    "/chart": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
     ]
   }
 }

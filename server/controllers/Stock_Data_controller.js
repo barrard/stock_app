@@ -318,7 +318,6 @@ class Stock_Data_Controller {
     let old_date = result.daily_data[result.daily_data.length - 1]["date"];
     if (new_date == old_date) return logger.log("data still the same");
 
-    return logger.log("test complete?");
 
     var counter = -1;
     let symbol_list = Object.keys(previous_data);
@@ -412,5 +411,3 @@ const stock_data_controller = (module.exports = new Stock_Data_Controller());
 /* Get All 5y data */
 // stock_data_controller.get_all_5y_data();
 
-/* Add All previous one-day daily data */
-// stock_data_controller.add_all_previous_daily_data_to_db()
