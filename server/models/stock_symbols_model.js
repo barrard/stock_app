@@ -1,5 +1,5 @@
 
-const mongoose = require('../db/db');
+const mongoose = require('mongoose');
 // const Crowdsale = require('./crowdsale.js')
 
 

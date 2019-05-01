@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+console.log('TD')
+
 const db_name = 'TD_DATA'
 console.log({db_name})
 // mongoose.set('debug', true);

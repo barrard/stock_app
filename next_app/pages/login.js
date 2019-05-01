@@ -110,8 +110,8 @@ class Login extends React.Component {
   
 
   render() {
-    console.log(this.props)
-    console.log(this)
+    // console.log(this.props)
+    // console.log(this)
     return (
       <Main_Layout className="container">
       <br />

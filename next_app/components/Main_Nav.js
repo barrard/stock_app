@@ -218,6 +218,7 @@ class Main_Nav extends React.Component {
             charts={this.props.stock_data.charts}
           />
           {is_loggedin && <MA_Analysis_Link />}
+          {is_loggedin && <Chart_Analysis_Link />}
         </ul>
         <Navbar_Search
           /* Let the list stay long enough to click */
@@ -300,6 +301,13 @@ const MA_Analysis_Link = ({ pathname }) => (
   <Navbar_Links
     name="Moving Avg. Analysis"
     path={"/moving-average-analysis"}
+    pathname={pathname}
+  />
+);
+const Chart_Analysis_Link = ({ pathname }) => (
+  <Navbar_Links
+    name="Chart Analysis"
+    path={"/chart-analysis?symbol=aapl"}
     pathname={pathname}
   />
 );

@@ -1,6 +1,6 @@
-const mongoose = require("../db/TD-db.js");
+const mongoose = require('mongoose');
 // const Crowdsale = require('./crowdsale.js')
-// const redis = require('../db/redis.js')
+const redis = require('../db/redis.js')
 const TD_Data_Schema = mongoose.Schema({
   symbol: { type: String, index: {unique:true}},
   daily_data: [
@@ -123,22 +123,19 @@ async function update_daily_stock_data(symbol, data) {
 async function get_daily_data_for(symbol) {
 
   try {
-    // let daily_data = await redis.get(`${symbol}_daily`)
+    var daily_data = await redis.get(`${symbol}_daily`)
     // logger.log(daily_data)
-    // if(!daily_data){
+    if(!daily_data){
       logger.log(`getting data from DB`)
-      let daily_data = await TD_Daily_Data.findOne(
+        daily_data = await TD_Daily_Data.findOne(
         { symbol: symbol }
       );
-      // await redis.set(`${symbol}_daily`, daily_data)
+      await redis.set(`${symbol}_daily`, daily_data)
       if(!daily_data) throw `No data found for ${symbol}`
-      logger.log(daily_data.length)
-      return daily_data
-    // }else{
-      // logger.log(`found in redis`)
+      logger.log(daily_data.daily_data.length)
+    }
+    return daily_data
 
-      // return daily_data
-    // }
   } catch (err) {
     logger.log("err".bgRed);
     logger.log(err);

@@ -15741,6 +15741,82 @@ function login_success(payload) {
 
 /***/ }),
 
+/***/ "./redux/reducers/Chart_Analysis_reducer.js":
+/*!**************************************************!*\
+  !*** ./redux/reducers/Chart_Analysis_reducer.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "../node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
+
+// import * as meta_actions from "../actions/meta_actions.js";
+var initial_state = {
+  mouseDown: false,
+  //listen for drag events
+  canvas_width: null,
+  canvas_height: null,
+  chart_height: "",
+  vol_canvas_height: "",
+  canvas: "",
+  context: {},
+  candle_width: 3,
+  space_between_bars: 0.5,
+  x_offset: -30,
+  data_loaded: false,
+  crosshair_overlay: "",
+  volume_canvas: "",
+  volume_canvas_overlay: "",
+  vol_canvas_share: 0.2,
+  overlay_offset: "",
+  scrollY_offset: "",
+  symbol: "",
+  spinner_timmer: false,
+  MA_data: {},
+  chart_style: "light",
+  chart_data_length: 0
+};
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initial_state;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case "SET_X_OFFSET":
+      {
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          x_offset: action.x_offset
+        });
+      }
+
+    default:
+      return state;
+  }
+});
+
+function high_to_low(a, b, prop) {
+  if (deep_value(a, prop) > deep_value(b, prop)) return -1;
+  if (deep_value(a, prop) < deep_value(b, prop)) return 1;
+  return 0;
+}
+
+function low_to_high(a, b, prop) {
+  if (deep_value(a, prop) > deep_value(b, prop)) return 1;
+  if (deep_value(a, prop) < deep_value(b, prop)) return -1;
+  return 0;
+}
+
+var deep_value = function deep_value(obj, path) {
+  return path.replace(/\[|\]\.?/g, ".").split(".").filter(function (s) {
+    return s;
+  }).reduce(function (acc, val) {
+    return acc && acc[val];
+  }, obj);
+};
+
+/***/ }),
+
 /***/ "./redux/reducers/MA_analysis_reducer.js":
 /*!***********************************************!*\
   !*** ./redux/reducers/MA_analysis_reducer.js ***!
@@ -15915,6 +15991,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _user_reducer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./user_reducer.js */ "./redux/reducers/user_reducer.js");
 /* harmony import */ var _stock_data_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stock_data_reducer */ "./redux/reducers/stock_data_reducer.js");
 /* harmony import */ var _MA_analysis_reducer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MA_analysis_reducer.js */ "./redux/reducers/MA_analysis_reducer.js");
+/* harmony import */ var _Chart_Analysis_reducer_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Chart_Analysis_reducer.js */ "./redux/reducers/Chart_Analysis_reducer.js");
+
 
 
 
@@ -15927,7 +16005,8 @@ __webpack_require__.r(__webpack_exports__);
   user: _user_reducer_js__WEBPACK_IMPORTED_MODULE_3__["default"],
   meta: _meta_reducer_js__WEBPACK_IMPORTED_MODULE_2__["default"],
   stock_data: _stock_data_reducer__WEBPACK_IMPORTED_MODULE_4__["default"],
-  MA_analysis: _MA_analysis_reducer_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+  MA_analysis: _MA_analysis_reducer_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+  Chart_Analysis: _Chart_Analysis_reducer_js__WEBPACK_IMPORTED_MODULE_6__["default"]
 }));
 
 /***/ }),

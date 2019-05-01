@@ -1,4 +1,5 @@
 require('dotenv').config()
+console.log('DB')
 const mongoose = require('mongoose');
 const db_name = process.env.DB_NAME || 'iex_stock_app'
 console.log({db_name})
