@@ -29,9 +29,16 @@ client.on('error', function (err) {
 
 }
 
-function set(item_to_set, value_to_set) {
-  logger.log(`set ${item_to_set} to `)
-  client.set(item_to_set, JSON.stringify(value_to_set))
+function set(item_to_set, value_to_set, expire) {
+  if(expire){
+    logger.log(`set ${item_to_set} to expire ${expire}`)
+    client.set(item_to_set, JSON.stringify(value_to_set), "EX", expire)
+
+  }else{
+
+    logger.log(`set ${item_to_set} to not expire`)
+    client.set(item_to_set, JSON.stringify(value_to_set))
+  }
 }
 
 

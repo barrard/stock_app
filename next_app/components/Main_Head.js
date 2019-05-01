@@ -29,7 +29,7 @@ class Main_Head extends React.Component{
 
    <link rel="stylesheet" href="/static/css/bootstrap.css" />
 
-   <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+   <link href="/static/vendor/font-awesome/css/all.min.css" rel="stylesheet" type="text/css" />
 
    <link rel='stylesheet' type='text/css' href='/static/css/nprogress.css' />
 

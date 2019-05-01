@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('../db/db');
 
 const user_schema = mongoose.Schema({
   auth_method:String,//LOCAL, FACEBOOK, GOOGLE, etc...

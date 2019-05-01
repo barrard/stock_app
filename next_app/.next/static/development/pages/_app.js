@@ -16035,11 +16035,9 @@ var initial_state = {
             MA_data = action.MA_data;
         var stock_data = state.charts[symbol];
 
-        var stock_data_with_MA = Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, stock_data, MA_data);
+        var stock_data_with_MA = Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, stock_data, MA_data); // console.log({stock_data_with_MA})
 
-        console.log({
-          stock_data_with_MA: stock_data_with_MA
-        });
+
         return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, state, {
           charts: Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, state.charts, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, symbol, Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, state.charts[symbol], stock_data_with_MA)))
         });

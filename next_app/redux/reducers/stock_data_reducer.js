@@ -16,7 +16,7 @@ export default (state = initial_state, action) => {
       let { symbol, MA_data } = action;
       let stock_data = state.charts[symbol];
       let stock_data_with_MA = { ...stock_data, ...MA_data };
-      console.log({stock_data_with_MA})
+      // console.log({stock_data_with_MA})
 
       return {
         ...state,

@@ -4,6 +4,7 @@ logger = require("tracer").colorConsole({
     "{{timestamp.green}} <{{title.yellow}}> {{message.cyan}} (in {{file.red}}:{{line}})",
   dateformat: "HH:MM:ss.L"
 });
+require('dotenv').config()
 const redis = require("../db/redis.js");
 // const sendgrid = require('../services/sendgrid.js');
 const Daily_Stock_Data_Model = require("../models/daily_stock_data_model.js");
@@ -14,7 +15,8 @@ const rp = require("request-promise");
 require("../db/db.js");
 const MA_Data_Model = require("../models/MA_data_model.js");
 const iex_server = `https://api.iextrading.com/1.0`;
-
+const api_server = process.env.API_SERVER
+const TD_DATA_controller = require('../models/TD_Data_Model.js')
 class Stock_Data_Controller {
   constructor() {
     this.get_symbols_data = this.get_symbols_data.bind(this);
@@ -219,16 +221,18 @@ class Stock_Data_Controller {
   async get_chart_5y(req, res, next) {
     let symbol = req.params.symbol.toUpperCase();
     logger.log(symbol);
-    var chart_5y = await redis.get(`${symbol}_chart_5y`);
-    if (!chart_5y) {
-      chart_5y = await rp(`  
-    ${iex_server}/stock/${symbol}/chart/5y
-  `);
-
+    // var chart_5y = await redis.get(`${symbol}_chart_5y`);
+    // if (!chart_5y) {
+  //     chart_5y = await rp(`  
+  //   ${iex_server}/stock/${symbol}/chart/5y
+  // `);
+  logger.log({symbol})
+  let chart_5y = await TD_DATA_controller.get_daily_data_for(symbol);
+console.log(chart_5y.daily_data.length)
       redis.set(`${symbol}_chart_5y`, chart_5y,  (1*60*60*24));
-    }
+    // }
 
-    res.send(chart_5y);
+    res.send(chart_5y.daily_data);
   }
   /* BOOK DATA */
   async get_book_data(req, res, next) {

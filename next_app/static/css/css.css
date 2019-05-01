@@ -122,7 +122,9 @@ body { height: 100%; }
   
   border-top: 5px solid black;
 }
-
+.padding_6{
+  padding: 6px
+}
 .stats_box{
   font-size: 11px;
   background: linear-gradient(184deg, rgba(63,62,92,1) 0%, rgba(46,2,2,1) 100%);
@@ -131,6 +133,10 @@ body { height: 100%; }
 
 .z_index_100{
   z-index: 100;
+}
+
+.z_index_10{
+  z-index: 10;
 }
 
 
@@ -204,6 +210,9 @@ body { height: 100%; }
 .align_items_center{
   align-items: center;
 }
+.text_indent_10{
+  text-indent :10%;
+}
 .clickable{
   cursor: pointer;
 }
@@ -219,6 +228,12 @@ body { height: 100%; }
 .flex_end {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+}
+
+.flex_start {
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
 }
 

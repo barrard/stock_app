@@ -22,6 +22,10 @@ export const Company_Stats = ({
             <div className={`tab-pane  `} id="price">
               <Historical_Price_Data stats={stats} quote={quote} />
               <Todays_Price_data quote={quote} />
+              <Previous_Close 
+                latest_price={quote.latestPrice}
+                prev_close={quote.previousClose}
+              />
             </div>
             <div className={`tab-pane  `} id="book">
               <p>BOOK</p>
@@ -87,7 +91,45 @@ const Stock_Data_Tabs = ({ set_active_tab, active_tab }) => {
 };
 
 const Company_Data = ({ company }) => {
-  return <p>cocopo</p>;
+  return (
+    <div className="container">
+      <div className="row flex_center">
+        <div className="col-sm-6 flex_end">Company Name</div>
+        <div className="col-sm-6 flex_start">{company.companyName}</div>
+      </div>
+      <hr />
+      <div className="row flex_center">
+        <div className="col-sm-6 flex_end">CEO</div>
+        <div className="col-sm-6 flex_start">{company.CEO}</div>
+      </div>
+      <hr />
+
+      <div className="row flex_center">
+        <div className="col-sm-12   text_indent_10">{`${
+          company.description
+        }`}</div>
+      </div>
+      <hr />
+      <div className="row flex_center">
+        <div className="col-sm-6 flex_end">Indistry </div>
+        <div className="col-sm-6 flex_start"> {company.industry}</div>
+      </div>
+      <hr />
+      <div className="row flex_center">
+        <div className="col-sm-6 flex_end">Sector </div>
+        <div className="col-sm-6 flex_start">{company.sector}</div>
+      </div>
+      <hr />
+      <div className="col-sm-12 flex_center">
+        Tags:{" "}
+        {company.tags.map((tag, index) => (
+          <span key={index}>
+            {`${tag}${index + 1 !== company.tags.length ? "," : ""}`}&nbsp;
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const Historical_Price_Data = ({ stats, quote }) => {
@@ -136,6 +178,45 @@ const Todays_Price_data = ({ quote }) => {
     </div>
   );
 };
+
+const Previous_Close =({latest_price, prev_close})=>{
+  let diff = latest_price > prev_close ?
+  (latest_price - prev_close):
+  (prev_close-latest_price)
+  let percent = (diff/prev_close)
+  console.log({latest_price, prev_close, diff, percent})
+  return(
+    <div className='row flex_center'>
+      <div className='col-sm-6 stats_box p-3 flex_center'>
+      <div className='row flex_center'>
+        <div className='col-sm-12 flex_center underline whitesmoke'>
+          Previous Close
+
+        </div>
+        <div className='row flex_center'>
+          <div className='col-sm-12 flex_center'>
+          <Price price={prev_close}/>
+
+          </div>
+        </div>
+      </div>
+      </div>
+      <div className='col-sm-6 stats_box p-3 flex_center'>
+      <div className='row flex_center'>
+        <div className='col-sm-12 flex_center underline whitesmoke'>
+          Percent Change
+        </div>
+        <div className='row flex_center'>
+          <div className='col-sm-12 flex_center'>
+          <Percent_Change precent_change={percent} />
+
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  )
+}
 
 const Volume = ({ vol }) => (
   <span className="ticker_vol">{vol.toLocaleString("en-US")}</span>

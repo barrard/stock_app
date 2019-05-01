@@ -10,7 +10,7 @@ import {
 
 export function view_selected_stock_symbol(symbol, props) {
   const { dispatch } = props;
-  console.log(symbol);
+  // console.log(symbol);
   /* Set the search symbol aas selected */
   dispatch(set_search_symbol(symbol));
   /* set show filtered list false */
@@ -27,7 +27,7 @@ export async function fetch_sector_data(sector, props) {
   ${api_server}/stock/market/collection/sector?collectionName=${sector}
   `);
   let sector_data = await sector_data_json.json();
-  console.log(sector_data);
+  // console.log(sector_data);
   dispatch(set_sector_data(sector, sector_data));
 }
 
@@ -40,29 +40,29 @@ export async function fetch_selected_chart_data(symbol, props) {
   let book_data_json = await fetch(`  
     ${api_server}/stock/${symbol}/book
   `);
-  console.log("done fetch");
+  // console.log("done fetch");
   let chart_data_json = await fetch(`  ${api_server}/stock/${symbol}/chart/5y
   `);
-  console.log("done fetch");
+  // console.log("done fetch");
 
   let chart_logo_json = await fetch(`
   ${api_server}/stock/${symbol}/logo
   `);
-  console.log("done fetch");
+  // console.log("done fetch");
 
   let chart_stats_json = await fetch(`
     ${api_server}/stock/${symbol}/stats
   `);
-  console.log("done fetch");
+  // console.log("done fetch");
 
   let company_json = await fetch(`
     ${api_server}/stock/${symbol}/company
   `);
-  console.log('done fetch')
+  // console.log('done fetch')
   let chart_larget_trades_json = await fetch(`
     ${api_server}/stock/${symbol}/largest-trades
   `);
-  console.log("done fetch");
+  // console.log("done fetch");
 
   let chart_larget_trades = await chart_larget_trades_json.json();
   let company = await company_json.json();
@@ -70,7 +70,7 @@ export async function fetch_selected_chart_data(symbol, props) {
   let chart_logo = await chart_logo_json.json();
   let book_data = await book_data_json.json();
   let chart_data = await chart_data_json.json();
-  console.log('done fetch')
+  // console.log('done fetch')
 
   dispatch(
     add_chart_data({
@@ -85,11 +85,11 @@ export async function fetch_selected_chart_data(symbol, props) {
     })
   );
   dispatch(is_loading(false));
-  console.log({
-    book_data,
-    chart_data,
-    chart_logo,
-    chart_stats,
-    chart_larget_trades
-  });
+  // console.log({
+  //   book_data,
+  //   chart_data,
+  //   chart_logo,
+  //   chart_stats,
+  //   chart_larget_trades
+  // });
 }

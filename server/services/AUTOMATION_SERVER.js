@@ -22,4 +22,4 @@ setInterval(()=>{
 
 
 
-Stock_Analysis_Controller.get_all_current_MA_status()
+// Stock_Analysis_Controller.get_all_current_MA_status()

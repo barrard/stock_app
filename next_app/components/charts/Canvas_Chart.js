@@ -19,7 +19,7 @@ class Canvas_Chart extends React.Component {
       context: {},
       candle_width: 3,
       space_between_bars: 0.5,
-      x_offset: 0,
+      x_offset: -30,
       data_loaded: false,
       crosshair_overlay: "",
       volume_canvas: "",
@@ -33,7 +33,8 @@ class Canvas_Chart extends React.Component {
       chart_style: "light",
       chart_data_length: 0
     };
-
+    this.narrow_bars = this.narrow_bars.bind(this)
+    this.wider_bars = this.wider_bars.bind(this)
     this.listen_for_chart_drag = this.listen_for_chart_drag.bind(this);
     this.draw_cross_hair = this.draw_cross_hair.bind(this);
   }
@@ -50,8 +51,8 @@ class Canvas_Chart extends React.Component {
     this.calc_MA_data();
   }
   componentDidUpdate(prevProps) {
-    let { meta, canvas_id } = this.props;
-    // console.log("----------------componentDidUpdate=====================");
+    let { meta, canvas_id, container_width } = this.props;
+    console.log("----------------componentDidUpdate=====================");
     // console.log(prevProps);
     // console.log(this.props);
     if (!prevProps.meta.is_loading && meta.is_loading) {
@@ -68,7 +69,11 @@ class Canvas_Chart extends React.Component {
     } else if (prevProps.meta.is_loading && !meta.is_loading) {
       // console.log("Done loading new data, draw chart righ meow");
       this.draw_chart();
-    } else {
+    } else if(prevProps.container_width != container_width) {
+      console.log("container_width changed");
+      this.make_canvas_full_screen();
+
+    }else {
       // console.log("render what is happeneing");
     }
   }
@@ -84,12 +89,12 @@ class Canvas_Chart extends React.Component {
   make_canvas_full_screen() {
     if (typeof window !== "undefined") {
       if (!this._ismounted) return;
-      console.log(this);
+      // console.log(this);
       let dom_node = ReactDOM.findDOMNode(this);
       let { canvas_id } = this.props;
       let canvas_width = dom_node.parentElement.clientWidth - 30; //15px padding left/right
       let canvas_height = dom_node.parentElement.clientHeight - 15;
-      console.log({ canvas_height, canvas_width });
+      // console.log({ canvas_height, canvas_width });
       this.state.canvas_width = canvas_width;
       this.state.canvas_height = canvas_height;
       setTimeout(() => {
@@ -97,6 +102,8 @@ class Canvas_Chart extends React.Component {
         let crosshair_overlay = document.getElementById(
           `${this.props.canvas_id}_crosshair_overlay`
         );
+        if(!crosshair_overlay)
+          return setTimeout(()=>this.make_canvas_full_screen(), 0)
         let scrollY_offset = window.scrollY;
         // console.log({scrollY_offset})
         let overlay_offset = crosshair_overlay.getBoundingClientRect();
@@ -170,7 +177,7 @@ class Canvas_Chart extends React.Component {
     e.preventDefault();
     x_offset = x_offset + e.movementX;
     //  console.log({x_offset})
-    if (x_offset < 0) x_offset = 0;
+    // if (x_offset < 0) x_offset = 0;
     if (x_offset > max_x_offset) x_offset = max_x_offset;
     // console.log({ x_offset });
     this.state.x_offset = x_offset;
@@ -182,8 +189,11 @@ class Canvas_Chart extends React.Component {
       <>
         <canvas
           onMouseDown={() => this.setState({ mouseDown: true })}
+          onTouchStart={() => this.setState({ mouseDown: true })}
           onMouseUp={() => this.setState({ mouseDown: false })}
+          onTouchEnd={() => this.setState({ mouseDown: false })}
           onMouseMove={this.draw_cross_hair}
+          onTouchMove={this.draw_cross_hair}
           className="crosshair_overlay absolute "
           id={`${canvas_id}_crosshair_overlay`}
           width={canvas_width}
@@ -267,20 +277,39 @@ class Canvas_Chart extends React.Component {
     let bar_data;
     if (this.props.data) bar_data = this.props.data.chart_data[candle_id];
     if (bar_data) {
-      write_label(
-        bar_data.date,
-        chart_style,
-        14,
-        x_hair_ctx,
-        left,
-        canvas.height
-      );
+      if(bar_data.date){
+
+        write_label(
+          bar_data.date,
+          chart_style,
+          14,
+          x_hair_ctx,
+          left,
+          canvas.height
+        );
+      }else if (bar_data.datetime){
+        write_label(
+          new Date(bar_data.datetime).toISOString().slice(0, 10),
+          chart_style,
+          14,
+          x_hair_ctx,
+          left,
+          canvas.height
+        );
+      }
 
       /* info box */
       var info_box_width = 80;
       var info_box_height = 80;
       /* Need to figure out widest label first */
-      let info_label_data = ["date", "open", "high", "low", "close"];
+      let info_label_data;
+      if(bar_data.date){
+        info_label_data = ["date", "open", "high", "low", "close"];
+
+      } else if(bar_data.datetime){
+        info_label_data = ["datetime", "open", "high", "low", "close"];
+        
+      }
       info_label_data.forEach((label_data, index) => {
         var label = bar_data[label_data];
         if (!isNaN(label)) label = `${label_data}: ${label.toFixed(2)}`;
@@ -300,7 +329,14 @@ class Canvas_Chart extends React.Component {
       /* Bar data labels inside info box */
 
       info_label_data.forEach((label_data, index) => {
-        var label = bar_data[label_data];
+        let label;
+        if(label_data == 'datetime'){
+          label = new Date(bar_data[label_data]).toISOString().slice(0,10);
+
+        }else{
+          label = bar_data[label_data];
+
+        }
         if (!isNaN(label)) label = `${label_data}: ${label.toFixed(2)}`;
 
         write_label(
@@ -343,14 +379,14 @@ class Canvas_Chart extends React.Component {
 
     // let candle_count = Math.floor(canvas.witdh /(space_between_bars + candle_width))
     // console.log({ chart_data, candle_count });
-    let bar_offset = x_offset / (candle_width + space_between_bars);
-    if (bar_offset <1 ) {
-      chart_data = chart_data.slice(candle_count * -1);
+    let bar_offset = Math.floor(x_offset / (candle_width + space_between_bars));
+    if (bar_offset <= 0) {
+      chart_data = chart_data.slice((candle_count + bar_offset) * -1);
     } else {
       let end_of_data = chart_data_length - bar_offset - candle_count;
       if (end_of_data < 0) end_of_data = 0;
       if (bar_offset + candle_count > chart_data_length)
-        bar_offset = chart_data_length - candle_count;
+        bar_offset = Math.floor(chart_data_length - candle_count);
 
       chart_data = chart_data.slice(end_of_data, bar_offset * -1);
     }
@@ -418,9 +454,14 @@ class Canvas_Chart extends React.Component {
     // }, 0);
   }
   draw_date_marker(candle_position, candle_width, data, canvas) {
+    // console.log({data})
+    // let date_time;
+    // if(data.datetime) date_time = data.datetime
+    // if(data.date) date_time = date.date
+    // return
     // console.log(canvas)
     let context = canvas.getContext("2d");
-    let date_time = this.parsed_date_time(data.date, data.label);
+    //  date_time = this.parsed_date_time(data.date, data.label);
     let date_line_color = this.state.chart_style == "light" ? "grey" : "white";
     context.beginPath();
     context.setLineDash([5, 15]);
@@ -484,6 +525,8 @@ class Canvas_Chart extends React.Component {
     );
   }
   parsed_date_time(date, label) {
+    // console.log({date, label})
+    return ''
     // console.log(date, label)
     let month_day = date.slice(-4);
     let day = month_day.slice(-2);
@@ -619,9 +662,9 @@ class Canvas_Chart extends React.Component {
     let data_length = chart_data_length;
     let new_data;
     // let bar_offset = x_offset / (candle_width+space_between_bars)
-
-    if (bar_offset < 1) {
-      new_data = MA_data.slice(candle_count * -1);
+// console.log({bar_offset})
+    if (bar_offset <= 0) {
+      new_data = MA_data.slice((candle_count+ bar_offset) * -1);
     } else {
       let end_of_data = data_length - bar_offset - candle_count;
       if (end_of_data < 0) end_of_data = 0;
@@ -652,13 +695,34 @@ class Canvas_Chart extends React.Component {
     });
   }
 
+  narrow_bars(){
+    console.log('narrow bars')
+    var {candle_width} = this.state
+    candle_width -= 1
+    this.setState({candle_width})
+    setTimeout(()=> this.draw_chart(),0)
+  }
+  wider_bars(){
+    console.log('wider_bars')
+    var {candle_width} = this.state
+    candle_width += 1
+    this.setState({candle_width})
+    setTimeout(()=> this.draw_chart(),0)
+  }
+
   render() {
     let { canvas_width, canvas_height } = this.state;
     let { canvas_id, chart_data, meta } = this.props;
     let { is_loading } = meta;
 
     return (
-      <div className="vh_30">
+      <div className="vh_30 relative">
+                 <Chat_Buttons 
+              toggle_wide={this.props.toggle_wide_mode}
+              narrow_bars={this.narrow_bars}
+              wider_bars={this.wider_bars}
+
+            />
         {/* Min-height is 30vh */}
         {/* this is here to make it work, dont remove */}
         {canvas_width &&
@@ -675,6 +739,31 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(withRouter(Canvas_Chart));
+const Chat_Buttons = ({toggle_wide, narrow_bars, wider_bars})=>{
+  return(
+    <div className='row flex_center absolute z_index_100 ml-1'>
+                <button
+              className="btn btn-info "
+              onClick={toggle_wide}
+            >
+              <span class="fa fa-expand" />
+            </button>
+            <button
+              className="btn btn-info"
+              onClick={wider_bars}
+            >
+              <span class="fa fa-arrows-alt-h" />
+            </button>
+            <button
+              className="btn btn-info padding_6"
+              onClick={narrow_bars}
+            >
+              <img width="29" src="/static/imgs/narrow-sm.png" alt=""/>
+            </button>
+    </div>
+  )
+}
+
 
 function clear_canvas(context, chart_style) {
   let background_color = chart_style == "light" ? "white" : "black";

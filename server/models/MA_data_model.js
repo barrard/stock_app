@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('../db/db');
 // const Crowdsale = require('./crowdsale.js')
 
 const MA_data_Schema = mongoose.Schema({
