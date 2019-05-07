@@ -11,11 +11,27 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/chart-analysis": [
+    "/account-profile": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
     "/landing": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/login": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/moving-average-analysis": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/next/dist/pages/_error": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/sign-up": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

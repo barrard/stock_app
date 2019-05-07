@@ -1448,9 +1448,9 @@ var initial_state = {
   vol_canvas_height: "",
   canvas: "",
   context: {},
-  candle_width: 3,
+  candle_width: 30,
   space_between_bars: 0.5,
-  x_offset: -30,
+  x_offset: 0,
   data_loaded: false,
   crosshair_overlay: "",
   volume_canvas: "",
@@ -1461,14 +1461,76 @@ var initial_state = {
   symbol: "",
   spinner_timmer: false,
   MA_data: {},
+  analysis_results: {},
   chart_style: "light",
-  chart_data_length: 0
+  chart_data_length: 0,
+  LR_avg: 4,
+  LR_results: {},
+  data_view_params: {
+    start: '',
+    end: ''
+  }
 };
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initial_state;
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
+  // console.log(action)
   switch (action.type) {
+    case "SET_DATA_VIEW_PARAMS":
+      {
+        var start = action.start,
+            end = action.end;
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          data_view_params: {
+            start: start,
+            end: end
+          }
+        });
+      }
+
+    case "SET_LR_RESULTS":
+      {
+        var result_data = Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state.LR_results);
+
+        var LR_results = action.LR_results,
+            avg = action.avg,
+            symbol = action.symbol;
+        if (!result_data[symbol]) result_data[symbol] = {};
+        result_data[symbol][avg] = LR_results;
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          LR_results: result_data
+        });
+      }
+
+    case "SET_LR_AVG":
+      {
+        console.log(action);
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          LR_avg: action.avg
+        });
+      }
+
+    case "HIGH_LOW":
+      {
+        console.log('HIGH LOW REDUCED');
+        console.log(action);
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          analysis_results: Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state.analysis_results, {
+            HIGH_LOW: action.data
+          })
+        });
+      }
+
+    case "SET_CANVAS_DIMENTIONS":
+      {
+        console.log("SET_CANVAS_DIMENTIONS REDUCER");
+        return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          canvas_width: action.w,
+          canvas_height: action.h
+        });
+      }
+
     case "SET_X_OFFSET":
       {
         return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {

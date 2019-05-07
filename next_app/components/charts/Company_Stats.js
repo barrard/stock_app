@@ -15,11 +15,11 @@ export const Company_Stats = ({
             active_tab={active_tab}
           />
           <div className="tab-content">
-            <div className={`tab-pane show active `} id="info">
+            <div className={`tab-pane fade show active `} id="info">
               <Company_Data company={company} />
             </div>
 
-            <div className={`tab-pane  `} id="price">
+            <div className={`tab-pane fade  `} id="price">
               <Historical_Price_Data stats={stats} quote={quote} />
               <Todays_Price_data quote={quote} />
               <Previous_Close 
@@ -27,10 +27,10 @@ export const Company_Stats = ({
                 prev_close={quote.previousClose}
               />
             </div>
-            <div className={`tab-pane  `} id="book">
+            <div className={`tab-pane fade  `} id="book">
               <p>BOOK</p>
             </div>
-            <div className={`tab-pane  `} id="news">
+            <div className={`tab-pane fade  `} id="news">
               news
             </div>
           </div>
@@ -40,9 +40,10 @@ export const Company_Stats = ({
   );
 };
 const Stock_Data_Tabs = ({ set_active_tab, active_tab }) => {
+  console.log({active_tab})
   return (
     <ul className="nav nav-tabs">
-      <li onClick={() => set_active_tab("info")} className="nav-item">
+      <li className="nav-item">
         <span
           href="#info"
           data-toggle="tab"
@@ -53,7 +54,7 @@ const Stock_Data_Tabs = ({ set_active_tab, active_tab }) => {
           Info
         </span>
       </li>
-      <li onClick={() => set_active_tab("price")} className="nav-item">
+      <li  className="nav-item">
         <span
           href="#price"
           data-toggle="tab"
@@ -64,7 +65,7 @@ const Stock_Data_Tabs = ({ set_active_tab, active_tab }) => {
           Price
         </span>
       </li>
-      <li onClick={() => set_active_tab("book")} className="nav-item">
+      <li className="nav-item">
         <span
           href="#book"
           data-toggle="tab"
@@ -75,7 +76,7 @@ const Stock_Data_Tabs = ({ set_active_tab, active_tab }) => {
           Book
         </span>
       </li>
-      <li onClick={() => set_active_tab("news")} className="nav-item">
+      <li className="nav-item">
         <span
           href="#news"
           data-toggle="tab"

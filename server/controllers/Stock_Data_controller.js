@@ -139,17 +139,17 @@ class Stock_Data_Controller {
       logger.log(age > data_age_limit);
       to_get_data_or_not = age > data_age_limit;
     }
-    if (to_get_data_or_not) {
-      let json_Data = await this.fetch_iex_symbols();
+    // if (to_get_data_or_not) {
+      // let json_Data = await this.fetch_iex_symbols();
 
-      logger.log(json_Data.length);
+      // logger.log(json_Data.length);
 
       // logger.log(resp);
-      let data = Stocks_Symbols_Model.update_symbols(json_Data);
-      res.send(data);
-    } else {
+      // let data = Stocks_Symbols_Model.update_symbols(json_Data);
+      // res.send(data);
+    // } else {
       res.send(symbol_data.symbols);
-    }
+    // }
   }
 
   /* 

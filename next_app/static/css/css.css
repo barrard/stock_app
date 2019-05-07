@@ -114,6 +114,10 @@ body { height: 100%; }
   /* min-height: 30vh; */
   border:1px solid black;
 }
+canvas{
+  border:1px solid black;
+
+}
 .arrow-down {
   width: 0; 
   height: 0; 
