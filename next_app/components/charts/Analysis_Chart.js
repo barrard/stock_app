@@ -5,15 +5,19 @@ import { connect } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import { withRouter } from "next/router";
 import { add_MA_data_action } from "../../redux/actions/stock_actions.js";
-import {set_x_offest, set_canvas_dimentions, set_data_view_params} from '../../redux/actions/Chart_Analysis_actions.js'
+import {
+  set_x_offest,
+  set_canvas_dimentions,
+  set_data_view_params
+} from "../../redux/actions/Chart_Analysis_actions.js";
 
 class Canvas_Chart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      last_candle_id:null,
-      date_marker_timestamp:{prev_year:'', prev_month:'', prev_day:''},
-      
+      last_candle_id: null,
+      date_marker_timestamp: { prev_year: "", prev_month: "", prev_day: "" },
+
       months: [
         "Jan",
         "Feb",
@@ -33,7 +37,7 @@ class Canvas_Chart extends React.Component {
     this.wider_bars = this.wider_bars.bind(this);
     this.listen_for_chart_drag = this.listen_for_chart_drag.bind(this);
     this.draw_cross_hair = this.draw_cross_hair.bind(this);
-    this.move_to_chart_begining = this.move_to_chart_begining.bind(this)
+    this.move_to_chart_begining = this.move_to_chart_begining.bind(this);
 
     this.move_chart_forward = this.move_chart_forward.bind(this);
     this.move_chart_backward = this.move_chart_backward.bind(this);
@@ -90,20 +94,25 @@ class Canvas_Chart extends React.Component {
     this.props.Chart_Analysis.MA_data = MA_data;
     this.props.Chart_Analysis.chart_data_length = chart_data_length;
     /* max x-ofset is needed for stuff */
-    let { candle_width, space_between_bars, x_offset, canvas_width } = this.props.Chart_Analysis;
+    let {
+      candle_width,
+      space_between_bars,
+      x_offset,
+      canvas_width
+    } = this.props.Chart_Analysis;
     let max_x_offset = chart_data_length * (candle_width + space_between_bars);
     this.props.Chart_Analysis.max_x_offset = max_x_offset;
-    
+
     let bar_size = candle_width + space_between_bars;
 
     let bar_offset = Math.floor(x_offset / bar_size);
     let candles_per_view = Math.floor(canvas_width / bar_size);
 
     let end = chart_data_length - bar_offset;
-    let start = end - candles_per_view
+    let start = end - candles_per_view;
 
-    this.props.Chart_Analysis.data_view_params.start = start
-    this.props.Chart_Analysis.data_view_params.end = end
+    this.props.Chart_Analysis.data_view_params.start = start;
+    this.props.Chart_Analysis.data_view_params.end = end;
 
     setTimeout(() => this.draw_chart(), 100);
   }
@@ -116,11 +125,11 @@ class Canvas_Chart extends React.Component {
       let canvas_width = dom_node.parentElement.clientWidth - 30; //15px padding left/right
       let canvas_height = dom_node.parentElement.clientHeight - 15;
       // console.log({ canvas_height, canvas_width });
-      this.props.dispatch(set_canvas_dimentions(canvas_width, canvas_height))
+      this.props.dispatch(set_canvas_dimentions(canvas_width, canvas_height));
       // this.props.Chart_Analysis.canvas_width = canvas_width;
       // this.props.Chart_Analysis.canvas_height = canvas_height;
       setTimeout(() => {
-        console.log(this.props)
+        console.log(this.props);
         let canvas = document.getElementById(this.props.canvas_id);
         let crosshair_overlay = document.getElementById(
           `${this.props.canvas_id}_crosshair_overlay`
@@ -200,10 +209,9 @@ class Canvas_Chart extends React.Component {
     } = this.props.Chart_Analysis;
     // if(!prev_clientX)return this.setState({prev_clientX:e.clientX})
     let bar_size = candle_width + space_between_bars;
-    let bar_count = Math.floor(canvas.width / bar_size)
+    let bar_count = Math.floor(canvas.width / bar_size);
     // console.log({chart_data_length, bar_size, bar_count, bar_size});
-    let max_x_offset =
-      (chart_data_length * bar_size ) - (bar_count * bar_size);
+    let max_x_offset = chart_data_length * bar_size - bar_count * bar_size;
 
     // console.log({ x_offset });
     e.preventDefault();
@@ -214,45 +222,48 @@ class Canvas_Chart extends React.Component {
     // console.log({ x_offset, max_x_offset });
     // console.log(this.props.Chart_Analysis.LR_results)
     /* whats candle ID range is eing shown? */
-    
+
     // console.log(canvas.width)
     let bar_offset = Math.floor(x_offset / bar_size);
-    let candle_count = Math.floor(canvas.width / bar_size)
+
     let candles_per_view = Math.floor(canvas.width / bar_size);
 
-        let candle_id = Math.floor(
-        (chart_data_length - bar_offset - candle_count)
+    let candle_id = Math.floor(
+      chart_data_length - bar_offset - candles_per_view
     );
-    if(this.state.last_candle_id != candle_id){
+    if (this.state.last_candle_id != candle_id) {
       var { chart_data } = this.props.data;
 
-      this.state.last_candle_id = candle_id
-      let {last_candle_id}  = this.state
-      console.log({last_candle_id, candle_id, chart_data_length, bar_offset, candles_per_view})
+      this.state.last_candle_id = candle_id;
+      let { last_candle_id } = this.state;
+      console.log({
+        last_candle_id,
+        candle_id,
+        chart_data_length,
+        bar_offset,
+        candles_per_view
+      });
       /* chart_data */
       let end = chart_data_length - bar_offset;
-      let start = end - candles_per_view
+      let start = end - candles_per_view;
       // console.log({start, end})
       // let view_bar_data = chart_data.slice(start, end)
       // console.log(view_bar_data)
       /* dispatch this to the store */
-      this.props.Chart_Analysis.data_view_params.start = start
-      this.props.Chart_Analysis.data_view_params.end = end
+      this.props.Chart_Analysis.data_view_params.start = start;
+      this.props.Chart_Analysis.data_view_params.end = end;
 
       // this.props.dispatch(set_data_view_params(start, end))
     }
-    
 
     // console.log({candle_count, bar_offset})
-
-
 
     this.props.Chart_Analysis.x_offset = x_offset;
     this.draw_chart();
   }
 
   render_canvas(canvas_id, canvas_width, canvas_height) {
-    console.log('CANVAS RENDERED')
+    console.log("CANVAS RENDERED");
     return (
       <>
         <canvas
@@ -314,43 +325,44 @@ class Canvas_Chart extends React.Component {
     let canvas = crosshair_overlay;
     if (!canvas) return;
     const chart_height = canvas.height * (1 - vol_canvas_share);
-    
+
     let price_label = parseFloat(
       min_price + ((chart_height - top) * pennies_per_pixel) / 100
-      ).toFixed(2);
-      
-      let x_hair_ctx = canvas.getContext("2d");
-      
-      x_hair_ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      //horizontal crosshair line on chart
-      x_hair_ctx.beginPath();
-      x_hair_ctx.moveTo(0, top);
-      x_hair_ctx.lineTo(canvas.width, top);
-      x_hair_ctx.stroke();
-      //vertical crosshair line on chart
-      x_hair_ctx.beginPath();
-      x_hair_ctx.moveTo(left, 0);
-      x_hair_ctx.lineTo(left, canvas.height);
-      x_hair_ctx.stroke();
-      /* flip label near edges */
-      let label_x_pos, label_y_pos;
-      if (left + 50 > canvas.width) label_x_pos = left - 50;
-      else label_x_pos = left + 10;
-      if (top + 50 > canvas.height) label_y_pos = top - 20;
-      else label_y_pos = top + 15;
-      let bar_size = candle_width + space_between_bars;
-      let bar_count = Math.floor(canvas.width / bar_size)
-      let bar_offset = Math.floor(x_offset / bar_size);
+    ).toFixed(2);
 
-      let candles_per_view = Math.floor(canvas_width / bar_size);
-      let mouse_over_bar_id = Math.floor(left / bar_size)
-      // let candle_id = Math.floor(
-      //   Math.floor(left / bar_size) +
-      //   (chart_data_length - bar_offset - (canvas.width / bar_size))
-      //   );
-      let candle_id = (chart_data_length - (bar_offset+candles_per_view))+mouse_over_bar_id
-        // console.log({ left });
+    let x_hair_ctx = canvas.getContext("2d");
+
+    x_hair_ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    //horizontal crosshair line on chart
+    x_hair_ctx.beginPath();
+    x_hair_ctx.moveTo(0, top);
+    x_hair_ctx.lineTo(canvas.width, top);
+    x_hair_ctx.stroke();
+    //vertical crosshair line on chart
+    x_hair_ctx.beginPath();
+    x_hair_ctx.moveTo(left, 0);
+    x_hair_ctx.lineTo(left, canvas.height);
+    x_hair_ctx.stroke();
+    /* flip label near edges */
+    let label_x_pos, label_y_pos;
+    if (left + 50 > canvas.width) label_x_pos = left - 50;
+    else label_x_pos = left + 10;
+    if (top + 50 > canvas.height) label_y_pos = top - 20;
+    else label_y_pos = top + 15;
+    let bar_size = candle_width + space_between_bars;
+    let bar_count = Math.floor(canvas.width / bar_size);
+    let bar_offset = Math.floor(x_offset / bar_size);
+
+    let candles_per_view = Math.floor(canvas_width / bar_size);
+    let mouse_over_bar_id = Math.floor(left / bar_size);
+    // let candle_id = Math.floor(
+    //   Math.floor(left / bar_size) +
+    //   (chart_data_length - bar_offset - (canvas.width / bar_size))
+    //   );
+    let candle_id =
+      chart_data_length - (bar_offset + candles_per_view) + mouse_over_bar_id;
+    // console.log({ left });
     // console.log({candle_id, mouse_over_bar_id})
     /* Crosshair price-y  */
     write_label(
@@ -369,18 +381,21 @@ class Canvas_Chart extends React.Component {
       let pixels_per_vol = this.props.Chart_Analysis.pixels_per_vol;
       const candle_position = Math.floor(left / bar_size) * bar_size;
 
-      let position =mouse_over_bar_id * bar_size;
-      let max_x_offset = (chart_data_length * (candle_width + space_between_bars))-(candles_per_view*bar_size);
+      let position = mouse_over_bar_id * bar_size;
+      let max_x_offset =
+        chart_data_length * (candle_width + space_between_bars) -
+        candles_per_view * bar_size;
 
       // console.log({candles_per_view, position, candle_id})
       // console.log({max_x_offset,x_offset, bar_offset, bar_size, canvas_width })
-
+      let width_multiplier = bar_size > 20 ? 1.5 : 2;
+      let width_divisor = bar_size > 4 ? 3.7 : 2;
       /* Bar being hovered over */
       this.draw_candle(
         x_hair_ctx,
-        position - bar_size/2,
+        position - bar_size / width_divisor,
         bar_data,
-        candle_width * 2,
+        candle_width * width_multiplier,
         pixels_per_penny,
         pixels_per_vol
       );
@@ -468,7 +483,6 @@ class Canvas_Chart extends React.Component {
   }
 
   draw_chart() {
-
     var { chart_data } = this.props.data;
     const {
       chart_style,
@@ -480,15 +494,17 @@ class Canvas_Chart extends React.Component {
       chart_data_length
     } = this.props.Chart_Analysis;
 
-    if (!canvas)  {
+    if (!canvas) {
       console.log("no canvas");
-      return /* setTimeout(()=> this.draw_chart() ,10) */
+      return; /* setTimeout(()=> this.draw_chart() ,10) */
     }
     // console.log("DRAW CART");
     let context = canvas.getContext("2d", false);
     clear_canvas(context, chart_style);
     /* Figure out how many bars are going to fin in the visible space */
-    let candle_count = Math.floor(canvas.width / (candle_width + space_between_bars));
+    let candle_count = Math.floor(
+      canvas.width / (candle_width + space_between_bars)
+    );
 
     // let candle_count = Math.floor(canvas.witdh /(space_between_bars + candle_width))
     // console.log({ chart_data, candle_count });
@@ -552,8 +568,6 @@ class Canvas_Chart extends React.Component {
     chart_data.forEach((data, count) => {
       const candle_position = count * candle_width + space_between_bars * count;
 
-  
-
       this.draw_candle(
         context,
         candle_position,
@@ -566,12 +580,9 @@ class Canvas_Chart extends React.Component {
     chart_data.forEach((data, count) => {
       const candle_position = count * candle_width + space_between_bars * count;
 
-      
       if (count % date_marker_position == 0)
-      this.draw_date_marker(candle_position, candle_width, data, canvas);
-    })
-
-
+        this.draw_date_marker(candle_position, candle_width, data, canvas);
+    });
   }
   /* Vertical lines on the chart */
   draw_date_marker(candle_position, candle_width, data, canvas) {
@@ -605,9 +616,6 @@ class Canvas_Chart extends React.Component {
       canvas.height
     );
     context.setLineDash([]);
-
-
-
   }
   draw_price_markers(context, min, max) {
     let { chart_height, chart_style } = this.props.Chart_Analysis;
@@ -660,8 +668,8 @@ class Canvas_Chart extends React.Component {
     );
   }
   parsed_date_time(date) {
-    let {date_marker_timestamp} = this.state
-    let {prev_year, prev_month, prev_day} = date_marker_timestamp
+    let { date_marker_timestamp } = this.state;
+    let { prev_year, prev_month, prev_day } = date_marker_timestamp;
     // console.log({ date });
     let iso_date = new Date(date).toISOString().slice(0, 10);
     // console.log(iso_date);
@@ -671,18 +679,16 @@ class Canvas_Chart extends React.Component {
     // if(month_number%6 == 0) return year
     // console.log(month_number)
     let day = new Date(date).getDate();
-    if(prev_year != year){
-      this.state.date_marker_timestamp.prev_year = year
+    if (prev_year != year) {
+      this.state.date_marker_timestamp.prev_year = year;
       return `${year}`;
-    }else if(prev_month != month_number){
-      this.state.date_marker_timestamp.prev_month = month_number
+    } else if (prev_month != month_number) {
+      this.state.date_marker_timestamp.prev_month = month_number;
 
       let month = this.state.months[month_number];
       return `${month}`;
-
-
-    }else if(prev_day != day){
-      this.state.date_marker_timestamp.prev_day = day
+    } else if (prev_day != day) {
+      this.state.date_marker_timestamp.prev_day = day;
       return `${day}`;
     }
   }
@@ -846,15 +852,46 @@ class Canvas_Chart extends React.Component {
 
   narrow_bars() {
     console.log("narrow bars");
-    var { candle_width } = this.props.Chart_Analysis;
+    var {
+      candle_width,
+      chart_data_length,
+      x_offset,
+      candle_width,
+      space_between_bars,
+      canvas
+    } = this.props.Chart_Analysis;
     candle_width -= 1;
+    console.log({ candle_width });
+    let bar_size = candle_width + space_between_bars;
+    let bar_offset = Math.floor(x_offset / bar_size);
+    let candles_per_view = Math.floor(canvas.width / bar_size);
+
+    let end = chart_data_length - bar_offset;
+    let start = end - candles_per_view;
+    this.props.Chart_Analysis.data_view_params.start = start;
+    this.props.Chart_Analysis.data_view_params.end = end;
+
     this.props.Chart_Analysis.candle_width = candle_width;
     setTimeout(() => this.draw_chart(), 0);
   }
   wider_bars() {
     console.log("wider_bars");
-    var { candle_width } = this.props.Chart_Analysis;
+    var { candle_width,      chart_data_length,
+      x_offset,
+      candle_width,
+      space_between_bars,
+      canvas } = this.props.Chart_Analysis;
+    let bar_size = candle_width + space_between_bars;
+    let bar_offset = Math.floor(x_offset / bar_size);
+    let candles_per_view = Math.floor(canvas.width / bar_size);
+
+    let end = chart_data_length - bar_offset;
+    let start = end - candles_per_view;
+    this.props.Chart_Analysis.data_view_params.start = start;
+    this.props.Chart_Analysis.data_view_params.end = end;
     candle_width += 1;
+    console.log({ candle_width });
+
     this.props.Chart_Analysis.candle_width = candle_width;
     setTimeout(() => this.draw_chart(), 0);
   }
@@ -880,16 +917,21 @@ class Canvas_Chart extends React.Component {
     this.props.Chart_Analysis.x_offset += bars_in_view;
     setTimeout(() => this.draw_chart(), 0);
   }
-  move_to_chart_begining(){
-    let {canvas_width,candle_width, chart_data_length, space_between_bars} = this.props.Chart_Analysis
-    let bar_size = candle_width+space_between_bars
-    let data_length = chart_data_length
-    let candle_count = Math.floor(canvas_width/(bar_size))
-    let new_x_offset = (data_length * (bar_size)) - (candle_count*bar_size)
-    this.props.Chart_Analysis.x_offset = new_x_offset
+  move_to_chart_begining() {
+    let {
+      canvas_width,
+      candle_width,
+      chart_data_length,
+      space_between_bars
+    } = this.props.Chart_Analysis;
+    let bar_size = candle_width + space_between_bars;
+    let data_length = chart_data_length;
+    let candle_count = Math.floor(canvas_width / bar_size);
+    let new_x_offset = data_length * bar_size - candle_count * bar_size;
+    this.props.Chart_Analysis.x_offset = new_x_offset;
     // console.log(this.props)
     // console.log({new_x_offset})
-    this.props.dispatch(set_x_offest(new_x_offset))
+    this.props.dispatch(set_x_offest(new_x_offset));
     // setTimeout(()=> this.draw_chart(),  0)
   }
 

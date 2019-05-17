@@ -1,4 +1,4 @@
-export const Return_Arr_Slopes = (price_data, LR_avg) => {
+export const Return_Arr_Slopes = (price_data, LR_avg, bar_size) => {
   console.log({LR_avg});
   /* clean to average */
   let mod = price_data.length%LR_avg
@@ -13,47 +13,55 @@ export const Return_Arr_Slopes = (price_data, LR_avg) => {
     let ys_lows = [];
 
     for (let j = i; j < i + LR_avg && j < price_data.length; j++) {
-      // console.log({ j });
-      // console.log(price_data[j]);
-      xs.push(j);
+
       ys_lows.push(price_data[j].low);
     }
     // console.log({ x: xs, y: ys_lows });
-    let { m, b } = linearRegression({ x: xs, y: ys_lows });
-    arr_slopes.push({ m, b });
+    let { m, b, min_max_y } = linearRegression(ys_lows , bar_size);
+    arr_slopes.push({ m, b, min_max_y });
   }
   console.log(arr_slopes);
   return arr_slopes
 };
 
-function linearRegression(data) {
+function linearRegression(ys, bar_size) {
   /* get the high and low */
   // let min_max_x = get_min_max(data.x)
   // let min_x = min_max_x.min;
   // let max_x = min_max_x.max
-  // let min_max_y= get_min_max(data.y)
-  // let min_y  = min_max_y.min
-  // let max_y= min_max_y.max
+  let min_max_y= get_min_max(ys)
+  let min_y  = min_max_y.min
+  let max_y= min_max_y.max
   // console.log({min_x, max_x})
   // console.log({min_y, max_y})
   // console.log(data)
   var xsum = 0;
   var ysum = 0;
   /* Sum  each value */
-  for (var i = 0; i < data.x.length; i++) {
-    xsum += data.x[i];
-    ysum += data.y[i];
+  // console.log(data.x.length)
+  let range = max_y-min_y 
+  let xs = []
+  for (var i = 0; i < ys.length; i++) {
+    /* map y according to min_max_y */
+    /* build the xs array based on bar width */
+    let x = ((i+1)*bar_size)-(bar_size/2)
+    xs.push(x)
+    let y = ys[i]
+    let mapped_y = map(y, min_y, max_y, range, 0 )
+    // console.log({mapped_y, y})
+    xsum += x;
+    ysum += mapped_y;
   }
   /* Find the mean */
-  var xmean = xsum / data.x.length;
-  var ymean = ysum / data.x.length;
+  var xmean = xsum / ys.length;
+  var ymean = ysum / ys.length;
 
   /* Calc the numerator */
   var numerator = 0;
   var denomenator = 0;
-  for (let i = 0; i < data.x.length; i++) {
-    let x = data.x[i];
-    let y = data.y[i];
+  for (let i = 0; i < xs.length; i++) {
+    let x = xs[i];
+    let y = ys[i];
     // console.log({x, y})
     /* all the (x minus xmean) times all the (y minus ymean) */
     numerator += (x - xmean) * (y - ymean);
@@ -63,7 +71,7 @@ function linearRegression(data) {
   let m = numerator / denomenator;
   let b = ymean - m * xmean;
   // console.log({ m, b });
-  return { m, b };
+  return { m, b, min_max_y };
 }
 
 function line(ctx, x1, y1, x2, y2) {
@@ -87,3 +95,21 @@ function get_min_max(data) {
   });
   return { max, min };
 }
+
+const constrain = function(n, low, high) {
+
+  return Math.max(Math.min(n, high), low);
+};
+
+const map = function(n, start1, stop1, start2, stop2, withinBounds) {
+
+  var newval = (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
+  if (!withinBounds) {
+    return newval;
+  }
+  if (start2 < stop2) {
+    return this.constrain(newval, start2, stop2);
+  } else {
+    return this.constrain(newval, stop2, start2);
+  }
+};
