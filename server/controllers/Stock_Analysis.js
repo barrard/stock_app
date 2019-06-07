@@ -49,7 +49,7 @@ class Stock_Analysis_Controller {
   /* Helpers */
   /* Helper functions */
   iex_api() {
-    return "https://api.iextrading.com/1.0";
+    return "https://cloud.iexapis.com/stable";
   }
   async get_or_set_from_redis(symbol) {
     let redis_resp = await redis.get(symbol);

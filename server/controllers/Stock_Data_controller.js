@@ -14,7 +14,7 @@ const Tags_Model = require("../models/tags_model.js");
 const rp = require("request-promise");
 require("../db/db.js");
 const MA_Data_Model = require("../models/MA_data_model.js");
-const iex_server = `https://api.iextrading.com/1.0`;
+const iex_server = `https://cloud.iexapis.com/stable`;
 const api_server = process.env.API_SERVER
 const TD_DATA_controller = require('../models/TD_Data_Model.js')
 class Stock_Data_Controller {
@@ -163,7 +163,7 @@ class Stock_Data_Controller {
     var largest_trades = await redis.get(`${symbol}_largest_trades`);
     if (!largest_trades) {
       largest_trades = await rp(`  
-    ${iex_server}/stock/${symbol}/largest-trades
+    ${iex_server}/stock/${symbol}/largest-trades?token=pk_105138096303482c84efbb7a181b4b25
   `);
 
       redis.set(`${symbol}_largest_trades`, largest_trades, (1*60*60));
@@ -178,7 +178,7 @@ class Stock_Data_Controller {
     var sector_data = await redis.get(`${sector}_data`);
     if (!sector_data) {
       sector_data = await rp(`  
-    ${iex_server}/stock/market/collection/sector?collectionName=${sector}
+    ${iex_server}/stock/market/collection/sector?collectionName=${sector}?token=pk_105138096303482c84efbb7a181b4b25
   `);
 
       redis.set(`${sector}_data`, sector_data, (1*60*60));
@@ -193,7 +193,7 @@ class Stock_Data_Controller {
     var company = await redis.get(`${symbol}_company`);
     if (!company) {
       company = await rp(`  
-    ${iex_server}/stock/${symbol}/company
+    ${iex_server}/stock/${symbol}/company?token=pk_105138096303482c84efbb7a181b4b25
   `);
 
       redis.set(`${symbol}_company`, company, (1*60*60*24*7));
@@ -208,7 +208,7 @@ class Stock_Data_Controller {
     var stats = await redis.get(`${symbol}_stats`);
     if (!stats) {
       stats = await rp(`  
-    ${iex_server}/stock/${symbol}/stats
+    ${iex_server}/stock/${symbol}/stats?token=pk_105138096303482c84efbb7a181b4b25
   `);
 
       redis.set(`${symbol}_stats`, stats,  (1*60*60*24*7));
@@ -241,7 +241,7 @@ console.log(chart_5y.daily_data.length)
     var book_data = await redis.get(`${symbol}_book_data`);
     if (!book_data) {
       book_data = await rp(`  
-      ${iex_server}/stock/${symbol}/book
+      ${iex_server}/stock/${symbol}/book?token=pk_105138096303482c84efbb7a181b4b25
     `);
 
       redis.set(`${symbol}_book_data`, book_data,  (1*60*5));
@@ -257,7 +257,7 @@ console.log(chart_5y.daily_data.length)
     var logo_url = await redis.get(`${symbol}_logo_url`);
     if (!logo_url) {
       logo_url = await rp(`  
-        ${iex_server}/stock/${symbol}/logo
+        ${iex_server}/stock/${symbol}/logo?token=pk_105138096303482c84efbb7a181b4b25
       `);
 
       redis.set(`${symbol}_logo_url`, logo_url,  (1*60*60*24*7));

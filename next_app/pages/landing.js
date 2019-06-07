@@ -21,7 +21,7 @@ class Landing_Page extends React.Component {
       !state.stock_data.home_page_data_set_at ||
       check_homepage_data_age(state.stock_data.home_page_data_set_at)
     ) {
-      const iex_api = "https://api.iextrading.com/1.0/stock/market";
+      const iex_api = "https://cloud.iexapis.com/stable/stock/market";
       const home_page_data = {};
       const home_page_data_urls = {
         sector_performance: `${iex_api}/sector-performance`,
@@ -35,7 +35,7 @@ class Landing_Page extends React.Component {
       const home_page_data_keys = Object.keys(home_page_data_urls);
       await Promise.all(
         home_page_data_keys.map(async key => {
-          let json_data = await fetch(home_page_data_urls[key]);
+          let json_data = await fetch(`${home_page_data_urls[key]}?token=pk_105138096303482c84efbb7a181b4b25`);
           let data = await json_data.json();
           home_page_data[key] = data;
         })

@@ -1,7 +1,7 @@
 export function set_api_server(api_server) {
   return {
     type: "SET_API_SERVER",
-    api_server, iex_server:'https://api.iextrading.com/1.0'
+    api_server, iex_server:'https://cloud.iexapis.com/stable'
   };
 }
 export function set_csrf(csrf) {
