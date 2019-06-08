@@ -19,49 +19,70 @@ export function view_selected_stock_symbol(symbol, props) {
   fetch_selected_chart_data(symbol, props);
 }
 
+/* HELPER METHOD */
+async function fetch_data(url, ctx){
+  console.log('WEF')
+  if(ctx){
+
+    return await fetch(url
+        , {
+          headers: {
+              /* Need header maybe? */
+              cookie: ctx.req.headers.cookie,
+            },
+          }
+          )
+  }else{
+
+    return await fetch(url
+ 
+          )
+        }
+}
+
 export async function fetch_sector_data(sector, props) {
   const { meta, dispatch, router } = props;
   const { api_server } = meta;
   router.push(`/sector?sector=${encodeURIComponent(sector)}`);
-  let sector_data_json = await fetch(`
+  let sector_data_json = await fetch_data(`
   ${api_server}/stock/market/collection/sector?collectionName=${sector}
-  `);
+  `, ctx);
   let sector_data = await sector_data_json.json();
   // console.log(sector_data);
   dispatch(set_sector_data(sector, sector_data));
 }
 
 export async function fetch_selected_chart_data(symbol, props) {
-  const { meta, dispatch, router } = props;
+  const { meta, dispatch, router, ctx } = props;
   /* Start loading */
   dispatch(is_loading(true));
   if (router) router.push(`/chart?symbol=${symbol}`);
   const { api_server } = meta;
-  let book_data_json = await fetch(`  
+  let book_data_json = await fetch_data(`  
     ${api_server}/stock/${symbol}/book
-  `);
+  `, ctx);
   // console.log("done fetch");
-  let chart_data_json = await fetch(`  ${api_server}/stock/${symbol}/chart/5y
-  `);
+  let chart_data_json = await fetch_data(`${api_server}/stock/${symbol}/chart/5y
+  `, ctx);
   // console.log("done fetch");
 
-  let chart_logo_json = await fetch(`
+  let chart_logo_json = await fetch_data(`
   ${api_server}/stock/${symbol}/logo
-  `);
+  `, ctx);
   // console.log("done fetch");
 
-  let chart_stats_json = await fetch(`
+  let chart_stats_json = await fetch_data(`
     ${api_server}/stock/${symbol}/stats
-  `);
+  `, ctx);
   // console.log("done fetch");
 
-  let company_json = await fetch(`
+  let company_json = await fetch_data(`
     ${api_server}/stock/${symbol}/company
-  `);
+  `, ctx);
   // console.log('done fetch')
-  let chart_larget_trades_json = await fetch(`
+  let chart_larget_trades_json = await fetch_data(`
     ${api_server}/stock/${symbol}/largest-trades
-  `);
+  `, ctx);
   // console.log("done fetch");
 
   let chart_larget_trades = await chart_larget_trades_json.json();

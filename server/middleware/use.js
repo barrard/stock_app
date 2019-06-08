@@ -21,6 +21,43 @@ module.exports = (app, next_app) => {
   const {stock_data_router} = require('../routes/Stock_Data_Router.js')()
   const {admin_router} = require('../routes/Admin_Router.js')()
   
+  // app.use((req, res, next)=>{
+  //   const ignored_paths = [
+  //     '/_next/static/webpack/3990e5758444a9bf4723.hot-update.json',
+  //     '/_next/static/webpack/6413def085cd83bdd4ea.hot-update.json',
+  //     '/_next/webpack-hmr',
+  //     '/_next/static/development/pages/landing.js.map',
+  //     '/static/js/bootstrap.js',
+  //     '/static/js/popper.js',
+  //     '/static/js/tether.js',
+  //     '/static/js/jq.js',
+  //     '/_next/static/development/dll/dll_9f052745d9378ee03f88.js',
+  //     '/_next/static/runtime/main.js',
+  //     '/_next/static/runtime/webpack.js',
+  //     '/static/css/css.css',
+  //     '/static/css/nprogress.css',
+  //     '/static/vendor/font-awesome/css/all.min.css',
+  //     '/static/css/bootstrap.css',
+  //     '/_next/static/development/pages/_app.js',
+  //     '/_next/static/development/pages/landing.js',
+  //     '/_next/on-demand-entries-ping',
+  //     ''
+
+  //   ]
+  //   const path = req.path
+  //   if(ignored_paths.indexOf(req.path != -1)) return next()
+  //   logger.log(`Session TEST?!?!`.green)
+  //   logger.log(req.cookies)
+  //   logger.log(req.headers)
+  //   if(req.session)logger.log(`WE HAVE SSEEEESSSSSSIIIIOOONNNNN!!!`.magenta)
+  //   logger.log(`@@@@@@2  HEADER   $$$$$$$$$4`.yellow)
+
+  //   logger.log(path)
+  //   logger.log(req.ip)
+
+  //   console.log('@$%$$@@$245@$44@$@23424@#$52345@#$%234%$@#4542#%23$%$234%$@3454234%$2345')
+  //   next()
+  // })
 
   app.use(helmet());
   app.use(cors())
@@ -64,7 +101,7 @@ app.use(express_validator(
   };
   if (process.env.NODE_ENV == "production"){
     logger.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SECURE COOKIE')
-    // session_options.cookie.secure = true;//TODO FIX
+    session_options.cookie.secure = true;//TODO FIX
   }
     
 

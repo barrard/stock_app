@@ -38,7 +38,7 @@ class Account_Profile extends React.Component {
     let symbol_data = stock_data.charts[symbol];
     if (!symbol) return {};
     if (!symbol_data) {
-      await fetch_selected_chart_data(symbol, { meta, dispatch });
+      await fetch_selected_chart_data(symbol, { meta, dispatch, ctx });
     }
     return { symbol: ctx.query.symbol };
   }
