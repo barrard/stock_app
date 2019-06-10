@@ -101,7 +101,7 @@ app.use(express_validator(
   };
   if (process.env.NODE_ENV == "production"){
     logger.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SECURE COOKIE')
-    // session_options.cookie.secure = true;//TODO FIX
+    session_options.cookie.secure = true;//TODO FIX
   }
     
 

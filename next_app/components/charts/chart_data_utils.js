@@ -29,6 +29,8 @@ async function fetch_data(url, ctx){
           headers: {
               /* Need header maybe? */
               cookie: ctx.req.headers.cookie,
+              credentials: 'include',
+
             },
           }
           )
