@@ -20,35 +20,30 @@ export function view_selected_stock_symbol(symbol, props) {
 }
 
 /* HELPER METHOD */
-async function fetch_data(url, ctx){
-  console.log('WEF')
-  if(ctx){
-
-    return await fetch(url
-        , {
-          headers: {
-              /* Need header maybe? */
-              cookie: ctx.req.headers.cookie,
-              credentials: 'include',
-
-            },
-          }
-          )
-  }else{
-
-    return await fetch(url
- 
-          )
-        }
+async function fetch_data(url, ctx) {
+  if (ctx && ctx.req.headers) {
+    return await fetch(url, {
+      headers: {
+        /* Need header maybe? */
+        cookie: ctx.req.headers.cookie,
+        credentials: "same-origin"
+      }
+    });
+  } else {
+    return await fetch(url);
+  }
 }
 
 export async function fetch_sector_data(sector, props) {
   const { meta, dispatch, router } = props;
   const { api_server } = meta;
   router.push(`/sector?sector=${encodeURIComponent(sector)}`);
-  let sector_data_json = await fetch_data(`
+  let sector_data_json = await fetch_data(
+    `
   ${api_server}/stock/market/collection/sector?collectionName=${sector}
-  `, ctx);
+  `,
+    ctx
+  );
   let sector_data = await sector_data_json.json();
   // console.log(sector_data);
   dispatch(set_sector_data(sector, sector_data));
@@ -60,31 +55,49 @@ export async function fetch_selected_chart_data(symbol, props) {
   dispatch(is_loading(true));
   if (router) router.push(`/chart?symbol=${symbol}`);
   const { api_server } = meta;
-  let book_data_json = await fetch_data(`  
+  let book_data_json = await fetch_data(
+    `  
     ${api_server}/stock/${symbol}/book
-  `, ctx);
+  `,
+    ctx
+  );
   // console.log("done fetch");
-  let chart_data_json = await fetch_data(`${api_server}/stock/${symbol}/chart/5y
-  `, ctx);
+  let chart_data_json = await fetch_data(
+    `${api_server}/stock/${symbol}/chart/5y
+  `,
+    ctx
+  );
   // console.log("done fetch");
 
-  let chart_logo_json = await fetch_data(`
+  let chart_logo_json = await fetch_data(
+    `
   ${api_server}/stock/${symbol}/logo
-  `, ctx);
+  `,
+    ctx
+  );
   // console.log("done fetch");
 
-  let chart_stats_json = await fetch_data(`
+  let chart_stats_json = await fetch_data(
+    `
     ${api_server}/stock/${symbol}/stats
-  `, ctx);
+  `,
+    ctx
+  );
   // console.log("done fetch");
 
-  let company_json = await fetch_data(`
+  let company_json = await fetch_data(
+    `
     ${api_server}/stock/${symbol}/company
-  `, ctx);
+  `,
+    ctx
+  );
   // console.log('done fetch')
-  let chart_larget_trades_json = await fetch_data(`
+  let chart_larget_trades_json = await fetch_data(
+    `
     ${api_server}/stock/${symbol}/largest-trades
-  `, ctx);
+  `,
+    ctx
+  );
   // console.log("done fetch");
 
   let chart_larget_trades = await chart_larget_trades_json.json();
