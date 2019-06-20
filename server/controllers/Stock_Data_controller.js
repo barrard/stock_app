@@ -166,7 +166,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/${symbol}/largest-trades?token=pk_105138096303482c84efbb7a181b4b25
   `);
 
-      redis.set(`${symbol}_largest_trades`, largest_trades, (1*60*60));
+      redis.set(`${symbol}_largest_trades`, largest_trades);
     }
 
     res.send(largest_trades);
@@ -181,7 +181,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/market/collection/sector?collectionName=${sector}?token=pk_105138096303482c84efbb7a181b4b25
   `);
 
-      redis.set(`${sector}_data`, sector_data, (1*60*60));
+      redis.set(`${sector}_data`, sector_data);
     }
 
     res.send(sector_data);
@@ -196,7 +196,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/${symbol}/company?token=pk_105138096303482c84efbb7a181b4b25
   `);
 
-      redis.set(`${symbol}_company`, company, (1*60*60*24*7));
+      redis.set(`${symbol}_company`, company);
     }
 
     res.send(company);
@@ -211,7 +211,7 @@ class Stock_Data_Controller {
     ${iex_server}/stock/${symbol}/stats?token=pk_105138096303482c84efbb7a181b4b25
   `);
 
-      redis.set(`${symbol}_stats`, stats,  (1*60*60*24*7));
+      redis.set(`${symbol}_stats`, stats);
     }
 
     res.send(stats);
@@ -229,7 +229,7 @@ class Stock_Data_Controller {
   logger.log({symbol})
   let chart_5y = await TD_DATA_controller.get_daily_data_for(symbol);
 console.log(chart_5y.daily_data.length)
-      redis.set(`${symbol}_chart_5y`, chart_5y,  (1*60*60*24));
+      redis.set(`${symbol}_chart_5y`, chart_5y);
     // }
 
     res.send(chart_5y.daily_data);
@@ -244,7 +244,7 @@ console.log(chart_5y.daily_data.length)
       ${iex_server}/stock/${symbol}/book?token=pk_105138096303482c84efbb7a181b4b25
     `);
 
-      redis.set(`${symbol}_book_data`, book_data,  (1*60*5));
+      redis.set(`${symbol}_book_data`, book_data);
     }
 
     res.send(book_data);
@@ -260,7 +260,7 @@ console.log(chart_5y.daily_data.length)
         ${iex_server}/stock/${symbol}/logo?token=pk_105138096303482c84efbb7a181b4b25
       `);
 
-      redis.set(`${symbol}_logo_url`, logo_url,  (1*60*60*24*7));
+      redis.set(`${symbol}_logo_url`, logo_url);
     }
 
     res.send(logo_url);
