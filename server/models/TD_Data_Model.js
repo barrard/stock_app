@@ -124,14 +124,15 @@ async function get_daily_data_for(symbol) {
 
   try {
     var daily_data = await redis.get(`${symbol}_daily`)
-    // logger.log(daily_data)
+    logger.log(daily_data)
     if(!daily_data){
       logger.log(`getting data from DB`)
         daily_data = await TD_Daily_Data.findOne(
         { symbol: symbol }
       );
-      await redis.set(`${symbol}_daily`, daily_data)
+      console.log(daily_data.length)
       if(!daily_data) throw `No data found for ${symbol}`
+      await redis.set(`${symbol}_daily`, daily_data)
       logger.log(daily_data.daily_data.length)
     }
     return daily_data

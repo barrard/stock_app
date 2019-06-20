@@ -12,7 +12,7 @@ const cacheableResponse = require('cacheable-response')
 
 // logger.channel(createConsoleProcessor());
 require("dotenv").config({ path: '/home/dave/code/stock_app/.env' });
-console.log(process.env)
+// console.log(process.env)
 require("./db/db.js");
 // require('./db/redis.js')
 const { parse } = require("url");
