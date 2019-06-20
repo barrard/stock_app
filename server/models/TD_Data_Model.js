@@ -26,7 +26,7 @@ const TD_Data_Schema = mongoose.Schema({
 });
 
 const TD_Daily_Data = mongoose.model(
-  "TD_daily_data",
+  "daily_stock_datas",
   TD_Data_Schema
 );
 module.exports = TD_Daily_Data;
@@ -127,10 +127,9 @@ async function get_daily_data_for(symbol) {
     logger.log(daily_data)
     if(!daily_data){
       logger.log(`getting data from DB`)
-        daily_data = await TD_Daily_Data.findOne(
-        { symbol: symbol }
-      );
-      console.log(daily_data.length)
+      daily_data = await get_symbol(symbol)
+      
+      // console.log(daily_data)
       if(!daily_data) throw `No data found for ${symbol}`
       await redis.set(`${symbol}_daily`, daily_data)
       logger.log(daily_data.daily_data.length)
