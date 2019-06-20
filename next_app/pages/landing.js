@@ -58,22 +58,19 @@ class Landing_Page extends React.Component {
     } = this.props.stock_data.home_page_data;
     return (
       <Main_Layout>
-        <div className="row">
-          <div className="col-sm-6 ">
+        <div className="row flex_center">
+          {/* <div className="col-sm-6 ">
             <div className="row ">
               <div className="col">Hide on small scrrens</div>
             </div>
 
-            {/* <Display_News_Headlines 
-            
-            /> */}
             <div className="row ">
               <div className="col">Crypto</div>
             </div>
             <div className="row ">
               <div className="col">IPO News</div>
             </div>
-          </div>
+          </div> */}
           <div className="col-sm-6">
             <div className="row ">
               <List_Stock_Data props={this.props} title={"Most Active"} data={mostactive} />
