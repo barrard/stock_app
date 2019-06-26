@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import { withRouter } from "next/router";
 import { add_MA_data_action } from "../../redux/actions/stock_actions.js";
+import { red } from "colors";
 
 class Canvas_Chart extends React.Component {
   constructor(props) {
@@ -185,8 +186,14 @@ class Canvas_Chart extends React.Component {
   }
 
   render_canvas(canvas_id, canvas_width, canvas_height) {
+    const data_warning={    position: 'absolute',
+    color:'red',
+    fontSize:'10px',
+      right: '0',
+      top: '-1.5em'}
     return (
       <>
+      <p title="Just a demo" style={data_warning}>New data fetching is currently off</p>
         <canvas
           onMouseDown={() => this.setState({ mouseDown: true })}
           onTouchStart={() => this.setState({ mouseDown: true })}

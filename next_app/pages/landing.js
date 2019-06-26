@@ -35,7 +35,7 @@ class Landing_Page extends React.Component {
       const home_page_data_keys = Object.keys(home_page_data_urls);
       await Promise.all(
         home_page_data_keys.map(async key => {
-          let json_data = await fetch(`${home_page_data_urls[key]}?token=pk_105138096303482c84efbb7a181b4b25`);
+          let json_data = await fetch(`${home_page_data_urls[key]}?token=pk_9c5351666ec649d99eb45ff08817d362`);
           let data = await json_data.json();
           home_page_data[key] = data;
         })
