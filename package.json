@@ -5,7 +5,6 @@
   "main": "ssr-server.js",
   "scripts": {
     "analyze": "BUNDLE_ANALYZE=both next build ./next_app",
-
     "dev": "nodemon ./server/next_server.js",
     "build": "next build ./next_app",
     "export": "next export ./next_app",
@@ -42,6 +41,9 @@
     "react-redux": "^6.0.0",
     "react-redux-toastr": "^7.4.8",
     "react-spinkit": "^3.0.0",
+    "fs-extra": "^8.0.1",
+    "json2csv": "^4.5.1",
+    "csvtojson": "^2.0.10",
     "react-toastr": "^3.0.0",
     "react-transition-group": "^2.5.3",
     "redis": "^2.8.0",

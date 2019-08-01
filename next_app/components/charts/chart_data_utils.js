@@ -22,6 +22,7 @@ export function view_selected_stock_symbol(symbol, props) {
 /* HELPER METHOD */
 async function fetch_data(url, ctx) {
   if (ctx && ctx.req.headers) {
+    console.log('got ctx headers?')
     return await fetch(url, {
       headers: {
         /* Need header maybe? */
@@ -30,12 +31,14 @@ async function fetch_data(url, ctx) {
       }
     });
   } else {
+    console.log('DONT have ctx headers?')
+
     return await fetch(url);
   }
 }
 
 export async function fetch_sector_data(sector, props) {
-  const { meta, dispatch, router } = props;
+  const { meta, dispatch, router, ctx } = props;
   const { api_server } = meta;
   router.push(`/sector?sector=${encodeURIComponent(sector)}`);
   let sector_data_json = await fetch_data(
@@ -92,15 +95,15 @@ export async function fetch_selected_chart_data(symbol, props) {
     ctx
   );
   // console.log('done fetch')
-  let chart_larget_trades_json = await fetch_data(
-    `
-    ${api_server}/stock/${symbol}/largest-trades
-  `,
-    ctx
-  );
+  // let chart_larget_trades_json = await fetch_data(
+  //   `
+  //   ${api_server}/stock/${symbol}/largest-trades
+  // `,
+  //   ctx
+  // );
   // console.log("done fetch");
 
-  let chart_larget_trades = await chart_larget_trades_json.json();
+  // let chart_larget_trades = await chart_larget_trades_json.json();
   let company = await company_json.json();
   let chart_stats = await chart_stats_json.json();
   let chart_logo = await chart_logo_json.json();
@@ -116,7 +119,7 @@ export async function fetch_selected_chart_data(symbol, props) {
         chart_data,
         chart_logo,
         chart_stats,
-        chart_larget_trades
+        // chart_larget_trades
       }
     })
   );

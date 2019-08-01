@@ -17,7 +17,7 @@ export function get_sector_data(sector, iex_api){
   console.log('GET SECTOR DATA')
   return async dispatch =>{
     let sector_data_json = await fetch(`
-    ${iex_api}/stock/market/collection/sector?collectionName=${sector}?token=pk_9c5351666ec649d99eb45ff08817d362
+    ${iex_api}/stock/market/collection/sector?collectionName=${sector}&token=pk_9c5351666ec649d99eb45ff08817d362
     `);
     let sector_data = await sector_data_json.json()
     // return {}

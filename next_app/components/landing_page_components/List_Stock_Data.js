@@ -71,6 +71,8 @@ export class List_Stock_Data extends React.Component {
 
   render() {
     const data = this.state.data;
+    
+    console.log(data)
     const { title } = this.props;
     const { props } = this.props;
     // console.log(props)
@@ -156,7 +158,7 @@ const Display_Sector_Row = ({ data, index, props }) => {
 };
 
 function Display_Stock_Row({ stock_data, index, props }) {
-  const { symbol, latestPrice, changePercent, latestVolume } = stock_data;
+  const { symbol, latestPrice, changePercent, latestVolume, avgTotalVolume } = stock_data;
   let class_name = index % 2 == 0 ? "ticker_row_light" : "ticker_row_dark";
 
   return (
@@ -176,7 +178,7 @@ function Display_Stock_Row({ stock_data, index, props }) {
       </div>
 
       <div className="col-4 flex_end">
-        <Volume vol={latestVolume} />
+        <Volume vol={latestVolume||avgTotalVolume} />
       </div>
     </div>
   );
@@ -225,9 +227,10 @@ const Stock_List_Header = ({ sort_by, sort_state, sorted_prop }) => {
     </div>
   );
 };
-const Volume = ({ vol }) => (
-  <span className="ticker_vol">{vol.toLocaleString("en-US")}</span>
-);
+const Volume = ({ vol }) => {
+  if(!vol) vol = 1234
+  return <span className="ticker_vol">{vol.toLocaleString("en-US")}</span>
+};
 
 const Price = ({ price }) => (
   <span className="ticker_price">

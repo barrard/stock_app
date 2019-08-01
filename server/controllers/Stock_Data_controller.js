@@ -4,7 +4,7 @@ logger = require("tracer").colorConsole({
     "{{timestamp.green}} <{{title.yellow}}> {{message.cyan}} (in {{file.red}}:{{line}})",
   dateformat: "HH:MM:ss.L"
 });
-require('dotenv').config()
+require("dotenv").config();
 const redis = require("../db/redis.js");
 // const sendgrid = require('../services/sendgrid.js');
 const Daily_Stock_Data_Model = require("../models/daily_stock_data_model.js");
@@ -15,9 +15,9 @@ const rp = require("request-promise");
 require("../db/db.js");
 const MA_Data_Model = require("../models/MA_data_model.js");
 const iex_server = `https://cloud.iexapis.com/stable`;
-const api_server = process.env.API_SERVER
-const IEX_TOKEN = process.env.IEX_TOKEN
-const TD_DATA_controller = require('../models/TD_Data_Model.js')
+const api_server = process.env.API_SERVER;
+const IEX_TOKEN = process.env.IEX_TOKEN;
+const TD_DATA_controller = require("../models/TD_Data_Model.js");
 class Stock_Data_Controller {
   constructor() {
     this.get_symbols_data = this.get_symbols_data.bind(this);
@@ -129,28 +129,28 @@ class Stock_Data_Controller {
     let now = Date.now();
     logger.log({ now });
     let symbol_data = await Stocks_Symbols_Model.findOne();
+
     if (!symbol_data) {
       to_get_data_or_not = true;
     } else {
-      logger.log(symbol_data.symbols_data_updated);
+      // logger.log(symbol_data.symbols_data_updated);
       let db_data_time = new Date(symbol_data.symbols_data_updated).getTime();
-      logger.log({ db_data_time });
+      // logger.log({ db_data_time });
       let age = now - db_data_time;
-      logger.log(age);
+      // logger.log(age);
       logger.log(age > data_age_limit);
       to_get_data_or_not = age > data_age_limit;
     }
-    // if (to_get_data_or_not) {
-      // let json_Data = await this.fetch_iex_symbols();
+    if (to_get_data_or_not) {
+      let json_Data = await this.fetch_iex_symbols();
 
-      // logger.log(json_Data.length);
+      logger.log(json_Data.length);
 
-      // logger.log(resp);
-      // let data = Stocks_Symbols_Model.update_symbols(json_Data);
-      // res.send(data);
-    // } else {
+      let data = Stocks_Symbols_Model.update_symbols(json_Data);
+      res.send(data);
+    } else {
       res.send(symbol_data.symbols);
-    // }
+    }
   }
 
   /* 
@@ -177,9 +177,11 @@ class Stock_Data_Controller {
     let sector = req.query.collectionName;
     logger.log(sector);
     var sector_data = await redis.get(`${sector}_data`);
+    logger.log(IEX_TOKEN);
     if (!sector_data) {
+      logger.log("fetching sector data");
       sector_data = await rp(`  
-    ${iex_server}/stock/market/collection/sector?collectionName=${sector}?token=${IEX_TOKEN}
+    ${iex_server}/stock/market/collection/sector?collectionName=${sector}&token=${IEX_TOKEN}
   `);
 
       redis.set(`${sector}_data`, sector_data);
@@ -222,19 +224,13 @@ class Stock_Data_Controller {
   async get_chart_5y(req, res, next) {
     let symbol = req.params.symbol.toUpperCase();
     logger.log(symbol);
-    var chart_5y = await redis.get(`${symbol}_chart_5y`);
-    logger.log(chart_5y.length)
-    if (!chart_5y) {
-  //     chart_5y = await rp(`  
-  //   ${iex_server}/stock/${symbol}/chart/5y?token=${IEX_TOKEN}
-  // `);
-  logger.log({symbol})
-  let chart_5y = await TD_DATA_controller.get_daily_data_for(symbol);
-console.log(chart_5y.daily_data.length)
-      redis.set(`${symbol}_chart_5y`, chart_5y);
-    }
 
-    res.send(chart_5y.daily_data);
+    let chart_5y = await TD_DATA_controller.get_daily_data_for(symbol);
+    // logger.log(chart_5y)
+    console.log(chart_5y.length);
+    redis.set(`${symbol}_chart_5y`, chart_5y);
+
+    res.send(chart_5y);
   }
   /* BOOK DATA */
   async get_book_data(req, res, next) {
@@ -323,7 +319,6 @@ console.log(chart_5y.daily_data.length)
     let result = await Daily_Stock_Data_Model.get_symbol("FB");
     let old_date = result.daily_data[result.daily_data.length - 1]["date"];
     if (new_date == old_date) return logger.log("data still the same");
-
 
     var counter = -1;
     let symbol_list = Object.keys(previous_data);
@@ -416,4 +411,3 @@ const stock_data_controller = (module.exports = new Stock_Data_Controller());
 
 /* Get All 5y data */
 // stock_data_controller.get_all_5y_data();
-
