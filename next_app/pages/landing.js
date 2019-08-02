@@ -24,7 +24,7 @@ class Landing_Page extends React.Component {
       const iex_api = "https://cloud.iexapis.com/stable/stock/market";
       const home_page_data = {};
       const home_page_data_urls = {
-        sector_performance: `${iex_api}/sector-performance`,
+        // sector_performance: `${iex_api}/sector-performance`,
         mostactive: `${iex_api}/list/mostactive`,
         gainers: `${iex_api}/list/gainers`,
         losers: `${iex_api}/list/losers`,
@@ -51,7 +51,7 @@ class Landing_Page extends React.Component {
       gainers,
       losers,
       infocus,
-      sector_performance,
+      // sector_performance,
       iexpercent,
       iexvolume,
       mostactive
@@ -79,7 +79,7 @@ class Landing_Page extends React.Component {
               <List_Stock_Data props={this.props} title={"Biggest Losers"} data={losers} />
               <List_Stock_Data props={this.props} title={"Biggest Gainers"} data={gainers} />
               <List_Stock_Data props={this.props} title={"In Focus"} data={infocus} />
-              <Sector_Performance props={this.props} data={sector_performance} />
+              {/* <Sector_Performance props={this.props} data={sector_performance} /> */}
             </div>
           </div>
         </div>

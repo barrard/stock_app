@@ -11,7 +11,7 @@ const cacheableResponse = require('cacheable-response')
 // const logger = new Logger;
 
 // logger.channel(createConsoleProcessor());
-require("dotenv").config('./');
+require("dotenv").config();
 // console.log(process.env)
 require("./db/db.js");
 // require('./db/redis.js')
