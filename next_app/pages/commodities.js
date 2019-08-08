@@ -43,10 +43,13 @@ class Contracts extends React.Component{
     let CL = commodity_data['/CL']
     return(
       <Main_Layout>
+      
       <p>ES is {ES.lastPriceInDouble} at {new Date(ES.tradeTimeInLong).toLocaleString()}</p>
+      <p>Vlume {ES.totalVolume}  Open Interest {ES.openInterest}</p>
       <p>CL is {CL.lastPriceInDouble} at {new Date(CL.tradeTimeInLong).toLocaleString()}</p>
+      <p>Vlume {CL.totalVolume}  Open Interest {CL.openInterest}</p>
       <p>GC is {GC.lastPriceInDouble} at {new Date(GC.tradeTimeInLong).toLocaleString()}</p>
-      </Main_Layout>
+      <p>Vlume {GC.totalVolume}  Open Interest {GC.openInterest}</p></Main_Layout>
     )
   }
 }
