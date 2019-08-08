@@ -11,9 +11,9 @@ class Contracts extends React.Component{
     super(props);
     this.state={
       commodity_data:{
-        ES:{},
-        GC:{},
-        CL:{},
+        '/ES':{},
+        '/GC':{},
+        '/CL':{},
       }
     }
   }
@@ -38,12 +38,14 @@ class Contracts extends React.Component{
   }
   render(){
     let {commodity_data} = this.state
-    let {ES, CL, GC} = commodity_data
+    let ES = commodity_data['/ES']
+    let GC = commodity_data['/GC']
+    let CL = commodity_data['/CL']
     return(
       <Main_Layout>
-      <p>ES is {ES.lastPriceInDouble}</p>
-      <p>CL is {CL.lastPriceInDouble}</p>
-      <p>GC is {GC.lastPriceInDouble}</p>
+      <p>ES is {ES.lastPriceInDouble} at {new Date(ES.tradeTimeInLong).toLocaleString()}</p>
+      <p>CL is {CL.lastPriceInDouble} at {new Date(CL.tradeTimeInLong).toLocaleString()}</p>
+      <p>GC is {GC.lastPriceInDouble} at {new Date(GC.tradeTimeInLong).toLocaleString()}</p>
       </Main_Layout>
     )
   }

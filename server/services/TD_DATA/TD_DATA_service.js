@@ -1,6 +1,6 @@
 require("dotenv").config();
 require("./utils/logger.js");
-const {save_data} = require('./utils/files.js')
+const { save_data } = require("./utils/files.js");
 const files = require("./utils/files.js");
 // require("./db.js");
 var request = require("request");
@@ -12,10 +12,12 @@ let { access_token } = require("./access_token.js");
 // logger.log({ access_token });
 
 module.exports = {
-  request_all_movers, request_data, get_minute_data, request_historical_data
-}
-
-
+  request_all_movers,
+  request_data,
+  get_minute_data,
+  request_historical_data,
+  get_commodities_quote
+};
 
 /* Helper functions */
 function iex_api() {
@@ -47,39 +49,50 @@ async function fetch_iex_symbols() {
   let json_Data = JSON.parse(resp);
   return json_Data;
 }
-//interest request_new_access_token
-// /ZT,/ZF,/ZN,/TN,/ZB,/GE,/ZQ,/GLB,/UB
-//METALS
-// /SIL,/GC,/SI/,HG,/MGC,/YG,/YI,/PL,/PA
-//CURRENCY
-// /6A,/6B,/6C,/M6A,/M6B,/M6E,/J7,/6E,/6J,/6M,/E7,/6N,/6S,/DX
-//GRAINS
-// /ZC,/XC,/XW,/XK,KE,/ZO,/ZS,/ZM,/ZL,/ZW
-//IDNEX
-// /NQ,/RTY,/ES,/EMD,/YM,/NKD,/VX,/BTC,/MES,/MNQ,/M2K,/MYM,/MME
-//ENERGY
-// /BZ,/QG,/RB,/HO,/CL,/NG,/QM
-//SOFTS
-// /CC,/KC,/CT,/OJ,/SB
-//FORST
-// /LBS
-//LIVE STOCK
-// /GF,/HE,/LE
-async function get_all_comodity_data_data() {
-  let SYMBOLS = ["/ES", "/GC", "/CL", "/NG", "/SI", "/ZB", "/ZN"];
 
-  var counter = -1;
-  var total = SYMBOLS.length;
-  let timer = setInterval(async () => {
-    counter++;
-    const symbol = SYMBOLS[counter];
-    logger.log(`counter = ${counter} requesting ${symbol}`);
 
-    let daily_data = await request_historical_data(symbol);
-    // TD_Data_Model.create_daily_data(symbol, daily_data);
-  }, 1000);
+let COMMODITIY_SYMBOLS = require('../Commodity_Symbols.js')
+
+let all_commodities = COMMODITIY_SYMBOLS.all()
+// let all_commodities = COMMODITIY_SYMBOLS.all()
+  // logger.log(all_commodities)
+/* Gets a quote for [symbols] */
+async function get_commodities_quote() {
+  return await get_quote(['/ES', '/CL', '/GC']);
 }
+async function get_quote(symbols) {
+  logger.log("Get quote");
+  /* serialize the symbols */
+  // let SYMBOLS =
 
+  try {
+    let now = new Date().getTime();
+    const options = {
+      url: `https://api.tdameritrade.com/v1/marketdata/quotes?symbol=${symbols}`,
+      // url: `https://api.tdameritrade.com/v1/marketdata/quotes?symbol=/ES,/GC,/CL,/NG,/SI,/ZB,/ZN`,
+      method: "get",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${access_token}`
+      }
+    };
+    var resp = await rp(options);
+    return JSON.parse(resp);
+  } catch (err) {
+    logger.log("err");
+    logger.log(err);
+    if (err.message) {
+      let expired_token = err.message.includes(
+        "The access token being passed has expired or is invalid"
+      );
+      if (expired_token) {
+        logger.log("get new token");
+        await request_new_access_token();
+        return get_commodities_quote();
+      }
+    }
+  }
+}
 async function get_all_data() {
   let volume_filtered = await fetch_iex_previous();
 
@@ -127,7 +140,6 @@ async function get_all_previous_daily_data() {
     if (counter + 1 == total) clearInterval(timer);
   }, 510);
 }
-
 
 /* Gets daily data for month, but just grab the last day and stick into DB */
 // get_last_daily_data('FB')
@@ -178,14 +190,11 @@ async function get_last_daily_data(symbol) {
   }
 }
 
-
 async function get_minute_data(symbol, start, end) {
-  logger.log({start, end})
+  logger.log({ start, end });
   logger.log(`get_minute_data from ${new Date(start)}, to ${new Date(end)}`);
 
-
   try {
-
     const options = {
       url: `https://api.tdameritrade.com/v1/marketdata/${symbol}/pricehistory?periodType=day&frequencyType=minute&frequency=1&endDate=${end}&startData=${start}`,
       method: "get",
@@ -194,7 +203,7 @@ async function get_minute_data(symbol, start, end) {
         Authorization: `Bearer ${access_token}`
       }
     };
-    logger.log(options.url)
+    logger.log(options.url);
     let resp = await rp(options);
     let { candles, empty } = JSON.parse(resp);
     if (empty) throw `${symbol} data is empty`;
@@ -208,7 +217,6 @@ async function get_minute_data(symbol, start, end) {
     logger.log("err");
     logger.log(err);
     handle_expired_token_error(err, get_minute_data, arguments[0]);
-
   }
 }
 async function request_all_movers() {
@@ -226,7 +234,7 @@ async function request_all_movers() {
         percent: []
       }
     },
-    '$DJI': {
+    $DJI: {
       down: {
         value: [],
         percent: []
@@ -236,7 +244,7 @@ async function request_all_movers() {
         percent: []
       }
     },
-    '$COMPX': {
+    $COMPX: {
       down: {
         value: [],
         percent: []
@@ -248,7 +256,7 @@ async function request_all_movers() {
     }
   };
   let timer = await setInterval(async () => {
-    let sym = markets[count]
+    let sym = markets[count];
     //up, percent
     movers_data[sym]["up"]["percent"] = await request_movers(
       sym,
@@ -286,22 +294,20 @@ async function request_all_movers() {
     count++;
     if (count == total) {
       clearInterval(timer);
-      logger.log('Error prone way to wait for data!')
-      setTimeout(async()=>{
+      logger.log("Error prone way to wait for data!");
+      setTimeout(async () => {
         logger.log("ALL DONE GETTING MARKET MOVERS".green);
         logger.log(movers_data);
-        save_data('MOVERS', 'MOVERS.csv', JSON.stringify(movers_data), false)
-        return movers_data
-      }, 6000)
-
+        save_data("MOVERS", "MOVERS.csv", JSON.stringify(movers_data), false);
+        return movers_data;
+      }, 6000);
     }
   }, 510 * 4);
-};
-
+}
 
 // request_movers('$DJI', 'up','value')
 async function request_movers(index, dir, chng) {
-  logger.log(`getting ${index}, ${dir}, ${chng}`)
+  logger.log(`getting ${index}, ${dir}, ${chng}`);
   try {
     let url = `https://api.tdameritrade.com/v1/marketdata/${index}/movers?direction=${dir}&change=${chng}`;
 
@@ -331,7 +337,7 @@ async function request_data({
   frequency,
   start_date,
   end_date
-}){
+}) {
   var url = `https://api.tdameritrade.com/v1/marketdata/${encodeURIComponent(
     symbol
   )}/pricehistory?`;
@@ -377,7 +383,7 @@ async function request_data({
       }
     }
   }
-};
+}
 
 async function handle_expired_token_error(err, fn, args) {
   if (err.message) {
@@ -428,9 +434,9 @@ async function request_historical_data(symbol) {
     var resp = await rp(options);
     var { candles, empty } = JSON.parse(resp);
     if (empty) {
-        logger.log(`${symbol} data is empty`)
-        return []
-        // throw `${symbol} data is empty`;
+      logger.log(`${symbol} data is empty`);
+      return [];
+      // throw `${symbol} data is empty`;
     }
     // logger.log(candles)
     logger.log(candles.length);
@@ -462,7 +468,7 @@ async function request_historical_data(symbol) {
 async function request_new_access_token() {
   logger.log(`Request new token`);
   try {
-    logger.log({refresh_token})
+    logger.log({ refresh_token });
     const options = {
       url: "https://api.tdameritrade.com/v1/oauth2/token",
       method: "post",

@@ -1,6 +1,6 @@
 const cookie = require("cookie");
 const cookie_parser = require("cookie-parser");
-const Quote_Controller = require("../controllers/Quote_Controller.js");
+const Quote = require("../controllers/Quote_Controller.js");
 require("dotenv");
 var io;
 module.exports = {
@@ -72,16 +72,32 @@ module.exports = {
     });
   }
 };
+var commodity_watcher_timer = false
 /* checks to see if anyone wants data in this room */
 function check_commodity_room(io) {
 
   /* this is checking for who is in commodities room */
   io.in("/commodities").clients(async (err, clients) => {
     /* if we have clients, we'll send data */
+
     if (clients.length) {
-      let commodity_room = io.sockets.in("/commodities");
-      let commodity_data = await Quote_Controller.get_faves();
-      commodity_room.emit("commodity_data", commodity_data);
+
+      if(!commodity_watcher_timer){
+        commodity_watcher_timer = setInterval(async () => {
+          let commodities_quotes = await Quote.get_commodities_quote()
+          let commodity_room = io.sockets.in("/commodities");
+          // let commodity_data = await Quote.get_faves();
+          commodity_room.emit("commodity_data", commodities_quotes);
+          Quote.insert_quotes_data(commodities_quotes)
+        }, 2000);
+      }
+
+ 
+    }else{
+      if(commodity_watcher_timer){
+        clearInterval(commodity_watcher_timer)
+        commodity_watcher_timer = false
+      }
     }
   });
 }
