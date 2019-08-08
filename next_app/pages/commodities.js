@@ -20,7 +20,9 @@ class Contracts extends React.Component{
   componentDidMount(){
     var isBrowser = typeof window !== 'undefined';
     if(isBrowser){
-      var socket = io('http://192.168.0.93:3003', {secure:true});
+      const { meta } = this.props;
+      const { api_server } = meta;
+      var socket = io(`${api_server}`, {secure:true});
       socket.emit('socket-test-id', 'test-data')
       socket.on(`connect`, data => {
         console.log('TEST')
@@ -56,9 +58,7 @@ class Contracts extends React.Component{
 
 
 function mapStateToProps(state) {
-  const { user, csrf, locals, crowdsales, two_factor_auth } = state;
-  return { ...user, ...csrf, ...locals, ...crowdsales, ...two_factor_auth };
+  const { stock_data, meta } = state;
+  return {stock_data, meta};
 }
-
-
 export default connect(mapStateToProps)(withRouter(Contracts));
