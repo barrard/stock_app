@@ -6,25 +6,22 @@ logger = require("tracer").colorConsole({
 });
 const cacheableResponse = require('cacheable-response')
 
-// import {Logger, createConsoleProcessor} from '@grabrinc/isomorphic-logger';
 
-// const logger = new Logger;
-
-// logger.channel(createConsoleProcessor());
 require("dotenv").config();
-// console.log(process.env)
 require("./db/db.js");
-// require('./db/redis.js')
 const { parse } = require("url");
 const express = require("express");
 const next = require("next");
-
 const middleware = require("./middleware/use.js");
 
 const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT || 3000;
 const next_app = next({ dir: "./next_app", dev });
 const handle = next_app.getRequestHandler();
+const app = express();
+
+const http_server = require('http').Server(app);
+const io = require('socket.io')(http_server);
 
 /* Home page cashing function */
 const Home_Page_Cache = cacheableResponse({
@@ -66,19 +63,19 @@ const routes = get_routes();
 next_app
   .prepare()
   .then(() => {
-    const server = express();
+
     logger.log("I AM SERVER".yellow);
     const env = dev ? "Development" : "Production"
     logger.log(`Running in ${env}`)
-    server.set("trust proxy", "loopback");
+    app.set("trust proxy", "loopback");
 
-    middleware(server, next_app);
+    middleware(app, next_app, io);
 
-    server.get('/', (req, res)=> Home_Page_Cache({req, res, pagePath:'/landing'}))
+    app.get('/', (req, res)=> Home_Page_Cache({req, res, pagePath:'/landing'}))
 
 
     /* Render dynamic chart */
-    server.get("/chart/:symbol", (req, res) => Chart_Page_Cache({req, res, pagePath:'/chart'}))
+    app.get("/chart/:symbol", (req, res) => Chart_Page_Cache({req, res, pagePath:'/chart'}))
     // {
     //   return next_app.render(req, res, "/chart", {
     //     chart: req.params.symbol
@@ -86,13 +83,13 @@ next_app
     // });
 
     /* Render dynamic sector */
-    server.get("/sector/:sector", (req, res) => {
+    app.get("/sector/:sector", (req, res) => {
       return next_app.render(req, res, "/sector", {
         sector: req.params.sector
       });
     });
 
-    server.get("*", (req, res) => {
+    app.get("*", (req, res) => {
       const parsed_url = parse(req.url, true);
       const { pathname, query = {} } = parsed_url;
 
@@ -107,7 +104,7 @@ next_app
       return handle(req, res);
     });
 
-    server.listen(port, err => {
+    http_server.listen(port, err => {
       if (err) throw err;
       logger.log(`> Ready on http://localhost:${port}`);
     });

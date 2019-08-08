@@ -12,15 +12,18 @@ const express_validator = require('express-validator')
 const Page_views_model = require('../models/page_views_model.js')
 const {ensure_admin} = require('./router_middleware.js')
 const DB_NAME = process.env.DB_NAME
+const Socket_Router = require('../routes/Socket_Router.js')
 
 const helper = require('./helper.js')
-module.exports = (app, next_app) => {
+module.exports = (app, next_app, io) => {
   const {protected_router} = require('../routes/Protected_Router.js')()
   const {auth_router} = require('../routes/Auth_Router.js')()
   const {user_router} = require('../routes/User_Router.js')()
   const {stock_data_router} = require('../routes/Stock_Data_Router.js')()
   const {admin_router} = require('../routes/Admin_Router.js')()
-  
+
+
+
   // app.use((req, res, next)=>{
   //   const ignored_paths = [
   //     '/_next/static/webpack/3990e5758444a9bf4723.hot-update.json',
@@ -58,6 +61,8 @@ module.exports = (app, next_app) => {
   //   console.log('@$%$$@@$245@$44@$@23424@#$52345@#$%234%$@#4542#%23$%$234%$@3454234%$2345')
   //   next()
   // })
+
+  
 
   app.use(helmet());
   app.use(cors())
@@ -108,6 +113,8 @@ app.use(express_validator(
   const session_middlesware = session(session_options);
   app.use(session_middlesware);
   app.use(csurf());
+
+
 
 
   app.use((req, res, next)=>{
@@ -191,12 +198,16 @@ app.use((err, req, res, next)=> {
     app.use(passport.initialize())
     app.use(passport.session(session_options))
   
-  
+    Socket_Router.init(io, mongo_store)
+
+
 
     app.use('/',protected_router)
     app.use('/auth',auth_router)
     app.use('/user', user_router)
     app.use('/stock', stock_data_router)
     app.use('/admin/',[ensure_admin], admin_router)
+
+
     
 };

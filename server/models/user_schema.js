@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const user_schema = mongoose.Schema({
-  auth_method:String,//LOCAL, FACEBOOK, GOOGLE, etc...
+  auth_method: String, //LOCAL, FACEBOOK, GOOGLE, etc...
   // auth0: {
   //   id: String,
   //   token: String,
@@ -11,7 +11,7 @@ const user_schema = mongoose.Schema({
   facebook: {
     id: String,
     token: String,
-    facebook_account_confirm:Boolean,
+    facebook_account_confirm: Boolean
     // email: String,
     // name: String
   },
@@ -24,7 +24,7 @@ const user_schema = mongoose.Schema({
   google: {
     id: String,
     token: String,
-    google_account_confirm:Boolean,
+    google_account_confirm: Boolean
 
     // email: String,
     // name: String
@@ -39,45 +39,48 @@ const user_schema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  primary_email:{
+  primary_email: {
     type: String,
     unique: true,
-    default:''
+    default: ""
   },
   emails: {
     type: [String],
     // unique: true,
-    default:[]
+    default: []
   },
-  email_verifed:{
-    type:Boolean, default:false
+  email_verifed: {
+    type: Boolean,
+    default: false
   },
-  primary_phone:{
+  primary_phone: {
     type: String,
-    default:''
+    default: ""
     // unique: true,
   },
-  phone_numbers:{
-    type:[String],default:[]
+  phone_numbers: {
+    type: [String],
+    default: []
   },
-  phone_verified:{
-    type:Boolean, default:false
+  phone_verified: {
+    type: Boolean,
+    default: false
   },
   firstname: {
     type: String,
-    default: 'firstname'
+    default: "firstname"
   },
   lastname: {
     type: String,
-    default: 'lastname'
+    default: "lastname"
   },
-  display_name:{
-    type:String,
-    default:'Full Name'
+  display_name: {
+    type: String,
+    default: "Full Name"
   },
   main_profile_img: {
     type: String,
-    default: ''
+    default: ""
   },
   profile_imgs: {
     type: [String],
@@ -85,7 +88,7 @@ const user_schema = mongoose.Schema({
   },
   password: {
     type: String,
-    default: ''
+    default: ""
   },
   is_approved: {
     type: Boolean,
@@ -99,27 +102,27 @@ const user_schema = mongoose.Schema({
   current_address: {
     street_number: {
       type: String,
-      default: 'address line 1'
+      default: "address line 1"
     },
     route: {
       type: String,
-      default: 'address line 2'
+      default: "address line 2"
     },
     locality: {
       type: String,
-      default: 'City'
+      default: "City"
     },
     region: {
       type: String,
-      default: 'State'
+      default: "State"
     },
     postal_code: {
       type: String,
-      default: 'Zip'
+      default: "Zip"
     },
     country: {
       type: String,
-      default: 'Country'
+      default: "Country"
     },
     lat: {
       type: Number,
@@ -131,7 +134,7 @@ const user_schema = mongoose.Schema({
     },
     formatted_address: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   has_wallet: {
@@ -139,9 +142,9 @@ const user_schema = mongoose.Schema({
     default: false
   },
 
-
-
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment", require: false }],
+  comments: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Comment", require: false }
+  ],
 
   transactionHashes: {
     type: [String],
@@ -151,62 +154,64 @@ const user_schema = mongoose.Schema({
     type: [{}],
     default: []
   },
-  socket_id:{
-    type:String
+  socket_id: {
+    type: String
   },
-  transaction_in_progress:{
-    type:Boolean,
-    default:false
+  transaction_in_progress: {
+    type: Boolean,
+    default: false
   },
-  user_held_token_addresses: [
-     String,
-  ],
-  bids_for_tokens: [{
-    token_address: String,
-    bidder_address: String,
-    token_amount: Number,
-    wei_amount: String,
-    bidder_index: String,
-    token_index: String,
-    time: String,
-    // timestamp: { type: Date, default: Date.now}
-  }],
-  tokens_for_sale: [{
-    seller_index: String,
-    token_index: String,
-    time: String,
-    token_address: String,
-    crowdsale_address: String,
-    wei_amount: String,
-    // transactionHash:{type:[String], default:[]},
-    token_amount: Number
-  }],
-  notifications: [{
-    data:{},
-    time: {
-      type: Date,
-      default: Date.now
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    body: {
-      type: String,
-      default: ''
-    },
-    link_path: {
-      type: String,
-      default: ''
-    },
-    seen: {
-      type: Boolean,
-      default: false
+  user_held_token_addresses: [String],
+  bids_for_tokens: [
+    {
+      token_address: String,
+      bidder_address: String,
+      token_amount: Number,
+      wei_amount: String,
+      bidder_index: String,
+      token_index: String,
+      time: String
+      // timestamp: { type: Date, default: Date.now}
     }
-
-  }]
-
-})
+  ],
+  tokens_for_sale: [
+    {
+      seller_index: String,
+      token_index: String,
+      time: String,
+      token_address: String,
+      crowdsale_address: String,
+      wei_amount: String,
+      // transactionHash:{type:[String], default:[]},
+      token_amount: Number
+    }
+  ],
+  notifications: [
+    {
+      data: {},
+      time: {
+        type: Date,
+        default: Date.now
+      },
+      title: {
+        type: String,
+        default: ""
+      },
+      body: {
+        type: String,
+        default: ""
+      },
+      link_path: {
+        type: String,
+        default: ""
+      },
+      seen: {
+        type: Boolean,
+        default: false
+      }
+    }
+  ]
+});
 
 // user_schema.methods.generateHash = function (password) {
 //   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
@@ -223,4 +228,4 @@ const user_schema = mongoose.Schema({
 //   }
 // }
 
-module.exports = mongoose.model('User', user_schema)
+module.exports = mongoose.model("User", user_schema);
