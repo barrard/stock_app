@@ -18,6 +18,7 @@ module.exports = {
     io = _io;
     /* This emits the data to commodity room */
     setInterval(() => {
+      /* AND collects quote data continuously */
       check_commodity_room(this.get_io());
     }, 3000);
 
@@ -72,32 +73,21 @@ module.exports = {
     });
   }
 };
-var commodity_watcher_timer = false
+var commodity_watcher_timer = false;
 /* checks to see if anyone wants data in this room */
-function check_commodity_room(io) {
+async function check_commodity_room(io) {
+  let commodities_quotes = await Quote.get_commodities_quote();
+  if(!commodities_quotes) return logger.log('No new  Data to report')
+  let commodity_room = io.sockets.in("/commodities");
+
+  Quote.insert_quotes_data(commodities_quotes);
 
   /* this is checking for who is in commodities room */
-  io.in("/commodities").clients(async (err, clients) => {
+  io.in("/commodities").clients((err, clients) => {
     /* if we have clients, we'll send data */
 
     if (clients.length) {
-
-      if(!commodity_watcher_timer){
-        commodity_watcher_timer = setInterval(async () => {
-          let commodities_quotes = await Quote.get_commodities_quote()
-          let commodity_room = io.sockets.in("/commodities");
-          // let commodity_data = await Quote.get_faves();
-          commodity_room.emit("commodity_data", commodities_quotes);
-          Quote.insert_quotes_data(commodities_quotes)
-        }, 2000);
-      }
-
- 
-    }else{
-      if(commodity_watcher_timer){
-        clearInterval(commodity_watcher_timer)
-        commodity_watcher_timer = false
-      }
+      commodity_room.emit("commodity_data", commodities_quotes);
     }
   });
 }

@@ -26,6 +26,8 @@ export default class MyDocument extends Document {
           <script src="/static/js/tether.js"></script>
           <script src="/static/js/popper.js"></script>
           <script src="/static/js/bootstrap.js"></script>
+          {/* <script src="/static/js/plotly.js"></script> */}
+
      
           {/* <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script> */}
 

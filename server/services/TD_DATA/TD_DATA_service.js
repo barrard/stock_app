@@ -23,6 +23,48 @@ module.exports = {
 function iex_api() {
   return "https://api.iextrading.com/1.0";
 }
+/* Function to verify markets are open
+param String market default "FUTURE"
+*/
+async function Get_ES_Session_Hours(){
+  
+
+  try {
+
+    let now = new Date().getTime();
+    const options = {
+      url: `https://api.tdameritrade.com/v1/marketdata/FUTURE/hours`,
+      method: "get",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${access_token}`
+      }
+    };
+    var resp = await rp(options);
+    logger.log(resp)
+    var {ES } = JSON.parse(resp).future;
+    logger.log({ES})
+    return ES.sessionHours
+
+  } catch (err) {
+    logger.log("err");
+    logger.log(err);
+    // for (let k in err) {
+    //   logger.log(k);
+    // }
+    if (err.message) {
+      let expired_token = err.message.includes(
+        "The access token being passed has expired or is invalid"
+      );
+      if (expired_token) {
+        logger.log("get new token");
+        await request_new_access_token();
+        // get_minute_data(symbol);
+      }
+    }
+  }
+
+}
 function high_to_low(a, b, prop) {
   if (a[prop] > b[prop]) return -1;
   if (a[prop] < b[prop]) return 1;
@@ -50,6 +92,23 @@ async function fetch_iex_symbols() {
   return json_Data;
 }
 
+/* check session hours and server time? */
+function check_session_hours(ES_Session_Hours){
+  let now = new Date().getTime()
+  /*  */
+
+  let {preMarket, regularMarket} = ES_Session_Hours
+  let preMarket_start = new Date(preMarket[0].start).getTime()
+  let preMarket_end = new Date(preMarket[0].end).getTime()
+  let regularMarket_start = new Date(regularMarket[0].start).getTime()
+  let regularMarket_end = new Date(regularMarket[0].end).getTime()
+  if(now < preMarket_start) {logger.log('NOT GOOD'); return false}
+  else{
+    logger.log({now})
+    return true
+  }
+
+}
 
 let COMMODITIY_SYMBOLS = require('../Commodity_Symbols.js')
 
@@ -57,11 +116,39 @@ let all_commodities = COMMODITIY_SYMBOLS.all()
 // let all_commodities = COMMODITIY_SYMBOLS.all()
   // logger.log(all_commodities)
 /* Gets a quote for [symbols] */
+let ES_Session_Hours = null
 async function get_commodities_quote() {
-  return await get_quote(['/ES', '/CL', '/GC']);
+  /* Check is market 'FUTURE' is open*/
+  // if(!ES_Session_Hours) ES_Session_Hours = await Get_ES_Session_Hours()
+  // logger.log(ES_Session_Hours)
+/* 
+{ preMarket: 
+   [ { start: '2019-08-13T17:45:00-04:00',
+       end: '2019-08-13T18:00:00-04:00' },
+     { start: '2019-08-13T16:15:00-04:00',
+       end: '2019-08-13T16:30:00-04:00' } ],
+  regularMarket: 
+   [ { start: '2019-08-13T18:00:00-04:00',
+       end: '2019-08-14T16:15:00-04:00' },
+     { start: '2019-08-13T16:30:00-04:00',
+       end: '2019-08-13T17:15:00-04:00' } ] }
+*/
+
+
+  // logger.log(check_session_hours(ES_Session_Hours))
+  // if(check_session_hours(ES_Session_Hours)) 
+  return await get_quote(all_commodities);
+  // return await get_quote(['/GF']);
+
+  // else{
+    // return false
+    // return await get_quote(all_commodities);
+  // }
 }
+var quote_counter = 0
 async function get_quote(symbols) {
-  logger.log("Get quote");
+  quote_counter++
+  if(quote_counter % 20 == 0) logger.log("Get quote X 20");
   /* serialize the symbols */
   // let SYMBOLS =
 

@@ -1,3 +1,11 @@
-{   
-  "ignore": ["next_app", "server/next_app"] 
+{
+  "ignore": [
+    
+    "next_app/",
+    "next_app/.next/",
+    "node_modules",
+    "server/services/TD_DATA/access_token.js"
+  ],
+  "watch": ["server/"]
+
 }

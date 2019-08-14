@@ -34,7 +34,7 @@ class Main_Head extends React.Component{
    <link rel='stylesheet' type='text/css' href='/static/css/nprogress.css' />
 
 
-   <link rel="stylesheet" href="/static/css/css.css" />
+   <link rel="stylesheet" href="/static/css/my_css.css" />
  
 
  

@@ -377,6 +377,8 @@ class Canvas_Chart extends React.Component {
     let bar_data;
     if (this.props.data) bar_data = this.props.data.chart_data[candle_id];
     if (bar_data) {
+      if(bar_data.timestamp)bar_data.datetime = bar_data.timestamp
+
       let pixels_per_penny = this.props.Chart_Analysis.pixels_per_penny;
       let pixels_per_vol = this.props.Chart_Analysis.pixels_per_vol;
       const candle_position = Math.floor(left / bar_size) * bar_size;
@@ -498,7 +500,7 @@ class Canvas_Chart extends React.Component {
       console.log("no canvas");
       return; /* setTimeout(()=> this.draw_chart() ,10) */
     }
-    // console.log("DRAW CART");
+    console.log("DRAW CART");
     let context = canvas.getContext("2d", false);
     clear_canvas(context, chart_style);
     /* Figure out how many bars are going to fin in the visible space */
@@ -507,7 +509,7 @@ class Canvas_Chart extends React.Component {
     );
 
     // let candle_count = Math.floor(canvas.witdh /(space_between_bars + candle_width))
-    // console.log({ chart_data, candle_count });
+    console.log({ chart_data, candle_count });
     let bar_offset = Math.floor(x_offset / (candle_width + space_between_bars));
     if (bar_offset <= 0) {
       chart_data = chart_data.slice((candle_count + bar_offset) * -1);
@@ -519,14 +521,14 @@ class Canvas_Chart extends React.Component {
 
       chart_data = chart_data.slice(end_of_data, bar_offset * -1);
     }
-    // console.log({ chart_data });
+    console.log({ chart_data });
 
     /* get min and max values */
     let { min_price, max_price, max_vol } = this.get_min_max(chart_data);
     // let min_price = this.get_min_price(chart_data);
     // let max_price = this.get_max_price(chart_data);
     // let max_vol = this.get_max_vol(chart_data);
-    // console.log({ min_price, max_price, max_vol });
+    console.log({ min_price, max_price, max_vol });
 
     /* price / Time markers */
     let date_marker_position = Math.floor(chart_data.length / 10);
@@ -671,7 +673,7 @@ class Canvas_Chart extends React.Component {
     let { date_marker_timestamp } = this.state;
     let { prev_year, prev_month, prev_day } = date_marker_timestamp;
     // console.log({ date });
-    let iso_date = new Date(date).toISOString().slice(0, 10);
+    // let iso_date = new Date(date).toISOString().slice(0, 10);
     // console.log(iso_date);
     // console.log(date, label)
     let month_number = new Date(date).getMonth();

@@ -21,6 +21,7 @@ module.exports = (app, next_app, io) => {
   const {user_router} = require('../routes/User_Router.js')()
   const {stock_data_router} = require('../routes/Stock_Data_Router.js')()
   const {admin_router} = require('../routes/Admin_Router.js')()
+  const {commodities_router} = require('../routes/Commodities_Router.js')()
 
 
 
@@ -207,6 +208,7 @@ app.use((err, req, res, next)=> {
     app.use('/user', user_router)
     app.use('/stock', stock_data_router)
     app.use('/admin/',[ensure_admin], admin_router)
+    app.use('/commodities', commodities_router)
 
 
     

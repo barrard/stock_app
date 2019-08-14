@@ -184,6 +184,10 @@ canvas{
   
 }
 
+
+
+
+
 .filtered_stock_list_item:hover{
   box-shadow: inset 2px 2px 2px green;
 }
@@ -250,6 +254,7 @@ canvas{
 .zero_margin{
   margin: 0 !important;
 }
+
 .stock-list-dropdown{
   text-decoration: none;
   color:#212529;
@@ -308,7 +313,7 @@ canvas{
   font-size: 1.15em;
   text-align: center; }
 
-svg {
+.svg-social-icons {
   width: 1.8em;
   height: 1.8em;
   fill: #fff; }
@@ -399,6 +404,7 @@ svg {
   background-image: linear-gradient(top, white, #ebebeb); }
   .sc--default svg {
     fill: #222; }
+    
   .sc--default:hover {
     color: #222;
     background-color: #d2d2d2;
