@@ -1,4 +1,5 @@
 // const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
+const webpack = require('webpack');
 
 const nextConfig = {
   // analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
@@ -14,6 +15,15 @@ const nextConfig = {
   //   }
   // },
   webpack(config) {
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        // 'd3': 'd3',
+        "window.d3": "d3",
+        "window.techan": "techan"
+        // 'techan': 'techan',
+
+      })
+    );
     // config.module.rules.push({
     //   test: /\.js$/,
     //   loader: "ify-loader"

@@ -8,7 +8,7 @@ export default (state = initial_state, action) => {
   switch (action.type) {
     case 'SET_COMMODITY_DATA':{
       let charts = { ...state.charts, ...action.chart_data };
-      console.log({charts})
+      // console.log({charts})
 
       return{
         ...state, charts

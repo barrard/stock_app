@@ -7,7 +7,7 @@ export async function fetch_commodity_chart_data(
   let commodity_data = await fetch(
     `${api_server}/commodities/get_all_data/${symbol}/`
   );
-  console.log(commodity_data)
+  // console.log(commodity_data)
   let commodity_chart_data = await commodity_data.json();
   return dispatch({
     type: "SET_COMMODITY_DATA",

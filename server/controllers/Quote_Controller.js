@@ -16,6 +16,7 @@ Quote.get_all_data = get_all_data;
 
 /* Takes the 2-second snap shots and resamples to one miniute */
 var compiled_data = {};
+var null_flag = true;
 var last_compiled_data = {};
 var one_minute = 1000 * 60;
 function parse_quote(sym, quote) {
@@ -44,6 +45,7 @@ function parse_quote(sym, quote) {
   let {
     symbol,
     open,
+    close,
     prices,
     high,
     low,
@@ -51,8 +53,11 @@ function parse_quote(sym, quote) {
     end_timestamp,
     volume,
     last_vol,
-    vols, quote_times, sample_times
+    vols,
+    quote_times,
+    sample_times
   } = compiled_data[key_safe_symbol];
+  if(!null_flag)null_flag=true
   if (!symbol) symbol = sym;
 
   if (!start_timestamp) start_timestamp = new Date().getTime();
@@ -62,7 +67,9 @@ function parse_quote(sym, quote) {
   }
   if (high < price) high = price;
   if (low > price) low = price;
+  close = price;
   if (!last_vol) last_vol = quote.totalVolume;
+
   let vol_diff = quote.totalVolume - last_vol;
   volume += vol_diff;
   last_vol = quote.totalVolume;
@@ -74,6 +81,7 @@ function parse_quote(sym, quote) {
   compiled_data[key_safe_symbol] = {
     ...compiled_data[key_safe_symbol],
     symbol,
+    close,
     open,
     prices,
     high,
@@ -86,31 +94,30 @@ function parse_quote(sym, quote) {
     vols
   };
   let now = new Date().getTime();
-logger.log(compiled_data[key_safe_symbol])
+  // logger.log(compiled_data[key_safe_symbol])
 
   if (now - one_minute > start_timestamp) {
     /* save closing price */
-    compiled_data[key_safe_symbol].close = price;
     /* save time stamp for end */
     compiled_data[key_safe_symbol].end_timestamp = quote.quoteTimeInLong;
     /* check for equality */
     let equal_check = isEquivalent(
       compiled_data[key_safe_symbol],
       last_compiled_data[key_safe_symbol]
-    )
+    );
     // if (
-      // last_compiled_data[key_safe_symbol] &&
-      // compiled_data[key_safe_symbol] &&
-      /* euality function maybe useless.... */
-      // equal_check || 
-      /* Compiled minutley data should have 20 prices/vols */
-      // compiled_data[key_safe_symbol].prices.length < 5
+    // last_compiled_data[key_safe_symbol] &&
+    // compiled_data[key_safe_symbol] &&
+    /* euality function maybe useless.... */
+    // equal_check ||
+    /* Compiled minutley data should have 20 prices/vols */
+    // compiled_data[key_safe_symbol].prices.length < 5
     // ) {
-      /* set last to current */
-      // last_compiled_data[key_safe_symbol] = compiled_data[key_safe_symbol];
-      /* reset the current compiled data */
-      // compiled_data[key_safe_symbol] = null;
-      // return logger.log(`The data is the same as last for ${symbol}`);
+    /* set last to current */
+    // last_compiled_data[key_safe_symbol] = compiled_data[key_safe_symbol];
+    /* reset the current compiled data */
+    // compiled_data[key_safe_symbol] = null;
+    // return logger.log(`The data is the same as last for ${symbol}`);
     // }
     /* Finally save the data */
     insert_minutely_data(compiled_data[key_safe_symbol], symbol);
@@ -118,11 +125,12 @@ logger.log(compiled_data[key_safe_symbol])
     last_compiled_data[key_safe_symbol] = compiled_data[key_safe_symbol];
     /* reset the current to null */
     compiled_data[key_safe_symbol] = null;
+    null_flag = false
   }
 }
 
 async function insert_minutely_data(data, symbol) {
-  logger.log(`inserting data for ${symbol}`);
+  // logger.log(`inserting data for ${symbol}`);
   try {
     minute_data = new Minutely_Commodity_Model(data);
     await minute_data.save();
@@ -163,8 +171,8 @@ async function get_all_data(req, res) {
   } else {
     let all_data = await Minutely_Commodity_Model.find({
       symbol: sym
-    }).limit(300);
-    logger.log(all_data.length);
+    }).sort({'_id':-1}).limit(500);
+    logger.log(`Quote data length ${all_data.length}`);
     return res.send(all_data);
   }
 }
@@ -178,10 +186,11 @@ async function get_faves() {
   return await get_all_symbols_latest_data(fave_comm_sym);
 }
 
-async function insert_quotes_data(quotes) {
+async function insert_quotes_data(quotes, io) {
   for (sym in quotes) {
     parse_quote(sym, quotes[sym]);
   }
+  if(null_flag)io.sockets.in("/commodities").emit("latest_minutley_bar", compiled_data);
 }
 
 async function insert_quote(data) {
@@ -243,7 +252,7 @@ function objectIdWithTimestamp(timestamp) {
 }
 
 function isEquivalent(a, b) {
-  if(!a || !b) return false
+  if (!a || !b) return false;
   // Create arrays of property names
   var aProps = Object.getOwnPropertyNames(a);
   var bProps = Object.getOwnPropertyNames(b);
@@ -256,7 +265,7 @@ function isEquivalent(a, b) {
 
   for (var i = 0; i < aProps.length; i++) {
     var propName = aProps[i];
-    if(Array.isArray(a[propName])) continue;
+    if (Array.isArray(a[propName])) continue;
 
     // If values of same property are not equal,
     // objects are not equivalent

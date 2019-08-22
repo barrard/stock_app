@@ -21,7 +21,7 @@ export function view_selected_stock_symbol(symbol, props) {
 
 /* HELPER METHOD */
 async function fetch_data(url, ctx) {
-  if (ctx && ctx.req.headers) {
+  if (ctx && ctx.req && ctx.req.headers) {
     console.log('got ctx headers?')
     return await fetch(url, {
       headers: {

@@ -47,7 +47,7 @@ module.exports = {
         if (referer.includes("/commodities")) {
           logger.log(`Join the room /commodities`.blue);
           socket.join(`/commodities`);
-          // logger.log(`room /marketplace`.blue)
+          logger.log(`room /marketplace`.blue)
         }
       } catch (err) {
         logger.log("err".red);
@@ -80,7 +80,7 @@ async function check_commodity_room(io) {
   if(!commodities_quotes) return logger.log('No new  Data to report')
   let commodity_room = io.sockets.in("/commodities");
 
-  Quote.insert_quotes_data(commodities_quotes);
+  Quote.insert_quotes_data(commodities_quotes, io);
 
   /* this is checking for who is in commodities room */
   io.in("/commodities").clients((err, clients) => {
@@ -94,11 +94,16 @@ async function check_commodity_room(io) {
 
 async function get_session(socket, session_store) {
   let session_id = find_session_id(socket);
+  logger.log({session_id})
   let user_session = await session_store.get(session_id);
   return user_session;
 }
 function find_session_id(socket) {
-  let cks = cookie.parse(socket.handshake.headers.cookie);
+  logger.log({socket})
+  logger.log(socket.handshake)
+  logger.log(socket.handshake.headers)
+  let cks = cookie.parse(socket.handshake.headers);
+  logger.log(cks)
   let session_id = cookie_parser.signedCookie(
     cks["Della_Session"],
     "process.env.SESSION_SECRET"

@@ -22,6 +22,7 @@
     "cors": "^2.8.5",
     "csurf": "^1.9.0",
     "csvtojson": "^2.0.10",
+    "d3": "^5.9.7",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
@@ -57,6 +58,7 @@
     "request-promise": "^4.2.2",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
+    "techan": "^0.8.0",
     "tracer": "^0.9.8",
     "websocket": "^1.0.28"
   }

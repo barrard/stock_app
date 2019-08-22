@@ -28,7 +28,7 @@ class Main_Nav extends React.Component {
     this.filtered_stock_list_item = this.filtered_stock_list_item.bind(this);
   }
   async componentDidMount() {
-    console.log("asdasd");
+    console.log("123123");
     // const { api_server } = location.origin;
     // console.log(location);
     // console.log(api_server);

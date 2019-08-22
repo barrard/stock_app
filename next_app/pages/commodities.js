@@ -5,62 +5,88 @@ import { withRouter } from "next/router";
 /* Might move this somewhere else */
 import io from "socket.io-client";
 import dynamic from "next/dynamic";
+import Techan_Chart from "../components/charts/Techan/Techan_Chart_Basic.js";
+// import Techan_Chart from "../components/charts/Techan/Techan_Chart_Feed.js";
+// import Techan_Chart from "../components/charts/Techan/Techan_Chart_Example.js";
 import { fetch_commodity_chart_data } from "../redux/actions/Commodities_Actions.js";
 // import Analysis_Chart from "../components/charts/Analysis_Chart.js";
 
-
-const Plotly_Chart = dynamic(import("../components/charts/Plotly_Chart.js"), {
-  ssr: false
-});
+// const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_Example.js"), {
+// const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_Basic.js"), {
+//     const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_Feed.js"), {
+//       ssr: false
+// });
 
 import Main_Layout from "../layouts/Main_Layout.js";
 class Commodities_Page extends React.Component {
   constructor(props) {
     super(props);
+    const { meta } = this.props;
+    const { api_server } = meta;
     this.state = {
+      socket : io(`${api_server}`, { secure: true }),
+
       commodity_tick_data: {
         "/ES": {},
         "/GC": {},
         "/CL": {}
       }
     };
+    this.recieve_latest_minute_data = this.recieve_latest_minute_data.bind(this)
+    this.recieve_quote_data = this.recieve_quote_data.bind(this)
     this.toggle_wide_mode = this.toggle_wide_mode.bind(this);
   }
   static async getInitialProps(ctx) {
     let { store, req, query } = ctx;
-    let {symbol} = query
-    let {dispatch} = store
-    if(!symbol) symbol='ES'
+    let { symbol } = query;
+    let { dispatch } = store;
+    if (!symbol) symbol = "ES";
 
     let state = store.getState();
-    let { commodities , meta } = state;
+    let { commodities, meta } = state;
     let { api_server } = meta;
     let symbol_data = commodities.charts[symbol];
 
     /* Check commodity data first to see? */
     if (!symbol_data) {
-      await fetch_commodity_chart_data(symbol, api_server, dispatch)
-
+      await fetch_commodity_chart_data(symbol, api_server, dispatch);
     } else {
       console.log(`already got ${symbol} data`);
       console.log(`already got ${symbol} data`);
       console.log(`already got ${symbol} data`);
     }
 
-    return { symbol}
+    return { symbol };
+  }
+  componentWillUnmount() {
+    let {socket} = this.state
+
+    this._ismounted = false;
+    this.recieve_latest_minute_data = this.recieve_latest_minute_data.bind(this)
+    socket.removeListener('commodity_data', this.recieve_quote_data)
+    socket.removeListener('latest_minutle_bar', this.recieve_latest_minute_data)
   }
   componentDidMount() {
+    let {socket} = this.state
+    this._ismounted = true;
     var isBrowser = typeof window !== "undefined";
     if (isBrowser) {
-      const { meta } = this.props;
-      const { api_server } = meta;
-      var socket = io(`${api_server}`, { secure: true });
 
-      socket.on(`commodity_data`, commodity_tick_data => {
-        console.log(commodity_tick_data);
-        this.setState({ commodity_tick_data });
-      });
+
+      socket.on(`commodity_data`, this.recieve_quote_data)
+      socket.on(`latest_minutley_bar`, this.recieve_latest_minute_data)
+      
     }
+  }
+
+  recieve_quote_data (commodity_tick_data){
+    // console.log(commodity_tick_data);
+    this.setState({ commodity_tick_data });
+  }
+  recieve_latest_minute_data(latest_minute_data){
+    this.setState({ latest_minute_data });
+    
+
   }
   toggle_wide_mode() {
     var { canvas_width } = this.state;
@@ -68,26 +94,25 @@ class Commodities_Page extends React.Component {
     this.setState({ canvas_width });
   }
 
-  fetch_all_commodities_data() {
-    console.log(`TODO`);
-  }
+
   render() {
-    let { commodity_tick_data } = this.state;
+    
+    let { commodity_tick_data, latest_minute_data } = this.state;
     let ES = commodity_tick_data["/ES"];
     let GC = commodity_tick_data["/GC"];
     let CL = commodity_tick_data["/CL"];
-    let { symbol,  commodities } = this.props;
-
-
+    let { symbol, commodities } = this.props;
+    // console.log(latest_minute_data)
+    // if(latest_minute_data)console.log(latest_minute_data.ES.close)
+    
     return (
       <Main_Layout>
-        <Plotly_Chart symbol={symbol} data= {commodities.charts[symbol].chart_data}/>
-        {/* <Analysis_Chart
-          toggle_wide_mode={this.toggle_wide_mode}
-          canvas_id={`commoditiy_${symbol}_analysis`}
-          data={commodities.charts[this.props.symbol]}
-          container_width={this.state.canvas_width}
-        /> */}
+        <div id="techan_chart_div">
+          <Techan_Chart divId={'techan_chart_div'}
+          latest_minute_data={latest_minute_data}
+           _width={560} _height={500} data={this.props.commodities.charts.ES.chart_data} />
+        </div>
+
         <p>
           ES is {ES.lastPriceInDouble} at{" "}
           {new Date(ES.tradeTimeInLong).toLocaleString()}
