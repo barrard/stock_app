@@ -134,8 +134,12 @@ class Auth_Controller {
 
   async logout(req, res){
     logger.log('Logging out!!')
+
+    // req.session.destroy(function (err) {
+    //   // req.session.messages.push({ "info": "You are now logged out" })
+    //   res.redirect('/'); //Inside a callback… bulletproof!
+    // });
     req.logOut();
-    req.session.messages.push({ "info": "You are now logged out" })
     res.redirect('/')
   }
 }

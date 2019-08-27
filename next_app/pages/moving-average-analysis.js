@@ -58,8 +58,8 @@ class MA_Analysis extends React.Component {
   }
 
   async submit_query() {
-    let {is_loading} =this.props.meta
-    if(is_loading)return toastr.info('Searching in progress....')
+    let { is_loading } = this.props.meta;
+    if (is_loading) return toastr.info("Searching in progress....");
     const _csrf = this.props.meta.csrf;
     let { queries, saved_queries } = this.props.MA_analysis;
     let query_data = { query: queries, _csrf };
@@ -142,59 +142,61 @@ class MA_Analysis extends React.Component {
     // console.log(this.props);
     return (
       <Main_Layout>
-        <h1>Query MA Data</h1>
-        {/* find all ? */}
-        {/* select Moving Average */}
-        <div className="col-sm-12 ">
-          <div className="row flex_center">
-            {this.props.MA_analysis.queries.map((query, index) => (
-              <MA_Select_Form
-                remove_query={this.remove_query}
-                perc={query.perc}
-                MA={query.MA}
-                g_l={query.g_l}
-                key={index}
-                index={index}
-                handleInput={this.handleInput}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="row flex_center">
-          <Add_New_Query_Btn add_query={this.add_query} />
-          <Submit_Query submit_query={this.submit_query} />
-        </div>
-        <div className="row flex_center">
-          <div className="col-sm-12 col-lg-8">
-            <Stock_List_Header
-              sorted_prop={this.state.sorted_prop}
-              sort_state={this.state.sort_state}
-              sort_by={prop => this.sort_by(prop)}
-              // on_sort={this}
-            />
-            <div className="">
-              Results:{" "}
-              {is_loading ? "Loading..." : current_query_results.length}
-              <>
-                {is_loading &&
-                <div className='row flex_center'>
-                   <Block_Spinner />
-                </div>
-                }
-                {!is_loading &&
-                  sorted_query_results.map((MA_data, index) => (
-                    <Display_Stock_Row
-                      key={index}
-                      index={index}
-                      MA_data={MA_data}
-                      props={props}
-                    />
-                  ))}
-              </>
+        <div className="container-flex">
+          <h1>Query MA Data</h1>
+          {/* find all ? */}
+          {/* select Moving Average */}
+          <div className="col-sm-12 ">
+            <div className="row flex_center">
+              {this.props.MA_analysis.queries.map((query, index) => (
+                <MA_Select_Form
+                  remove_query={this.remove_query}
+                  perc={query.perc}
+                  MA={query.MA}
+                  g_l={query.g_l}
+                  key={index}
+                  index={index}
+                  handleInput={this.handleInput}
+                />
+              ))}
             </div>
-            {current_query_results.length > 30 && (
-              <More_Rows handle_click={this.load_more_data} />
-            )}
+          </div>
+          <div className="row flex_center">
+            <Add_New_Query_Btn add_query={this.add_query} />
+            <Submit_Query submit_query={this.submit_query} />
+          </div>
+          <div className="row flex_center">
+            <div className="col-sm-12 col-lg-8">
+              <Stock_List_Header
+                sorted_prop={this.state.sorted_prop}
+                sort_state={this.state.sort_state}
+                sort_by={prop => this.sort_by(prop)}
+                // on_sort={this}
+              />
+              <div className="">
+                Results:{" "}
+                {is_loading ? "Loading..." : current_query_results.length}
+                <>
+                  {is_loading && (
+                    <div className="row flex_center">
+                      <Block_Spinner />
+                    </div>
+                  )}
+                  {!is_loading &&
+                    sorted_query_results.map((MA_data, index) => (
+                      <Display_Stock_Row
+                        key={index}
+                        index={index}
+                        MA_data={MA_data}
+                        props={props}
+                      />
+                    ))}
+                </>
+              </div>
+              {current_query_results.length > 30 && (
+                <More_Rows handle_click={this.load_more_data} />
+              )}
+            </div>
           </div>
         </div>
 
@@ -461,7 +463,7 @@ const Price = ({ price }) => (
 );
 
 const Percent_From_Price = ({ MA_price, current_close, MA_perc }) => {
-  if(!MA_perc)return "N/A"
+  if (!MA_perc) return "N/A";
   let class_name;
   if (MA_price > current_close) class_name = "percentage_up";
   if (MA_price < current_close) class_name = "percentage_down";

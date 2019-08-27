@@ -63,11 +63,20 @@ module.exports = (app, next_app, io) => {
   //   next()
   // })
 
-  
+  /* CORS OPTIONS FOR ORIGIN */
+  let whitelist = ['http://192.168.0.93:3003', 'http://localhost:3003', 'https://stocks.dakine.website']
+let corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
   app.use(helmet());
-  app.use(cors())
-
+  app.use(cors(corsOptions))
   app.use((req, res, next)=>{
     // logger.log('res.checkBody')
     next()

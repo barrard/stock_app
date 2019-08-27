@@ -1,3 +1,5 @@
+import Router from 'next/router'
+
 export function ensure_loggedin(ctx) {
   let state = ctx.store.getState();
   if (!state.user.is_loggedin) {

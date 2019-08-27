@@ -218,6 +218,7 @@ class Techan_Chart_Basic extends React.Component {
       console.log({ ES });
       data.push(ES);
     }
+    data = data.ES.chart_data
     data = data
       // .slice(0, 20)
       .map(function(d) {

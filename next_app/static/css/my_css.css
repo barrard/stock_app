@@ -313,7 +313,7 @@ canvas{
   font-size: 1.15em;
   text-align: center; }
 
-.svg-social-icons {
+.svg {
   width: 1.8em;
   height: 1.8em;
   fill: #fff; }
@@ -468,8 +468,11 @@ canvas{
     background-image: -o-linear-gradient(top, #dc564e, #b92d25);
     background-image: linear-gradient(top, #dc564e, #b92d25); }
 
-    svg.chart_background{
-      background: black;
+    svg.dark_background{
+      background:#333;
+    }
+    svg.light_background{
+      background: #ddd;;
     }
 
     

@@ -37,6 +37,7 @@ class Techan_Chart_Basic extends React.Component {
 
   init_chart() {
     if (!this._ismounted) return;
+    console.log('init')
 
     let { data, divId, _width, _height, latest_minute_data } = this.props;
 
@@ -56,6 +57,7 @@ class Techan_Chart_Basic extends React.Component {
     dim.indicator.top = dim.ohlc.height + dim.indicator.padding;
     dim.indicator.bottom =
       dim.indicator.top + dim.indicator.height + dim.indicator.padding;
+
     var indicatorTop = d3
       .scaleLinear()
       .range([dim.indicator.top, dim.indicator.bottom]);
@@ -67,30 +69,42 @@ class Techan_Chart_Basic extends React.Component {
       .select(`#${divId}`)
       .append("svg")
       .attr("width", dim.width)
-      .attr("height", dim.height)
-      this.state.defs = this.state.svg.append("defs");
+      .attr("height", dim.height);
 
-      this.state.defs.append("clipPath")
-              .attr("id", "ohlcClip")
-          .append("rect")
-              .attr("x", 0)
-              .attr("y", 0)
-              .attr("width", dim.plot.width)
-              .attr("height", dim.ohlc.height);
-  
-      this.state.defs.selectAll("indicatorClip").data([0, 1])
-          .enter()
-              .append("clipPath")
-              .attr("id", function(d, i) { return "indicatorClip-" + i; })
-          .append("rect")
-              .attr("x", 0)
-              .attr("y", function(d, i) { return indicatorTop(i); })
-              .attr("width", dim.plot.width)
-              .attr("height", dim.indicator.height);
 
-      this.state.svg = this.state.svg.append("g")
+
+    this.state.defs = this.state.svg.append("defs");
+
+    this.state.defs
+      .append("clipPath")
+      .attr("id", "ohlcClip")
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", dim.plot.width)
+      .attr("height", dim.ohlc.height);
+
+    this.state.defs
+      .selectAll("indicatorClip")
+      .data([0, 1])
+      .enter()
+      .append("clipPath")
+      .attr("id", function(d, i) {
+        return "indicatorClip-" + i;
+      })
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", function(d, i) {
+        return indicatorTop(i);
+      })
+      .attr("width", dim.plot.width)
+      .attr("height", dim.indicator.height);
+
+    this.state.svg = this.state.svg
+      .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      this.state.svg.append('text')
+    this.state.svg
+      .append("text")
       .attr("class", "symbol")
       .attr("x", 20)
       .text("Facebook, Inc. (FB)");
@@ -152,27 +166,24 @@ class Techan_Chart_Basic extends React.Component {
       .format(d3.format(",.2f"))
       .translate([this.state.x(1), 0]);
 
+    /* appending the x-axis */
+    this.state.svg
+      .append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + dim.plot.height + ")");
 
-          /* appending the x-axis */
-          this.state.svg.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + dim.plot.height + ")")
-
-          /* setting up the OHLC anotation? */
+    /* setting up the OHLC anotation? */
 
     var ohlcSelection = this.state.svg
-    .append("g")
-    .attr("class", "ohlc")
-    .attr("transform", "translate(0,0)");
+      .append("g")
+      .attr("class", "ohlc")
+      .attr("transform", "translate(0,0)");
 
-
-
-      /* appending the y axis */
-      ohlcSelection.append("g")
+    /* appending the y axis */
+    ohlcSelection
+      .append("g")
       .attr("class", "axis")
       .attr("transform", "translate(" + dim.plot.width + ",0)");
-
-
 
     ohlcSelection
       .append("g")
@@ -197,28 +208,28 @@ class Techan_Chart_Basic extends React.Component {
       .attr("class", "candlestick")
       .attr("clip-path", "url(#ohlcClip)");
 
-//     ohlcSelection
-//       .append("g")
-//       .attr("class", "indicator sma ma-0")
-//       .attr("clip-path", "url(#ohlcClip)");
+    //     ohlcSelection
+    //       .append("g")
+    //       .attr("class", "indicator sma ma-0")
+    //       .attr("clip-path", "url(#ohlcClip)");
 
-//     ohlcSelection
-//       .append("g")
-//       .attr("class", "indicator sma ma-1")
-//       .attr("clip-path", "url(#ohlcClip)");
+    //     ohlcSelection
+    //       .append("g")
+    //       .attr("class", "indicator sma ma-1")
+    //       .attr("clip-path", "url(#ohlcClip)");
 
-//     ohlcSelection
-//       .append("g")
-//       .attr("class", "indicator ema ma-2")
-//       .attr("clip-path", "url(#ohlcClip)");
+    //     ohlcSelection
+    //       .append("g")
+    //       .attr("class", "indicator ema ma-2")
+    //       .attr("clip-path", "url(#ohlcClip)");
 
     ohlcSelection.append("g").attr("class", "percent axis");
 
     ohlcSelection.append("g").attr("class", "volume axis");
 
     let accesor = this.state.candlestick.accessor();
-
-    data = data
+    console.log(data);
+    data = data.ES.chart_data
       //       .slice(0, 200)
       .map(function(d) {
         return {
@@ -238,8 +249,17 @@ class Techan_Chart_Basic extends React.Component {
   draw_chart() {
     let indicatorPreRoll = 33;
     let { data } = this.props;
+    data = data.ES.chart_data;
 
-    let { xAxis, x, svg, ohlcAnnotation, ohlcRightAnnotation, closeAnnotation } = this.state;
+
+    let {
+      xAxis,
+      x,
+      svg,
+      ohlcAnnotation,
+      ohlcRightAnnotation,
+      closeAnnotation
+    } = this.state;
 
     this.state.x.domain(techan.scale.plot.time(data).domain());
     this.state.y.domain(

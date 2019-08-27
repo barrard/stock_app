@@ -1,12 +1,14 @@
 
+import {fetch_data} from '../../components/charts/chart_data_utils.js'
+
 export async function fetch_commodity_chart_data(
-  symbol, api_server, dispatch
+  symbol, api_server, dispatch, ctx
 ) {
   console.log('fetch_commodity_chart_data')
+  let url =     `${api_server}/commodities/get_all_data/${symbol}/`
 
-  let commodity_data = await fetch(
-    `${api_server}/commodities/get_all_data/${symbol}/`
-  );
+  let commodity_data= await fetch_data(url, ctx)
+  
   // console.log(commodity_data)
   let commodity_chart_data = await commodity_data.json();
   return dispatch({

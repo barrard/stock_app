@@ -16,7 +16,7 @@ class Login extends React.Component {
     super(props);
     this.state = {
       errors: [],
-      email: "111@gg.com",
+      email: "123@gg.com",
       password: "1",
       confirm_password:'1',
       _csrf:props.csrf    

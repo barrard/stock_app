@@ -20,9 +20,9 @@ export function view_selected_stock_symbol(symbol, props) {
 }
 
 /* HELPER METHOD */
-async function fetch_data(url, ctx) {
+export async function fetch_data(url, ctx) {
   if (ctx && ctx.req && ctx.req.headers) {
-    console.log('got ctx headers?')
+    console.log("got ctx headers?");
     return await fetch(url, {
       headers: {
         /* Need header maybe? */
@@ -31,9 +31,12 @@ async function fetch_data(url, ctx) {
       }
     });
   } else {
-    console.log('DONT have ctx headers?')
-
-    return await fetch(url);
+    console.log("DONT have ctx headers?");
+console.log(url)
+    return await fetch(url, {
+      // credentials: "same-origin",
+      // credentials: "include"
+    });
   }
 }
 
@@ -118,7 +121,7 @@ export async function fetch_selected_chart_data(symbol, props) {
         book_data,
         chart_data,
         chart_logo,
-        chart_stats,
+        chart_stats
         // chart_larget_trades
       }
     })

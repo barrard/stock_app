@@ -4,7 +4,8 @@ const Stock_Analysis_Controller = require("../controllers/Stock_Analysis.js");
 const Trade_Post_Model = require("../models/Trade_Post_Model.js");
 
 const {
-  ensure_authenticated
+  ensure_authenticated,
+  api_access_ensure_authenticated
 } = require("./../middleware/router_middleware.js");
 
 class Protected_Router {
@@ -15,9 +16,10 @@ class Protected_Router {
 
   buildRoutes() {
     /* return trade last 30 posts */
-    this.protected_router.get('/trade_posts', 
-    Trade_Post_Model.get_last_30_trade_posts
-    )
+    this.protected_router.get(
+      "/trade_posts",
+      Trade_Post_Model.get_last_30_trade_posts
+    );
 
     /* handle MA analysis queryies */
     this.protected_router.post(
@@ -30,6 +32,23 @@ class Protected_Router {
     this.protected_router.get(
       "/moving-average-analysis",
       [ensure_authenticated],
+      (req, res, next) => next()
+    );
+
+    /* api for the commodity minutley data */
+    this.protected_router.get(
+      "/commodities",
+      [ensure_authenticated],
+      (req, res, next) => {
+        logger.log('COMMODITIESSSS'.green.bgYellow)
+        next()
+      }
+    );
+
+    /* api for the commodity minutley data */
+    this.protected_router.get(
+      "/commodities/get_all_data/*",
+      [api_access_ensure_authenticated],
       (req, res, next) => next()
     );
 

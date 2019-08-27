@@ -10,13 +10,15 @@ module.exports = Quote;
 Quote.get_latest_data = get_latest_data;
 Quote.get_faves = get_faves;
 Quote.insert_quote = insert_quote;
-Quote.insert_quotes_data = insert_quotes_data;
+Quote.parse_commodity_quote = parse_commodity_quote;
 Quote.get_commodities_quote = get_commodities_quote;
 Quote.get_all_data = get_all_data;
 
 /* Takes the 2-second snap shots and resamples to one miniute */
 var compiled_data = {};
 var null_flag = true;
+var new_minutely_data = false
+
 var last_compiled_data = {};
 var one_minute = 1000 * 60;
 function parse_quote(sym, quote) {
@@ -60,7 +62,7 @@ function parse_quote(sym, quote) {
   if(!null_flag)null_flag=true
   if (!symbol) symbol = sym;
 
-  if (!start_timestamp) start_timestamp = new Date().getTime();
+  if (!start_timestamp) start_timestamp = new Date();
   if (!open) {
     // logger.log(`setting open @ ${price}`.yellow);
     open = price;
@@ -93,36 +95,20 @@ function parse_quote(sym, quote) {
     last_vol,
     vols
   };
-  let now = new Date().getTime();
+  let now = new Date();
   // logger.log(compiled_data[key_safe_symbol])
 
   if (now - one_minute > start_timestamp) {
     /* save closing price */
     /* save time stamp for end */
     compiled_data[key_safe_symbol].end_timestamp = quote.quoteTimeInLong;
-    /* check for equality */
-    let equal_check = isEquivalent(
-      compiled_data[key_safe_symbol],
-      last_compiled_data[key_safe_symbol]
-    );
-    // if (
-    // last_compiled_data[key_safe_symbol] &&
-    // compiled_data[key_safe_symbol] &&
-    /* euality function maybe useless.... */
-    // equal_check ||
-    /* Compiled minutley data should have 20 prices/vols */
-    // compiled_data[key_safe_symbol].prices.length < 5
-    // ) {
-    /* set last to current */
-    // last_compiled_data[key_safe_symbol] = compiled_data[key_safe_symbol];
-    /* reset the current compiled data */
-    // compiled_data[key_safe_symbol] = null;
-    // return logger.log(`The data is the same as last for ${symbol}`);
-    // }
+
+
     /* Finally save the data */
     insert_minutely_data(compiled_data[key_safe_symbol], symbol);
     /* set new to old */
     last_compiled_data[key_safe_symbol] = compiled_data[key_safe_symbol];
+    new_minutely_data = true
     /* reset the current to null */
     compiled_data[key_safe_symbol] = null;
     null_flag = false
@@ -186,11 +172,15 @@ async function get_faves() {
   return await get_all_symbols_latest_data(fave_comm_sym);
 }
 
-async function insert_quotes_data(quotes, io) {
+async function parse_commodity_quote(quotes, io) {
   for (sym in quotes) {
-    parse_quote(sym, quotes[sym]);
+    parse_quote(sym, quotes[sym], io);
   }
   if(null_flag)io.sockets.in("/commodities").emit("latest_minutley_bar", compiled_data);
+  if(new_minutely_data) {
+    io.sockets.in("/commodities").emit("new_minutley_bar", last_compiled_data);
+    setTimeout(()=> new_minutely_data = false, 1000)
+  }
 }
 
 async function insert_quote(data) {

@@ -5,11 +5,19 @@ import { withRouter } from "next/router";
 /* Might move this somewhere else */
 import io from "socket.io-client";
 import dynamic from "next/dynamic";
-import Techan_Chart from "../components/charts/Techan/Techan_Chart_Basic.js";
+
+// import Techan_Chart from "../components/charts/Techan/Techan_Raw_Chart.js"
+import Techan_Chart from "../components/charts/Techan/Techan_Chart_Zoom.js"
+// import Techan_Chart from "../components/charts/Techan/Techan_Chart_Basic.js";
+// import Techan_Chart from "../components/charts/Techan/Techan_Chart_Crosshair.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Feed.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Example.js";
+// import Techan_Chart from "../components/charts/Techan/simple_feed_with_sma.js";
+
+
 import { fetch_commodity_chart_data } from "../redux/actions/Commodities_Actions.js";
 // import Analysis_Chart from "../components/charts/Analysis_Chart.js";
+import {ensure_loggedin} from '../components/utils/auth.js'
 
 // const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_Example.js"), {
 // const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_Basic.js"), {
@@ -37,6 +45,8 @@ class Commodities_Page extends React.Component {
     this.toggle_wide_mode = this.toggle_wide_mode.bind(this);
   }
   static async getInitialProps(ctx) {
+    ensure_loggedin(ctx)
+
     let { store, req, query } = ctx;
     let { symbol } = query;
     let { dispatch } = store;
@@ -49,7 +59,7 @@ class Commodities_Page extends React.Component {
 
     /* Check commodity data first to see? */
     if (!symbol_data) {
-      await fetch_commodity_chart_data(symbol, api_server, dispatch);
+      await fetch_commodity_chart_data(symbol, api_server, dispatch, ctx);
     } else {
       console.log(`already got ${symbol} data`);
       console.log(`already got ${symbol} data`);
@@ -83,11 +93,14 @@ class Commodities_Page extends React.Component {
     // console.log(commodity_tick_data);
     this.setState({ commodity_tick_data });
   }
-  recieve_latest_minute_data(latest_minute_data){
-    this.setState({ latest_minute_data });
-    
 
+
+  recieve_latest_minute_data(latest_minute_data){
+    // console.log({latest_minute_data})
+    this.setState({ latest_minute_data });
   }
+
+
   toggle_wide_mode() {
     var { canvas_width } = this.state;
     canvas_width = canvas_width == 6 ? 12 : 6;
@@ -97,7 +110,7 @@ class Commodities_Page extends React.Component {
 
   render() {
     
-    let { commodity_tick_data, latest_minute_data } = this.state;
+    let { commodity_tick_data, latest_minute_data, socket } = this.state;
     let ES = commodity_tick_data["/ES"];
     let GC = commodity_tick_data["/GC"];
     let CL = commodity_tick_data["/CL"];
@@ -108,9 +121,12 @@ class Commodities_Page extends React.Component {
     return (
       <Main_Layout>
         <div id="techan_chart_div">
-          <Techan_Chart divId={'techan_chart_div'}
+          <Techan_Chart 
+          divId={'techan_chart_div'}
+          socket={socket}
+          symbol={'ES'}
           latest_minute_data={latest_minute_data}
-           _width={560} _height={500} data={this.props.commodities.charts.ES.chart_data} />
+           _width={560} _height={500} data={this.props.commodities.charts} />
         </div>
 
         <p>

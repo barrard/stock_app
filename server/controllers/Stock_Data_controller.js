@@ -153,10 +153,12 @@ class Stock_Data_Controller {
     }
   }
 
+
+
   /* 
   Controllers for caching 24-hr data
-
 */
+
   /* LARGET TRADE */
   async get_largest_trades(req, res, next) {
     let symbol = req.params.symbol.toUpperCase();
@@ -174,6 +176,7 @@ class Stock_Data_Controller {
   }
   /* SECOR DATA */
   async get_sector_data(req, res, next) {
+    logger.log(req.headers)
     let sector = req.query.collectionName;
     logger.log(sector);
     var sector_data = await redis.get(`${sector}_data`);
@@ -191,6 +194,8 @@ class Stock_Data_Controller {
   }
   /* GET COMPANY DATA */
   async get_company(req, res, next) {
+    logger.log(req.headers)
+
     let symbol = req.params.symbol.toUpperCase();
     logger.log(symbol);
     var company = await redis.get(`${symbol}_company`);
@@ -206,6 +211,8 @@ class Stock_Data_Controller {
   }
   /* GET STATS */
   async get_stats(req, res, next) {
+    logger.log(req.headers)
+
     let symbol = req.params.symbol.toUpperCase();
     logger.log(symbol);
     var stats = await redis.get(`${symbol}_stats`);
@@ -222,6 +229,8 @@ class Stock_Data_Controller {
   /* GET CHART 5Y */
 
   async get_chart_5y(req, res, next) {
+    logger.log(req.headers)
+
     let symbol = req.params.symbol.toUpperCase();
     logger.log(symbol);
 
@@ -234,6 +243,8 @@ class Stock_Data_Controller {
   }
   /* BOOK DATA */
   async get_book_data(req, res, next) {
+    logger.log(req.headers)
+
     let symbol = req.params.symbol.toUpperCase();
     logger.log(symbol);
     var book_data = await redis.get(`${symbol}_book_data`);
