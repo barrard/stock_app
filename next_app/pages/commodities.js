@@ -7,8 +7,8 @@ import io from "socket.io-client";
 import dynamic from "next/dynamic";
 
 // import Techan_Chart from "../components/charts/Techan/Techan_Raw_Chart.js"
-import Techan_Chart from "../components/charts/Techan/Techan_Chart_Zoom.js"
-// import Techan_Chart from "../components/charts/Techan/Techan_Chart_Basic.js";
+// import Techan_Chart from "../components/charts/Techan/Techan_Chart_Zoom.js"
+import Techan_Chart from "../components/charts/Techan/Techan_Chart_Basic.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Crosshair.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Feed.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Example.js";

@@ -22,7 +22,6 @@ const app = express();
 
 const http_server = require('http').Server(app);
 const io = require('socket.io')(http_server);
-
 /* Home page cashing function */
 const Home_Page_Cache = cacheableResponse({
   ttl: 1000 * 60 * 5, // 5 min

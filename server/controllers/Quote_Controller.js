@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 
 const symbols = require("../services/Commodity_Symbols.js");
 
+const python_socket_Server = require('../services/python_socket_comm.js')()
+
 module.exports = Quote;
 
 Quote.get_latest_data = get_latest_data;
@@ -173,6 +175,7 @@ async function get_faves() {
 }
 
 async function parse_commodity_quote(quotes, io) {
+  python_socket_Server.emit('commodity_data', quotes)
   for (sym in quotes) {
     parse_quote(sym, quotes[sym], io);
   }
