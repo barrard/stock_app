@@ -167,7 +167,7 @@ async function get_quote(symbols) {
     return JSON.parse(resp);
   } catch (err) {
     logger.log("err");
-    logger.log(err);
+    // logger.log(err);
     if (err.message) {
       let expired_token = err.message.includes(
         "The access token being passed has expired or is invalid"
@@ -573,7 +573,7 @@ async function request_new_access_token() {
     };
     var resp = await rp(options);
     resp = JSON.parse(resp);
-    console.log(access_token);
+    // console.log(access_token);
     logger.log(
       `ooollldddd access_token ${access_token
         .split("")

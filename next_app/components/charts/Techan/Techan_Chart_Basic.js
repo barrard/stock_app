@@ -1,5 +1,6 @@
 import React from "react";
 // import d3 from 'd3'
+import * as d3 from 'd3'
 // var d3 = require("d3");
 // var techan = require("techan");
 class Techan_Chart_Basic extends React.Component {
@@ -7,7 +8,6 @@ class Techan_Chart_Basic extends React.Component {
     super(props);
     this.state = {
       margin: { top: 20, right: 75, bottom: 30, left: 50 }
-      // width:960, height:500
     };
     this.recieve_new_minute_data = this.recieve_new_minute_data.bind(this);
   }

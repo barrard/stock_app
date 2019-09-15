@@ -6,22 +6,23 @@ import { withRouter } from "next/router";
 import io from "socket.io-client";
 import dynamic from "next/dynamic";
 
+import Techan_Chart from "../components/charts/Techan/Techan_Chart_WTF.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Raw_Chart.js"
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Zoom.js"
-import Techan_Chart from "../components/charts/Techan/Techan_Chart_Basic.js";
+//import Techan_Chart from "../components/charts/Techan/Techan_Chart_Final.js";
+// import Techan_Chart from "../components/charts/Techan/Techan_Chart_Basic.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Crosshair.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Feed.js";
 // import Techan_Chart from "../components/charts/Techan/Techan_Chart_Example.js";
 // import Techan_Chart from "../components/charts/Techan/simple_feed_with_sma.js";
 
-
 import { fetch_commodity_chart_data } from "../redux/actions/Commodities_Actions.js";
 // import Analysis_Chart from "../components/charts/Analysis_Chart.js";
-import {ensure_loggedin} from '../components/utils/auth.js'
+import { ensure_loggedin } from "../components/utils/auth.js";
 
 // const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_Example.js"), {
 // const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_Basic.js"), {
-//     const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_Feed.js"), {
+//     const Techan_Chart = dynamic(import("../components/charts/Techan/Techan_Chart_WTF.js"), {
 //       ssr: false
 // });
 
@@ -32,7 +33,7 @@ class Commodities_Page extends React.Component {
     const { meta } = this.props;
     const { api_server } = meta;
     this.state = {
-      socket : io(`${api_server}`, { secure: true }),
+      socket: io(`${api_server}`, { secure: true }),
 
       commodity_tick_data: {
         "/ES": {},
@@ -40,12 +41,14 @@ class Commodities_Page extends React.Component {
         "/CL": {}
       }
     };
-    this.recieve_latest_minute_data = this.recieve_latest_minute_data.bind(this)
-    this.recieve_quote_data = this.recieve_quote_data.bind(this)
+    this.recieve_latest_minute_data = this.recieve_latest_minute_data.bind(
+      this
+    );
+    this.recieve_quote_data = this.recieve_quote_data.bind(this);
     this.toggle_wide_mode = this.toggle_wide_mode.bind(this);
   }
   static async getInitialProps(ctx) {
-    ensure_loggedin(ctx)
+    ensure_loggedin(ctx);
 
     let { store, req, query } = ctx;
     let { symbol } = query;
@@ -69,37 +72,37 @@ class Commodities_Page extends React.Component {
     return { symbol };
   }
   componentWillUnmount() {
-    let {socket} = this.state
+    let { socket } = this.state;
 
     this._ismounted = false;
-    this.recieve_latest_minute_data = this.recieve_latest_minute_data.bind(this)
-    socket.removeListener('commodity_data', this.recieve_quote_data)
-    socket.removeListener('latest_minutle_bar', this.recieve_latest_minute_data)
+    this.recieve_latest_minute_data = this.recieve_latest_minute_data.bind(
+      this
+    );
+    socket.removeListener("commodity_data", this.recieve_quote_data);
+    socket.removeListener(
+      "latest_minutle_bar",
+      this.recieve_latest_minute_data
+    );
   }
   componentDidMount() {
-    let {socket} = this.state
+    let { socket } = this.state;
     this._ismounted = true;
     var isBrowser = typeof window !== "undefined";
     if (isBrowser) {
-
-
-      socket.on(`commodity_data`, this.recieve_quote_data)
-      socket.on(`latest_minutley_bar`, this.recieve_latest_minute_data)
-      
+      socket.on(`commodity_data`, this.recieve_quote_data);
+      socket.on(`latest_minutley_bar`, this.recieve_latest_minute_data);
     }
   }
 
-  recieve_quote_data (commodity_tick_data){
+  recieve_quote_data(commodity_tick_data) {
     // console.log(commodity_tick_data);
     this.setState({ commodity_tick_data });
   }
 
-
-  recieve_latest_minute_data(latest_minute_data){
+  recieve_latest_minute_data(latest_minute_data) {
     // console.log({latest_minute_data})
     this.setState({ latest_minute_data });
   }
-
 
   toggle_wide_mode() {
     var { canvas_width } = this.state;
@@ -107,9 +110,7 @@ class Commodities_Page extends React.Component {
     this.setState({ canvas_width });
   }
 
-
   render() {
-    
     let { commodity_tick_data, latest_minute_data, socket } = this.state;
     let ES = commodity_tick_data["/ES"];
     let GC = commodity_tick_data["/GC"];
@@ -117,16 +118,19 @@ class Commodities_Page extends React.Component {
     let { symbol, commodities } = this.props;
     // console.log(latest_minute_data)
     // if(latest_minute_data)console.log(latest_minute_data.ES.close)
-    
+
     return (
       <Main_Layout>
         <div id="techan_chart_div">
-          <Techan_Chart 
-          divId={'techan_chart_div'}
-          socket={socket}
-          symbol={'ES'}
-          latest_minute_data={latest_minute_data}
-           _width={560} _height={500} data={this.props.commodities.charts} />
+          <Techan_Chart
+            divId={"techan_chart_div"}
+            socket={socket}
+            symbol={"ES"}
+            latest_minute_data={latest_minute_data}
+            _width={560}
+            _height={500}
+            data={this.props.commodities.charts}
+          />
         </div>
 
         <p>

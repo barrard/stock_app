@@ -159,7 +159,7 @@ async function get_all_data(req, res) {
   } else {
     let all_data = await Minutely_Commodity_Model.find({
       symbol: sym
-    }).sort({'_id':-1}).limit(500);
+    }).sort({'_id':-1}).limit(300);
     logger.log(`Quote data length ${all_data.length}`);
     return res.send(all_data);
   }

@@ -19,9 +19,6 @@ socket.on('com_data_conf', ()=>{
 })
 
 
-socket.on('conn_test', ()=>{
-  logger.log('got a response')
-})
 
 
 return socket
