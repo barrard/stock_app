@@ -374,7 +374,7 @@ class Stock_Analysis_Controller {
     }
     let { daily_data } = data;
     if (daily_data.length < MA)
-      return `data length ${data.length} is less than MA $MA`;
+      return `data length ${data.length} is less than MA ${MA}`;
     // logger.log(data)
     // logger.log(daily_data.length)
     let average = this.find_average(daily_data, price_type);

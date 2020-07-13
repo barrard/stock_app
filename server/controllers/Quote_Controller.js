@@ -1,6 +1,6 @@
 const Quote = require("../models/Quote_Model.js");
 const Minutely_Commodity_Model = require("../models/Minutely_Commodity_Model.js");
-const TD_DATA_service = require("../services/TD_DATA/TD_DATA_service.js");
+// const TD_DATA_service = require("../services/TD_DATA/TD_DATA_service.js");
 const mongoose = require("mongoose");
 
 const symbols = require("../services/Commodity_Symbols.js");
@@ -13,7 +13,7 @@ Quote.get_latest_data = get_latest_data;
 Quote.get_faves = get_faves;
 Quote.insert_quote = insert_quote;
 Quote.parse_commodity_quote = parse_commodity_quote;
-Quote.get_commodities_quote = get_commodities_quote;
+// Quote.get_commodities_quote = get_commodities_quote;
 Quote.get_all_data = get_all_data;
 
 /* Takes the 2-second snap shots and resamples to one miniute */
@@ -164,9 +164,9 @@ async function get_all_data(req, res) {
     return res.send(all_data);
   }
 }
-async function get_commodities_quote() {
-  return TD_DATA_service.get_commodities_quote();
-}
+// async function get_commodities_quote() {
+//   return TD_DATA_service.get_commodities_quote();
+// }
 
 /* My faves */
 const fave_comm_sym = ["/GC", "/CL", "/ES"];

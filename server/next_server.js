@@ -21,7 +21,7 @@ const handle = next_app.getRequestHandler();
 const app = express();
 
 const http_server = require('http').Server(app);
-const io = require('socket.io')(http_server);
+// const io = require('socket.io')(http_server);
 /* Home page cashing function */
 const Home_Page_Cache = cacheableResponse({
   ttl: 1000 * 60 * 5, // 5 min
@@ -44,20 +44,7 @@ const Chart_Page_Cache = cacheableResponse({
 const get_routes = require("./routes/routes.js");
 const routes = get_routes();
 
-/* Services */
-// require('./services/stock_data_service.js')
 
-
-/* ORACLE here? */
-// const oracle = require('./services/Eth_Price_Oracle/Eth_Price_Oracle.js')
-// oracle()
-
-//TODO figure out if this will be useful
-// const LRUCache = require('lru-cache')
-// const ssrCache = new LRUCache({
-//   max: 100,
-//   maxAge: dev ? 5 : 1000 * 60 * 60 // 1hour
-// })
 
 next_app
   .prepare()
@@ -68,7 +55,7 @@ next_app
     logger.log(`Running in ${env}`)
     app.set("trust proxy", "loopback");
 
-    middleware(app, next_app, io);
+    middleware(app, next_app);
 
     app.get('/', (req, res)=> Home_Page_Cache({req, res, pagePath:'/landing'}))
 

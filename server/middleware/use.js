@@ -15,7 +15,7 @@ const DB_NAME = process.env.DB_NAME
 const Socket_Router = require('../routes/Socket_Router.js')
 
 const helper = require('./helper.js')
-module.exports = (app, next_app, io) => {
+module.exports = (app, next_app) => {
   const {protected_router} = require('../routes/Protected_Router.js')()
   const {auth_router} = require('../routes/Auth_Router.js')()
   const {user_router} = require('../routes/User_Router.js')()
@@ -208,7 +208,7 @@ app.use((err, req, res, next)=> {
     app.use(passport.initialize())
     app.use(passport.session(session_options))
   
-    Socket_Router.init(io, mongo_store)
+    // Socket_Router.init(io, mongo_store)
 
 
 

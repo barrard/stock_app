@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 // const Crowdsale = require('./crowdsale.js')
 const redis = require('../db/redis.js')
-const TD_DATA_service = require('../services/TD_DATA/TD_DATA_service.js')
+// const TD_DATA_service = require('../services/TD_DATA/TD_DATA_service.js')
 const TD_Data_Schema = mongoose.Schema({
   symbol: { type: String, index: {unique:true}},
   daily_data: [
@@ -31,7 +31,7 @@ const TD_Daily_Data = mongoose.model(
   TD_Data_Schema
 );
 module.exports = TD_Daily_Data;
-TD_Daily_Data.get_daily_data_for = get_daily_data_for;
+// TD_Daily_Data.get_daily_data_for = get_daily_data_for;
 TD_Daily_Data.update_daily_stock_data = update_daily_stock_data;
 // TD_Daily_Data.get_symbol = get_symbol;
 TD_Daily_Data.get_symbols_list = get_symbols_list
@@ -43,7 +43,7 @@ TD_Daily_Data.add_MA_price_data= add_MA_price_data
 async function get_symbols_list(){
   logger.log('getting list')
   let symbols = await TD_Daily_Data.find({}, {symbol:1})
-  logger.log('returngin lit')
+  logger.log('returning lit')
   return symbols
 }
 
@@ -121,26 +121,26 @@ async function update_daily_stock_data(symbol, data) {
   }
 }
 
-async function get_daily_data_for(symbol) {
+// async function get_daily_data_for(symbol) {
 
-  try {
-    var daily_data = await redis.get(`${symbol}_daily`)
-    // logger.log(daily_data)
-    if(!daily_data || !daily_data.length){
-      logger.log(`getting data from DB`)
-      daily_data = await TD_DATA_service.request_historical_data(symbol)
+//   try {
+//     var daily_data = await redis.get(`${symbol}_daily`)
+//     // logger.log(daily_data)
+//     if(!daily_data || !daily_data.length){
+//       logger.log(`getting data from DB`)
+//       daily_data = await TD_DATA_service.request_historical_data(symbol)
       
-      // console.log(daily_data)
-      if(!daily_data) throw `No data found for ${symbol}`
-      await redis.set(`${symbol}_daily`, daily_data)
-      logger.log(daily_data.length)
-    }
-    return daily_data
+//       // console.log(daily_data)
+//       if(!daily_data) throw `No data found for ${symbol}`
+//       await redis.set(`${symbol}_daily`, daily_data)
+//       logger.log(daily_data.length)
+//     }
+//     return daily_data
 
-  } catch (err) {
-    logger.log("err".bgRed);
-    logger.log(err);
-  }
-}
+//   } catch (err) {
+//     logger.log("err".bgRed);
+//     logger.log(err);
+//   }
+// }
 
 
